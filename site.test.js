@@ -406,3 +406,47 @@ test('homepage right media card is a video carousel without photo slides', () =>
   assert(css.includes('.video-card-carousel .video-slide video'), 'video carousel slides need direct video styling');
   assert(js.includes('querySelectorAll(\'[data-slide-video]\')'), 'media carousel should manage multiple slide videos');
 });
+
+test('project is migrated to a Vercel-ready Next.js App Router application', () => {
+  const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
+  assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');
+  assert(pkg.scripts.build === 'next build', 'build script should run Next.js');
+  assert(pkg.scripts.start === 'next start', 'start script should run Next.js');
+  assert(pkg.dependencies && pkg.dependencies.next, 'Next.js dependency missing');
+  assert(pkg.dependencies && pkg.dependencies.react && pkg.dependencies['react-dom'], 'React dependencies missing');
+
+  const requiredFiles = [
+    'next.config.mjs',
+    'tsconfig.json',
+    'next-env.d.ts',
+    'app/layout.tsx',
+    'app/globals.css',
+    'app/page.tsx',
+    'app/services/page.tsx',
+    'app/family-practice/page.tsx',
+    'app/wellness/page.tsx',
+    'app/telehealth/page.tsx',
+    'app/about/page.tsx',
+    'app/contact/page.tsx',
+    'components/SiteHeader.tsx',
+    'components/SiteFooter.tsx',
+    'components/PageBodyMarker.tsx',
+    'components/RawPage.tsx',
+    'public/site-interactions.js',
+  ];
+  for (const file of requiredFiles) {
+    assert(fs.existsSync(path.join(root, file)), `${file} missing from Next.js migration`);
+  }
+
+  const layout = read('app/layout.tsx');
+  assert(layout.includes('import Script from \'next/script\''), 'layout should load client interactions with next/script');
+  assert(layout.includes('<SiteHeader />') && layout.includes('<SiteFooter />'), 'layout should use shared header/footer components');
+  assert(!layout.includes('next export'), 'layout should not rely on static export mode');
+
+  const home = read('app/page.tsx');
+  assert(home.includes('<PageBodyMarker page="home" />'), 'homepage should mark body page state for existing CSS');
+  assert(read('components/RawPage.tsx').includes('dangerouslySetInnerHTML'), 'page content should preserve current design markup through the shared RawPage component');
+});
+
+
+

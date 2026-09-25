@@ -1,0 +1,18 @@
+import type { Metadata } from 'next';
+import { PageBodyMarker } from '@/components/PageBodyMarker';
+import { RawPage } from '@/components/RawPage';
+
+export const metadata: Metadata = {
+  title: "Services | Leancare Health",
+};
+
+const content = "<section class=\"page-hero compact-hero\">\n      <div class=\"page-photo-carousel\" data-page-hero-carousel aria-hidden=\"true\">\n        <img class=\"page-photo-slide is-active\" data-page-hero-slide src=\"https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1600&q=82\" alt=\"\" />\n        <img class=\"page-photo-slide\" data-page-hero-slide src=\"https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1600&q=82\" alt=\"\" />\n        <img class=\"page-photo-slide\" data-page-hero-slide src=\"https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1600&q=82\" alt=\"\" />\n      </div>\n      <p class=\"eyebrow\">Services</p>\n      <h1>Start where your health needs momentum.</h1>\n      <p>Pick a care lane below. The details update instantly, and every path leads back to a real conversation with the Leancare team.</p>\n    </section>\n\n    <section class=\"service-studio reveal\" aria-label=\"Interactive services\">\n      <div class=\"service-tabs\" role=\"tablist\" aria-label=\"Leancare services\">\n        <button class=\"service-tab\" type=\"button\" role=\"tab\" aria-selected=\"true\" data-service=\"family\">Family Practice</button>\n        <button class=\"service-tab\" type=\"button\" role=\"tab\" aria-selected=\"false\" data-service=\"telehealth\">Telehealth</button>\n        <button class=\"service-tab\" type=\"button\" role=\"tab\" aria-selected=\"false\" data-service=\"behavioral\">Behavioral Health</button>\n        <button class=\"service-tab\" type=\"button\" role=\"tab\" aria-selected=\"false\" data-service=\"weight\">Weight Management</button>\n        <button class=\"service-tab\" type=\"button\" role=\"tab\" aria-selected=\"false\" data-service=\"vitamins\">Vitamin Injections</button>\n      </div>\n      <article class=\"service-panel\" data-service-panel>\n        <span class=\"panel-kicker\">Family Practice</span>\n        <h2>Primary care that makes room for the full story.</h2>\n        <p>Everyday visits, preventive guidance, chronic-condition support, and care coordination for individuals and families.</p>\n        <dl>\n          <div><dt>Best for</dt><dd>Ongoing primary care and everyday health concerns.</dd></div>\n          <div><dt>Visit style</dt><dd>In-person care with clear next steps.</dd></div>\n        </dl>\n        <a class=\"button button-primary\" href=\"/family-practice\">View family practice</a>\n      </article>\n    </section>\n\n    <section class=\"cards-section reveal\">\n      <article><h2>Family Practice</h2><p>Whole-person primary care for adults and families.</p><a href=\"/family-practice\">Learn more</a></article>\n      <article><h2>Telehealth</h2><p>Virtual guidance for follow-ups, questions, and select care needs.</p><a href=\"/telehealth\">Learn more</a></article>\n      <article><h2>Behavioral Health</h2><p>Confidential screenings that help tailor your visit and support.</p><a href=\"/telehealth\">Learn more</a></article>\n      <article><h2>Weight Management</h2><p>Physician-supervised support shaped around your goals.</p><a href=\"/wellness\">Learn more</a></article>\n      <article><h2>Vitamin Injections</h2><p>Targeted nutrient support for energy, immunity, and wellness.</p><a href=\"/wellness\">Learn more</a></article>\n    </section>";
+
+export default function Page() {
+  return (
+    <>
+      <PageBodyMarker page="services" />
+      <RawPage html={content} />
+    </>
+  );
+}

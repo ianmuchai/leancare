@@ -1,12 +1,27 @@
-﻿{
+{
   "name": "leancare-health-site",
   "version": "1.0.0",
   "private": true,
-  "description": "Static multipage Leancare Health website prepared for GitHub Pages deployment.",
+  "description": "Next.js App Router project for the Leancare Health website, ready for Vercel deployment.",
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "test": "node site.test.js"
   },
+  "dependencies": {
+    "@next/third-parties": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.9.0"
   }
 }

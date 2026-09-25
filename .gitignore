@@ -18,3 +18,7 @@ yarn-error.log*
 
 # GitHub Pages artifact
 _site/
+
+# Next.js
+.next/
+out/

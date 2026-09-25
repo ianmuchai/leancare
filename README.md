@@ -1,29 +1,30 @@
-﻿# Leancare Health Website
+# Leancare Health Website
 
-Static multipage website for Leancare Health, prepared for GitHub Pages deployment.
+A Vercel-ready Next.js App Router project for Leancare Health.
 
-## Local Check
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Verification
 
 ```bash
 npm test
+npm run build
 ```
 
-The site is plain HTML, CSS, and JavaScript, so it can be opened locally from `index.html` or served by any static host.
+## Vercel Deployment
 
-## GitHub Pages Deployment
+Import this GitHub repository in Vercel and use the **Next.js** framework preset. Vercel will install dependencies and run `next build` automatically.
 
-This repository includes `.github/workflows/pages.yml`, which deploys the site to GitHub Pages when changes are pushed to `main`.
+Recommended Vercel settings:
 
-Before the first deployment, open the repository on GitHub and set:
+- Framework Preset: `Next.js`
+- Build Command: `next build`
+- Output Directory: leave default
+- Install Command: leave default
 
-1. `Settings` -> `Pages`
-2. `Build and deployment` -> `Source` -> `GitHub Actions`
-
-Then push the repository:
-
-```bash
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-git push -u origin main
-```
-
-The workflow will run `npm test`, package the static files, and publish the Pages deployment.
+The current design is preserved through shared App Router layout/components and migrated route pages.
