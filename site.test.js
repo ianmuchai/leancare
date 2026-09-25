@@ -451,3 +451,23 @@ test('project is migrated to a Vercel-ready Next.js App Router application', () 
 
 
 
+
+test('Next app preserves static UI interaction hooks and reinitializes them after hydration and route changes', () => {
+  const header = read('components/SiteHeader.tsx');
+  const layout = read('app/layout.tsx');
+  const runtime = read('components/SiteRuntime.tsx');
+  const interactions = read('public/site-interactions.js');
+
+  assert(header.includes('data-menu-toggle'), 'Next header missing mobile nav toggle hook');
+  assert(header.includes('data-nav'), 'Next header missing nav container hook');
+  assert(header.includes('data-nav-link'), 'Next header missing active nav link hook');
+  assert(header.includes('navKey'), 'Next header should map routes to legacy page keys');
+
+  assert(layout.includes('<SiteRuntime />'), 'layout should include the client runtime reinitializer');
+  assert(runtime.includes('usePathname'), 'runtime should re-run interactions after Next route changes');
+  assert(runtime.includes('window.LeanCareInit'), 'runtime should call the global interaction initializer');
+
+  assert(interactions.includes('window.LeanCareInit = initLeancareInteractions'), 'interactions should expose a global initializer');
+  assert(interactions.includes('document.readyState === \'loading\''), 'interactions should run even when loaded after DOMContentLoaded');
+  assert(!interactions.includes("document.addEventListener('DOMContentLoaded', initHeroCarousel);"), 'interactions should not rely on one-off DOMContentLoaded listeners');
+});

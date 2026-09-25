@@ -3,6 +3,7 @@ import Script from 'next/script';
 import './globals.css';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { SiteRuntime } from '@/components/SiteRuntime';
 
 export const metadata: Metadata = {
   title: 'Leancare Health | Jacksonville Primary Care + Wellness',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        <SiteRuntime />
         <SiteHeader />
         {children}
         <SiteFooter />

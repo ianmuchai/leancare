@@ -50,6 +50,8 @@ function initMobileNav() {
   const toggle = document.querySelector('[data-menu-toggle]');
   const nav = document.querySelector('[data-nav]');
   if (!toggle || !nav) return;
+  if (toggle.dataset.leancareInit === 'true') return;
+  toggle.dataset.leancareInit = 'true';
 
   toggle.addEventListener('click', () => {
     const isOpen = document.body.classList.toggle('nav-open');
@@ -65,7 +67,7 @@ function initMobileNav() {
 }
 
 function initActiveNav() {
-  const page = document.body.dataset.page;
+  const page = document.body.dataset.page || { '/': 'home', '/services': 'services', '/family-practice': 'family-practice', '/wellness': 'wellness', '/telehealth': 'telehealth', '/about': 'about', '/contact': 'contact' }[window.location.pathname];
   if (!page) return;
 
   document.querySelectorAll('[data-nav-link]').forEach((link) => {
@@ -93,6 +95,9 @@ function renderService(serviceKey) {
 function initServiceTabs() {
   const tabs = Array.from(document.querySelectorAll('.service-tab'));
   if (!tabs.length) return;
+  const tabsRoot = tabs[0].closest('[role="tablist"]') || tabs[0].parentElement;
+  if (tabsRoot?.dataset.leancareInit === 'true') return;
+  if (tabsRoot) tabsRoot.dataset.leancareInit = 'true';
 
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -116,6 +121,8 @@ function initTestimonials() {
   const cards = Array.from(document.querySelectorAll('[data-testimonial]'));
   const next = document.querySelector('[data-testimonial-next]');
   if (!cards.length || !next) return;
+  if (next.dataset.leancareInit === 'true') return;
+  next.dataset.leancareInit = 'true';
 
   let index = 0;
   const show = (nextIndex) => {
@@ -151,17 +158,12 @@ function initReveal() {
   elements.forEach((element) => observer.observe(element));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initMobileNav();
-  initActiveNav();
-  initServiceTabs();
-  initTestimonials();
-  initReveal();
-});
 
 function initHeroCarousel() {
   const carousel = document.querySelector('[data-hero-carousel]');
   if (!carousel) return;
+  if (carousel.dataset.leancareInit === 'true') return;
+  carousel.dataset.leancareInit = 'true';
   const slides = Array.from(carousel.querySelectorAll('.hero-slide'));
   if (slides.length < 2) return;
   let index = 0;
@@ -176,11 +178,12 @@ function initHeroCarousel() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initHeroCarousel);
 
 function initVisualCarousel() {
   const carousel = document.querySelector('[data-visual-carousel]');
   if (!carousel) return;
+  if (carousel.dataset.leancareVisualInit === 'true') return;
+  carousel.dataset.leancareVisualInit = 'true';
   const slides = Array.from(carousel.querySelectorAll('[data-visual-slide]'));
   const dots = Array.from(carousel.querySelectorAll('[data-visual-dot]'));
   if (!slides.length) return;
@@ -209,7 +212,6 @@ function initVisualCarousel() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initVisualCarousel);
 function initCareDock() {
   const dock = document.querySelector('[data-care-dock]');
   if (!dock) return;
@@ -252,6 +254,8 @@ function initMagneticCards() {
   if (!cards.length) return;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   cards.forEach((card) => {
+    if (card.dataset.leancareInit === 'true') return;
+    card.dataset.leancareInit = 'true';
     card.addEventListener('pointermove', (event) => {
       if (reduce) return;
       const rect = card.getBoundingClientRect();
@@ -267,10 +271,6 @@ function initMagneticCards() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initCareDock();
-  initMagneticCards();
-});
 function initSpotlightRail() {
   const rail = document.querySelector('[data-spotlight-rail]');
   if (!rail) return;
@@ -292,10 +292,11 @@ function initSpotlightRail() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initSpotlightRail);
 function initMediaCarousel() {
   const carousel = document.querySelector('[data-media-carousel]');
   if (!carousel) return;
+  if (carousel.dataset.leancareMediaInit === 'true') return;
+  carousel.dataset.leancareMediaInit = 'true';
   const slides = Array.from(carousel.querySelectorAll('[data-media-slide]'));
   const videos = Array.from(carousel.querySelectorAll('[data-slide-video]'));
   const dots = Array.from(carousel.querySelectorAll('[data-media-dot]'));
@@ -349,10 +350,11 @@ function initMediaCarousel() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initMediaCarousel);
 function initBackgroundCarousel() {
   const carousel = document.querySelector('[data-bg-carousel]');
   if (!carousel) return;
+  if (carousel.dataset.leancareBgInit === 'true') return;
+  carousel.dataset.leancareBgInit = 'true';
   const slides = Array.from(carousel.querySelectorAll('[data-bg-slide]'));
   if (slides.length < 2) return;
   let index = 0;
@@ -367,7 +369,6 @@ function initBackgroundCarousel() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initBackgroundCarousel);
 
 
 
@@ -409,7 +410,6 @@ function initHeroTools() {
   chips.forEach((chip) => chip.addEventListener('click', () => render(chip.dataset.heroTool)));
 }
 
-document.addEventListener('DOMContentLoaded', initHeroTools);
 
 function initPageHeroCarousels() {
   const carousels = Array.from(document.querySelectorAll('[data-page-hero-carousel]'));
@@ -417,6 +417,8 @@ function initPageHeroCarousels() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   carousels.forEach((carousel, carouselIndex) => {
+    if (carousel.dataset.leancareInit === 'true') return;
+    carousel.dataset.leancareInit = 'true';
     const slides = Array.from(carousel.querySelectorAll('[data-page-hero-slide]'));
     if (slides.length < 2) return;
     let index = 0;
@@ -431,6 +433,30 @@ function initPageHeroCarousels() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', initPageHeroCarousels);
 
 
+
+function initLeancareInteractions() {
+  initMobileNav();
+  initActiveNav();
+  initServiceTabs();
+  initTestimonials();
+  initReveal();
+  initHeroCarousel();
+  initVisualCarousel();
+  initCareDock();
+  initMagneticCards();
+  initSpotlightRail();
+  initMediaCarousel();
+  initBackgroundCarousel();
+  initHeroTools();
+  initPageHeroCarousels();
+}
+
+window.LeanCareInit = initLeancareInteractions;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLeancareInteractions, { once: true });
+} else {
+  initLeancareInteractions();
+}
