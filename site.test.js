@@ -216,7 +216,7 @@ test('home page has a real video carousel card and bottom photo background secti
   const html = read('index.html');
   const css = read('styles.css');
   const videoSlides = html.match(/data-slide-video/g) || [];
-  assert(videoSlides.length >= 3, 'video carousel card missing multiple real video elements');
+  assert(videoSlides.length >= 4, 'video carousel card should have four real video elements');
   assert(html.includes('bottom-photo-bg'), 'bottom photo background section missing');
   assert(css.includes('.bottom-photo-bg'), 'bottom photo background CSS missing');
 });
@@ -345,7 +345,7 @@ test('all pages use reliable hero photo carousels and the homepage card uses dir
   const homeBgTags = home.match(/<img class="bg-slide[\s\S]*?>/g) || [];
   const homeVideoTags = home.match(/<video class="slide-video"[\s\S]*?<\/video>/g) || [];
   assert(homeBgTags.length >= 3, 'homepage should keep background photo carousel photos');
-  assert(homeVideoTags.length >= 3, 'homepage right media card should use multiple direct video slides');
+  assert(homeVideoTags.length >= 4, 'homepage right media card should use four direct video slides');
   for (const tag of homeBgTags) {
     assert(!tag.includes('www.leancarehealth.com/_next/image'), 'homepage background carousel still depends on original-site _next/image URLs');
     assert(/images\.unsplash\.com|images\.pexels\.com/.test(tag), 'homepage background carousel should use direct reliable photo URLs');
@@ -374,8 +374,8 @@ test('homepage uses distinct background photos and rotates multiple opaque hero 
   const bgTags = html.match(/<img class="bg-slide[\s\S]*?>/g) || [];
   const videoSources = [...html.matchAll(/<video class="slide-video"[\s\S]*?<source src="([^"]+)"/g)].map((match) => match[1]);
   assert(bgTags.length >= 3, 'homepage background should keep at least three photo slides');
-  assert(videoSources.length >= 3, 'homepage media carousel should provide multiple video clips');
-  assert(new Set(videoSources).size >= 3, 'homepage video clips should be distinct');
+  assert(videoSources.length >= 4, 'homepage media carousel should provide four video clips');
+  assert(new Set(videoSources).size >= 4, 'homepage video clips should be distinct');
   for (const tag of bgTags) {
     assert(/images\.unsplash\.com/.test(tag), 'homepage background photos should use direct Unsplash photo URLs');
     assert(!tag.includes('photo-1511895426328-dc8714191300'), 'homepage should not reuse the old family-sunset photo');
@@ -398,7 +398,7 @@ test('homepage right media card is a video carousel without photo slides', () =>
   assert(mediaMatch, 'homepage media carousel markup not found');
   const media = mediaMatch[0];
   const videoSlides = media.match(/<figure class="media-slide video-slide[\s\S]*?<video/g) || [];
-  assert(videoSlides.length >= 3, 'homepage right media card should have at least three video slides');
+  assert(videoSlides.length >= 4, 'homepage right media card should have at least three video slides');
   assert(!media.includes('<img'), 'homepage right media card should not include photo carousel images');
   assert(!media.includes('data-video-src'), 'homepage right media card should not use hidden photo slides to swap one video source');
   assert(media.includes('data-slide-video'), 'each video carousel slide should expose its own video element');
@@ -447,6 +447,7 @@ test('project is migrated to a Vercel-ready Next.js App Router application', () 
   assert(home.includes('<PageBodyMarker page="home" />'), 'homepage should mark body page state for existing CSS');
   assert(read('components/RawPage.tsx').includes('dangerouslySetInnerHTML'), 'page content should preserve current design markup through the shared RawPage component');
 });
+
 
 
 
