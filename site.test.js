@@ -1,4 +1,4 @@
-﻿const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 
 const root = __dirname;
@@ -278,6 +278,29 @@ test('top bar navigation words have balanced spacing', () => {
   assert(css.includes('white-space: nowrap;'), 'nav labels should not wrap awkwardly');
 });
 
+test('homepage header and video overlays are aligned and evenly spaced', () => {
+  const css = read('styles.css');
+  assert(css.includes('/* Header and hero video overlay alignment correction. */'), 'missing final header/video alignment correction layer');
+  assert(css.includes('.site-header { grid-template-columns: minmax(172px, 224px) minmax(0, 1fr) max-content max-content; }'), 'desktop header needs stable logo/nav/phone/cta columns');
+  assert(css.includes('.phone-link { white-space: nowrap; line-height: 1; }'), 'phone number should not wrap in the top bar');
+  assert(css.includes('.header-cta { min-width: 150px; padding: 13px 20px; line-height: 1.08; }'), 'header appointment button should be compact and vertically centered');
+  assert(css.includes('.video-card-carousel .video-slide .media-caption { bottom: 30px; left: 30px; max-width: min(380px, calc(100% - 260px)); padding: 18px 20px; }'), 'video caption card should sit cleanly inside the video side');
+  assert(css.includes('.floating-glass-card { bottom: 30px; left: auto; right: 34px; max-width: 204px; padding: 16px 18px; }'), 'small video-side glass card should be compact and aligned');
+  assert(css.includes('.video-card-carousel .media-controls { bottom: 42px; right: 260px; }'), 'video carousel controls should be spaced from the caption cards');
+});
+test('homepage is concise with a cleaner header and no rainbow treatment', () => {
+  const html = read('index.html');
+  const css = read('styles.css');
+  assert(html.includes('<h1>Primary care. Wellness. Clear next steps.</h1>'), 'homepage headline should be direct and concise');
+  assert(!html.includes('Leancare pairs unhurried family medicine with modern wellness support, so every visit turns into a plan you can actually live with.'), 'homepage still uses the wordy hero paragraph');
+  assert(css.includes('/* Concise no-rainbow homepage/header cleanup. */'), 'missing concise no-rainbow cleanup layer');
+  assert(css.includes('.site-header { grid-template-columns: minmax(160px, 218px) minmax(0, 1fr) max-content; }'), 'header should use a simpler logo/nav/cta grid');
+  assert(css.includes('.phone-link { display: none; }'), 'wrapped phone number should be removed from the desktop header');
+  assert(css.includes('.home-hero.photo-bg-active .hero-bg-carousel::after { background: rgba(255, 255, 255, 0.78); }'), 'homepage should not use the visible blue-magenta hero wash');
+  assert(css.includes('.carousel-progress, .tool-meter, .energy-wave { display: none; }'), 'rainbow progress/motion strips should be hidden');
+  assert(css.includes('.hero-lede, .hero-proof, .hero-carousel, .media-caption p, .spotlight-card p, .cockpit-copy p, .feature-grid p { display: none; }'), 'wordy support paragraphs should be suppressed in the homepage UI');
+  assert(css.includes('.button-primary, .header-cta { background: var(--logo-blue); background-image: none; }'), 'primary actions should use a solid brand color instead of gradients');
+});
 test('inner page hero templates use smaller titles and distinct vibrant page styling', () => {
   const css = read('styles.css');
   assert(css.includes('/* Inner page hero personality correction. */'), 'missing inner page hero correction layer');
