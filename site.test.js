@@ -53,7 +53,7 @@ test('every page has shared navigation, appointment CTA, and footer disclaimer',
 test('services page exposes keyboard-accessible dynamic service tabs', () => {
   const html = read('services.html');
   const serviceButtons = (html.match(/class="service-tab"/g) || []).length;
-  assert(serviceButtons >= 5, 'services.html should include at least five service tabs');
+  assert(serviceButtons === 3, 'services.html should include exactly three service tabs');
   assert(html.includes('data-service-panel'), 'services.html missing dynamic service panel');
   assert(html.includes('aria-selected="true"'), 'services.html missing selected tab state');
 });
@@ -88,219 +88,59 @@ test('layout includes additional tablet and small-phone responsive breakpoints',
   assert(css.includes('@media (max-width: 540px)'), 'missing small-phone breakpoint');
 });
 
-test('home page uses richer image design instead of a single plain hero image', () => {
-  const html = read('index.html');
-  assert(html.includes('hero-command'), 'home page missing redesigned command hero');
-  assert(html.includes('visual-carousel'), 'home page missing visual carousel shell');
-  assert(html.includes('floating-glass-card'), 'home page missing supporting floating glass card');
-});
-
-test('pages use the original logo asset and exact logo color values', () => {
-  const css = read('styles.css');
-  const html = read('index.html');
-  assert(css.includes('#3fa2db'), 'missing exact logo blue #3fa2db');
-  assert(css.includes('#ff00c2'), 'missing exact logo magenta #ff00c2');
-  assert(html.includes('https://www.leancarehealth.com/logo.svg'), 'home page missing original logo asset');
-});
-
-test('home page includes professional glass, shimmer, and rotating carousel hooks', () => {
+test('homepage is streamlined around three real services', () => {
   const html = read('index.html');
   const css = read('styles.css');
+  const services = ['Primary Care', 'Psychiatric/Behavioural Services', 'Chronic Disease Management'];
+  assert(html.includes('lean-home-services'), 'homepage missing streamlined three-service section');
+  for (const service of services) {
+    assert(html.includes(service), `homepage missing ${service}`);
+  }
+  assert(!html.includes('brand-energy'), 'homepage should not keep the redundant brand energy section');
+  assert(!html.includes('care-cockpit'), 'homepage should not keep the redundant care cockpit section');
+  assert(!html.includes('route-band reveal'), 'homepage should not keep repeated route cards');
+  assert(!html.includes('service-preview reveal'), 'homepage should not keep duplicate service preview cards');
+  assert(!html.includes('Wellness care <span>'), 'homepage should not list wellness as a standalone service card');
+  assert(!html.includes('Virtual care <span>'), 'homepage should not list virtual care as a standalone service card');
+  assert(css.includes('/* Streamlined three-service homepage cleanup. */'), 'missing streamlined homepage CSS layer');
+});
+
+test('services page only exposes the approved three services', () => {
+  const html = read('services.html');
   const js = read('script.js');
-  assert(html.includes('data-hero-carousel'), 'home page missing hero carousel hook');
-  assert(html.includes('glass-panel'), 'home page missing glass panel markup');
-  assert(css.includes('.glass-panel'), 'css missing glass panel styling');
-  assert(css.includes('.shimmer'), 'css missing shimmer styling');
-  assert(js.includes('initHeroCarousel'), 'script missing hero carousel initializer');
+  const serviceButtons = html.match(/class="service-tab"/g) || [];
+  assert(serviceButtons.length === 3, 'services page should include exactly three service tabs');
+  for (const service of ['Primary Care', 'Psychiatric/Behavioural Services', 'Chronic Disease Management']) {
+    assert(html.includes(service), `services page missing ${service}`);
+    assert(js.includes(service), `script service model missing ${service}`);
+  }
+  for (const retired of ['Weight Management', 'Vitamin Injections', 'Wellness care', 'Virtual care']) {
+    assert(!html.includes(retired), `services page still exposes retired service ${retired}`);
+  }
 });
 
-
-test('home page uses premium typography and a non-clone hero command design', () => {
+test('home page keeps concise media and appointment paths without button clutter', () => {
   const html = read('index.html');
-  const css = read('styles.css');
-  assert(html.includes('family=Plus+Jakarta+Sans'), 'home page missing Plus Jakarta Sans font');
-  assert(html.includes('family=Fraunces'), 'home page missing Fraunces display font');
-  assert(html.includes('hero-command'), 'home page missing redesigned hero command module');
-  assert(html.includes('data-visual-carousel'), 'home page missing interactive carousel module');
-  assert(css.includes('--font-display'), 'css missing premium display font token');
-  assert(css.includes('.hero-command'), 'css missing hero command styling');
-  assert(css.includes('@keyframes carousel-progress'), 'css missing carousel progress animation');
-});
-
-test('home hero is compact and uses an interactive glass showcase instead of mobile imagery', () => {
-  const html = read('index.html');
-  const css = read('styles.css');
-  const js = read('script.js');
-  assert(html.includes('data-visual-carousel'), 'home page missing main visual carousel');
-  assert(html.includes('class="carousel-dot is-active"'), 'home page missing carousel controls');
-  assert(!html.includes('hero-portrait-stack'), 'home page still includes unnecessary hero image stack');
-  assert(css.includes('clamp(38px, 5.6vw, 68px)'), 'hero font scale is still too large');
-  assert(css.includes('.visual-carousel'), 'css missing visual carousel styling');
-  assert(css.includes('.carousel-progress'), 'css missing carousel progress styling');
-  assert(js.includes('initVisualCarousel'), 'script missing visual carousel initializer');
-});
-
-test('home page includes dynamic care cockpit and magnetic glass interactions', () => {
-  const html = read('index.html');
-  const css = read('styles.css');
-  const js = read('script.js');
-  assert(html.includes('data-care-cockpit'), 'home page missing care cockpit section');
-  assert(html.includes('data-care-dock'), 'home page missing interactive care dock');
-  assert(html.includes('magnetic-card'), 'home page missing magnetic glass cards');
-  assert(css.includes('.care-cockpit'), 'css missing care cockpit styling');
-  assert(css.includes('.ambient-orb'), 'css missing ambient orb effects');
-  assert(css.includes('@keyframes float-orb'), 'css missing floating orb animation');
-  assert(js.includes('initCareDock'), 'script missing care dock initializer');
-});
-
-test('home page includes a vibrant brand energy rail and removes orb-led decoration', () => {
-  const html = read('index.html');
-  const css = read('styles.css');
-  const js = read('script.js');
-  assert(html.includes('brand-energy'), 'home page missing brand energy section');
-  assert(html.includes('class="kinetic-strip"'), 'home page missing kinetic ticker strip');
-  assert(html.includes('data-spotlight-rail'), 'home page missing spotlight rail');
-  assert(html.includes('class="spotlight-card is-active"'), 'home page missing active spotlight card');
-  assert(!html.includes('ambient-orb'), 'home page still uses orb-led decoration');
-  assert(css.includes('.brand-energy'), 'css missing brand energy styling');
-  assert(css.includes('@keyframes ribbon-shift'), 'css missing ribbon animation');
-  assert(css.includes('.energy-wave'), 'css missing animated energy wave');
-  assert(js.includes('initSpotlightRail'), 'script missing spotlight rail initializer');
-});
-
-test('home hero uses a real photo carousel instead of abstract text panels', () => {
-  const html = read('index.html');
-  const css = read('styles.css');
-  const js = read('script.js');
-  const photoSlides = (html.match(/class="media-slide/g) || []).length;
-  assert(html.includes('data-media-carousel'), 'home page missing media carousel hook');
-  assert(photoSlides >= 3, 'home page should include at least three media slides');
-  assert(html.includes('class="media-caption glass-panel"'), 'home page missing glass media caption');
-  assert(!html.includes('Care plans that start with listening.'), 'home page still uses abstract text-panel slide');
-  assert(css.includes('.media-carousel'), 'css missing media carousel styling');
-  assert(css.includes('@keyframes media-kenburns'), 'css missing carousel image motion');
-  assert(js.includes('initMediaCarousel'), 'script missing media carousel initializer');
-});
-
-test('home hero typography is restrained and visually balanced', () => {
-  const css = read('styles.css');
-  assert(css.includes('clamp(32px, 4.4vw, 54px)'), 'hero headline max size is still too large');
-  assert(css.includes('.hero-content-balanced'), 'css missing balanced hero content treatment');
-  assert(css.includes('max-width: 620px'), 'hero content width is still too wide');
-});
-
-test('home hero has both background photo carousel and video-style card carousel', () => {
-  const html = read('index.html');
-  const css = read('styles.css');
-  const js = read('script.js');
-  const bgSlides = (html.match(/data-bg-slide/g) || []).length;
-  assert(html.includes('data-bg-carousel'), 'home hero missing background photo carousel');
-  assert(bgSlides >= 3, 'background carousel should include at least three photo slides');
-  assert(html.includes('video-card-carousel'), 'home hero missing video-style card carousel');
-  assert(html.includes('video-play-button'), 'video-style card missing play treatment');
-  assert(css.includes('.hero-bg-carousel'), 'css missing background carousel styling');
-  assert(css.includes('.video-card-carousel'), 'css missing video card carousel styling');
-  assert(js.includes('initBackgroundCarousel'), 'script missing background carousel initializer');
-});
-
-test('hero background photo carousel is visually above old gradient layers', () => {
-  const css = read('styles.css');
-  assert(css.includes('.home-hero.photo-bg-active'), 'css missing explicit photo background active state');
-  assert(css.includes('.home-hero.photo-bg-active::before'), 'css missing old gradient disable rule');
-  assert(css.includes('z-index: 0; /* photo background visible */'), 'background carousel is still likely behind old hero background');
-  assert(css.includes('background: transparent; /* reveal photo carousel */'), 'home hero background is not cleared for photos');
-});
-
-
-test('home page has a real video carousel card and bottom photo background section', () => {
-  const html = read('index.html');
-  const css = read('styles.css');
+  const buttonLinks = html.match(/class="button /g) || [];
   const videoSlides = html.match(/data-slide-video/g) || [];
-  assert(videoSlides.length >= 4, 'video carousel card should have four real video elements');
-  assert(html.includes('bottom-photo-bg'), 'bottom photo background section missing');
-  assert(css.includes('.bottom-photo-bg'), 'bottom photo background CSS missing');
+  assert(buttonLinks.length <= 5, 'homepage has too many prominent buttons');
+  assert(videoSlides.length >= 3, 'homepage should retain a simple video carousel');
+  assert(html.includes('href="contact.html"'), 'homepage should keep a direct appointment path');
+  assert(html.includes('href="services.html"'), 'homepage should keep one services path');
+  assert(!html.includes('data-hero-tools'), 'homepage should remove the redundant interactive tool panel');
+  assert(!html.includes('data-spotlight-rail'), 'homepage should remove duplicate spotlight rail controls');
 });
 
-test('home hero has compact editorial left tools and cinematic video proportions', () => {
+test('home page header shows the real Leancare logo image', () => {
   const html = read('index.html');
-  const css = read('styles.css');
-  const js = read('script.js');
-  assert(html.includes('data-hero-tools'), 'home hero missing dynamic left-side tool cluster');
-  assert(html.includes('data-tool-output'), 'home hero missing live tool output panel');
-  assert(html.includes('cinematic-card'), 'video card missing cinematic layout class');
-  assert(css.includes('.hero-toolkit'), 'css missing hero tool cluster styling');
-  assert(css.includes('clamp(27px, 3.5vw, 44px)'), 'left hero headline is not smaller and more balanced');
-  assert(css.includes('aspect-ratio: 16 / 8.2'), 'video card should be wider and shorter');
-  assert(js.includes('initHeroTools'), 'script missing dynamic hero tool initializer');
+  const headerMatch = html.match(/<header class="site-header"[\s\S]*?<\/header>/);
+  assert(headerMatch, 'home page missing site header');
+  const header = headerMatch[0];
+  assert(header.includes('class="brand-logo"'), 'home header missing visible brand logo image');
+  assert(header.includes('https://www.leancarehealth.com/logo.svg'), 'home header should use original Leancare logo asset');
+  assert(!header.includes('class="brand-mark"'), 'home header still uses hidden fallback brand mark');
 });
 
-test('hero video card fills the right media side instead of looking like a snippet', () => {
-  const css = read('styles.css');
-  assert(css.includes('/* Fill-side video card correction. */'), 'missing fill-side video correction layer');
-  assert(css.includes('.hero-media { width: 100%; justify-self: stretch; }'), 'hero media should stretch across its grid side');
-  assert(css.includes('width: 100%; /* fill media column */'), 'video card width should fill the media column');
-  assert(css.includes('min-height: clamp(390px, 39vw, 540px)'), 'video card should have stronger visual presence');
-  assert(css.includes('.cinematic-card .tab-video { inset: 0; height: 100%; width: 100%; object-fit: cover; }'), 'video should cover the full card surface');
-});
-
-test('hero video card starts level with the left content card', () => {
-  const css = read('styles.css');
-  assert(css.includes('/* Hero top-aligned media correction. */'), 'missing top alignment correction layer');
-  assert(css.includes('align-items: start; /* align left and video card tops */'), 'hero grid should align both columns to the top');
-  assert(css.includes('.hero-command { align-self: start; padding-top: 0; }'), 'hero media wrapper should start at the top of its grid cell');
-  assert(css.includes('.video-card-carousel.cinematic-card { align-self: start; margin-top: 0; }'), 'video card should not be vertically centered or offset downward');
-});
-
-test('second section is calmer, compact, and balanced after the hero', () => {
-  const css = read('styles.css');
-  assert(css.includes('/* Balanced second-section correction. */'), 'missing balanced second-section correction layer');
-  assert(css.includes('padding: clamp(38px, 5vw, 60px) 6vw;'), 'brand energy section still has too much vertical padding');
-  assert(css.includes('opacity: 0.22; /* calmer motion layer */'), 'brand energy motion layer is still too visually busy');
-  assert(css.includes('min-height: 280px; /* remove unutilized vertical space */'), 'spotlight shell still has too much empty height');
-  assert(css.includes('font-size: clamp(26px, 3vw, 40px);'), 'second-section headline/card type is still oversized');
-});
-
-test('left side hero panel is more vibrant without losing readability', () => {
-  const css = read('styles.css');
-  assert(css.includes('/* Vibrant left hero panel correction. */'), 'missing vibrant left hero correction layer');
-  assert(css.includes('.home-hero.photo-bg-active .hero-content::before'), 'left hero panel missing animated brand glow layer');
-  assert(css.includes('animation: left-panel-shimmer 8s ease-in-out infinite alternate;'), 'left hero glow should have subtle motion');
-  assert(css.includes('box-shadow: 0 28px 90px rgba(63, 162, 219, 0.18), 0 18px 60px rgba(255, 0, 194, 0.14);'), 'left hero panel needs stronger blue/magenta depth');
-  assert(css.includes('@keyframes left-panel-shimmer'), 'missing left hero shimmer keyframes');
-});
-
-test('top bar navigation words have balanced spacing', () => {
-  const css = read('styles.css');
-  assert(css.includes('/* Top bar spacing correction. */'), 'missing top bar spacing correction layer');
-  assert(css.includes('.site-header { gap: clamp(18px, 2.4vw, 34px); }'), 'header gap should be more balanced');
-  assert(css.includes('.site-nav { gap: clamp(8px, 1.1vw, 18px); }'), 'nav links need better spacing between words');
-  assert(css.includes('padding: 11px clamp(12px, 1.05vw, 18px);'), 'nav link padding should breathe more evenly');
-  assert(css.includes('white-space: nowrap;'), 'nav labels should not wrap awkwardly');
-});
-
-test('homepage header and video overlays are aligned and evenly spaced', () => {
-  const css = read('styles.css');
-  assert(css.includes('/* Header and hero video overlay alignment correction. */'), 'missing final header/video alignment correction layer');
-  assert(css.includes('.site-header { grid-template-columns: minmax(172px, 224px) minmax(0, 1fr) max-content max-content; }'), 'desktop header needs stable logo/nav/phone/cta columns');
-  assert(css.includes('.phone-link { white-space: nowrap; line-height: 1; }'), 'phone number should not wrap in the top bar');
-  assert(css.includes('.header-cta { min-width: 150px; padding: 13px 20px; line-height: 1.08; }'), 'header appointment button should be compact and vertically centered');
-  assert(css.includes('.video-card-carousel .video-slide .media-caption { bottom: 30px; left: 30px; max-width: min(380px, calc(100% - 260px)); padding: 18px 20px; }'), 'video caption card should sit cleanly inside the video side');
-  assert(css.includes('.floating-glass-card { bottom: 30px; left: auto; right: 34px; max-width: 204px; padding: 16px 18px; }'), 'small video-side glass card should be compact and aligned');
-  assert(css.includes('.video-card-carousel .media-controls { bottom: 42px; right: 260px; }'), 'video carousel controls should be spaced from the caption cards');
-});
-test('homepage is concise with a cleaner header and no rainbow treatment', () => {
-  const html = read('index.html');
-  const css = read('styles.css');
-  assert(html.includes('<h1>Primary care. Wellness. Clear next steps.</h1>'), 'homepage headline should be direct and concise');
-  assert(!html.includes('Leancare pairs unhurried family medicine with modern wellness support, so every visit turns into a plan you can actually live with.'), 'homepage still uses the wordy hero paragraph');
-  assert(css.includes('/* Concise no-rainbow homepage/header cleanup. */'), 'missing concise no-rainbow cleanup layer');
-  assert(css.includes('.site-header { grid-template-columns: minmax(160px, 218px) minmax(0, 1fr) max-content; }'), 'header should use a simpler logo/nav/cta grid');
-  assert(css.includes('.phone-link { display: none; }'), 'wrapped phone number should be removed from the desktop header');
-  assert(css.includes('.home-hero.photo-bg-active .hero-bg-carousel::after { background: rgba(255, 255, 255, 0.78); }'), 'homepage should not use the visible blue-magenta hero wash');
-  assert(css.includes('.carousel-progress, .tool-meter, .energy-wave { display: none; }'), 'rainbow progress/motion strips should be hidden');
-  assert(css.includes('.hero-lede, .hero-proof, .hero-carousel, .media-caption p, .spotlight-card p, .cockpit-copy p, .feature-grid p { display: none; }'), 'wordy support paragraphs should be suppressed in the homepage UI');
-  assert(css.includes('.button-primary, .header-cta { background: var(--logo-blue); background-image: none; }'), 'primary actions should use a solid brand color instead of gradients');
-});
 test('inner page hero templates use smaller titles and distinct vibrant page styling', () => {
   const css = read('styles.css');
   assert(css.includes('/* Inner page hero personality correction. */'), 'missing inner page hero correction layer');
@@ -417,7 +257,7 @@ test('homepage right media card is a video carousel without photo slides', () =>
   const html = read('index.html');
   const js = read('script.js');
   const css = read('styles.css');
-  const mediaMatch = html.match(/<div class="media-carousel video-card-carousel[\s\S]*?<\/div>\s*<\/div>\s*<div class="floating-glass-card/);
+  const mediaMatch = html.match(/<div class="media-carousel video-card-carousel[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/);
   assert(mediaMatch, 'homepage media carousel markup not found');
   const media = mediaMatch[0];
   const videoSlides = media.match(/<figure class="media-slide video-slide[\s\S]*?<video/g) || [];

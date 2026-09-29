@@ -3,9 +3,6 @@ import Link from 'next/link';
 const navItems = [
   { href: '/', label: 'Home', navKey: 'home' },
   { href: '/services', label: 'Services', navKey: 'services' },
-  { href: '/family-practice', label: 'Family Practice', navKey: 'family-practice' },
-  { href: '/wellness', label: 'Wellness', navKey: 'wellness' },
-  { href: '/telehealth', label: 'Telehealth', navKey: 'telehealth' },
   { href: '/about', label: 'About', navKey: 'about' },
   { href: '/contact', label: 'Contact', navKey: 'contact' },
 ];
