@@ -295,6 +295,17 @@ test('site uses restrained clinical styling and concise inner-page copy', () => 
     }
   }
 });
+test('homepage has mature photo-forward hero and no repeated CTA section', () => {
+  const html = read('index.html');
+  const css = read('styles.css');
+  assert(css.includes('/* Mature photo-forward homepage polish. */'), 'missing mature homepage polish layer');
+  assert(css.includes('.home-hero.photo-bg-active .hero-bg-carousel::after { background: rgba(255, 255, 255, 0.46); }'), 'homepage photo overlay should be more transparent');
+  assert(css.includes('.page-photo-carousel::after { background: rgba(255, 255, 255, 0.56); }'), 'inner page photo overlays should reveal more image detail');
+  assert(css.includes('.lean-hero-copy { min-height: clamp(430px, 42vw, 560px); padding: clamp(34px, 4.4vw, 62px); }'), 'left hero card should be larger and better proportioned');
+  assert(css.includes('.lean-home-hero { grid-template-columns: minmax(430px, 0.96fr) minmax(480px, 1.04fr); }'), 'homepage hero columns should give the left card more presence');
+  assert(!html.includes('bottom-photo-bg'), 'homepage should not repeat appointment CTA in a bottom photo section');
+  assert(!html.includes('<section class="cta-panel'), 'homepage should not keep a second CTA panel');
+});
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
   assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');
