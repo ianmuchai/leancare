@@ -270,6 +270,31 @@ test('homepage right media card is a video carousel without photo slides', () =>
   assert(js.includes('querySelectorAll(\'[data-slide-video]\')'), 'media carousel should manage multiple slide videos');
 });
 
+test('site uses restrained clinical styling and concise inner-page copy', () => {
+  const css = read('styles.css');
+  assert(css.includes('/* Site-wide clinical restraint cleanup. */'), 'missing site-wide clinical restraint cleanup layer');
+  assert(css.includes('.shimmer::after { display: none; }'), 'shimmer effects should be disabled');
+  assert(css.includes('.page-photo-carousel::after { background: rgba(255, 255, 255, 0.78); }'), 'inner page photo overlays should be plain and restrained');
+  assert(css.includes('.page-hero, .contact-hero { background: #ffffff; }'), 'inner page hero backgrounds should be plain');
+  assert(css.includes('.cards-section article, .detail-grid article, .values-row article, .appointment-grid article { box-shadow: none; }'), 'inner page cards should not look over-designed');
+
+  const retiredPhrases = [
+    'momentum',
+    'fully awake',
+    'vibrant',
+    'watch the plan shift',
+    'built around care that moves',
+    'glass-panel shimmer',
+  ];
+  for (const page of pages) {
+    const html = read(page);
+    const bodyText = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    assert(bodyText.split(' ').length < 850, `${page} is still too wordy`);
+    for (const phrase of retiredPhrases) {
+      assert(!html.toLowerCase().includes(phrase), `${page} still contains vibe-coded phrase/effect: ${phrase}`);
+    }
+  }
+});
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
   assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');
