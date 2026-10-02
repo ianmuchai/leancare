@@ -371,6 +371,18 @@ test('site uses firmer smaller typography across homepage and inner pages', () =
   assert(css.includes('.hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p { font-size: clamp(14px, 1.05vw, 16px); }'), 'lead copy should be compact');
   assert(css.includes('.lean-service-grid h3, .depth-copy h2, .story-team-section h2, .insight-strip h2 { letter-spacing: -0.015em; }'), 'section/card headings should have firmer tracking');
 });
+
+test('all page headings use a professional medium-weight heading system', () => {
+  const css = read('styles.css');
+  assert(css.includes('/* Professional medium-weight heading correction. */'), 'missing professional heading correction layer');
+  assert(css.includes(':root { --heading-font: "Aptos Display", "Segoe UI Variable Display", "Inter", "Helvetica Neue", Arial, sans-serif; }'), 'missing professional heading font stack');
+  assert(css.includes('h1, h2, h3, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); }'), 'heading font should apply globally and to page overrides');
+  assert(css.includes('h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 650; }'), 'main headings should be medium-weight, not heavy bold');
+  assert(css.includes('h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 620; }'), 'section and card headings should be firm but not overly bold');
+  assert(css.includes('.eyebrow, .lean-service-grid span, .depth-grid span, .panel-kicker { font-weight: 700; }'), 'small topic labels should not use extra-bold weights');
+  assert(css.includes('.site-nav a, .button, .phone-link { font-weight: 650; }'), 'navigation and button text should be less heavy');
+  assert(!css.includes('font-weight: 840;'), 'final CSS should not keep the homepage title at 840 weight');
+});
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
   assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');

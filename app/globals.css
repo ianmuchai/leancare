@@ -5184,7 +5184,7 @@ body {
 h1, h2, h3 { font-family: var(--font-sans); font-variation-settings: normal; }
 
 h1, h2, h3 {
-  font-weight: 820;
+  font-weight: 650;
   letter-spacing: -0.018em;
 }
 
@@ -5200,7 +5200,7 @@ h3 {
 .full-video-home .lean-hero-copy h1 { font-size: clamp(31px, 4.2vw, 52px); }
 
 .full-video-home .lean-hero-copy h1 {
-  font-weight: 840;
+  font-weight: 650;
   letter-spacing: -0.02em;
   line-height: 1.05;
 }
@@ -5209,7 +5209,7 @@ h3 {
 
 .page-hero h1,
 .contact-hero h1 {
-  font-weight: 820;
+  font-weight: 650;
   letter-spacing: -0.018em;
   line-height: 1.1;
 }
@@ -5237,7 +5237,7 @@ h3 {
 .team-card h2,
 .lean-visit-strip h2,
 .depth-grid-head h2 {
-  font-weight: 810;
+  font-weight: 620;
 }
 
 .site-nav a,
@@ -5289,4 +5289,30 @@ h3 {
   .contact-hero h1 {
     font-size: clamp(24px, 7vw, 34px);
   }
+}
+
+/* Professional medium-weight heading correction. */
+:root { --heading-font: "Aptos Display", "Segoe UI Variable Display", "Inter", "Helvetica Neue", Arial, sans-serif; }
+
+h1, h2, h3, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); }
+
+h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 650; }
+
+h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 620; }
+
+.eyebrow, .lean-service-grid span, .depth-grid span, .panel-kicker { font-weight: 700; }
+
+.site-nav a, .button, .phone-link { font-weight: 650; }
+
+.full-video-home .lean-hero-copy h1,
+.page-hero h1,
+.contact-hero h1 {
+  letter-spacing: -0.012em;
+}
+
+.depth-copy h2,
+.story-team-section h2,
+.insight-strip h2,
+.lean-home-services .section-copy h2 {
+  letter-spacing: -0.01em;
 }
