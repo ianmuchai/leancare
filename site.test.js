@@ -338,6 +338,25 @@ test('homepage restores original-site depth in a cleaner benchmarked structure',
   assert(css.includes('.patient-story-rail'), 'missing patient story rail styling');
   assert(css.includes('.insight-strip'), 'missing health insight strip styling');
 });
+
+test('homepage adds restrained Nola-inspired color and optimized hero card without vibe-coded effects', () => {
+  const html = read('index.html');
+  const css = read('styles.css');
+  const heroMatch = html.match(/<div class="hero-content reveal lean-hero-copy[\s\S]*?<\/div>\s*<div class="hero-service-dock/);
+  assert(heroMatch, 'homepage hero card markup not found');
+  const heroCard = heroMatch[0];
+  assert(html.includes('nola-inspired-polish'), 'homepage should mark the restrained benchmark polish layer');
+  assert(heroCard.includes('hero-access-list'), 'hero card should include concise access cues');
+  assert(heroCard.includes('Whole-family primary care'), 'hero card should borrow the benchmark whole-family care cue');
+  assert(heroCard.includes('Transparent visit path'), 'hero card should include a clear access/pricing-style cue');
+  assert(heroCard.includes('Mental wellness support'), 'hero card should include mental wellness support cue');
+  assert(css.includes('/* Restrained Nola-inspired color and hero card polish. */'), 'missing restrained color/card polish CSS');
+  assert(css.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(246, 251, 255, 0.82)); }'), 'hero card should use a light clinical color wash');
+  assert(css.includes('.hero-access-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }'), 'hero card access cues should be laid out as compact columns');
+  assert(css.includes('.hero-access-list span::before { background: var(--logo-magenta); }'), 'hero access cues should use restrained brand color markers');
+  assert(!css.includes('rainbow'), 'homepage polish should not use rainbow styling');
+  assert(!css.includes('neon'), 'homepage polish should avoid neon styling');
+});
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
   assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');

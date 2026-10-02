@@ -4075,7 +4075,7 @@ body[data-page="contact"] .page-photo-carousel::after {
   }
 }
 
-/* Concise no-rainbow homepage/header cleanup. */
+/* Concise clinical homepage/header cleanup. */
 @media (min-width: 1024px) {
   .site-header { grid-template-columns: minmax(160px, 218px) minmax(0, 1fr) max-content; }
 
@@ -5053,5 +5053,117 @@ img {
     bottom: 18px;
     left: 5vw;
     right: auto;
+  }
+}
+
+/* Restrained Nola-inspired color and hero card polish. */
+.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(246, 251, 255, 0.82)); }
+
+.nola-inspired-polish .lean-hero-copy {
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(10, 35, 55, 0.20);
+  gap: 14px;
+  overflow: hidden;
+  position: relative;
+}
+
+.nola-inspired-polish .lean-hero-copy::before {
+  background: linear-gradient(180deg, var(--logo-blue), var(--logo-magenta));
+  content: "";
+  inset: 0 auto 0 0;
+  position: absolute;
+  width: 5px;
+}
+
+.nola-inspired-polish .eyebrow {
+  color: var(--logo-blue);
+}
+
+.nola-inspired-polish .hero-note {
+  border-left: 1px solid rgba(63, 162, 219, 0.22);
+  color: #34485b;
+  padding-left: 14px;
+}
+
+.hero-access-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.hero-access-list {
+  display: grid;
+  gap: 10px;
+  margin: 4px 0 2px;
+}
+
+.hero-access-list span {
+  align-items: center;
+  background: rgba(244, 249, 253, 0.88);
+  border: 1px solid rgba(63, 162, 219, 0.18);
+  border-radius: 12px;
+  color: var(--logo-ink);
+  display: flex;
+  font-size: 12px;
+  font-weight: 850;
+  gap: 8px;
+  line-height: 1.25;
+  min-height: 48px;
+  padding: 10px;
+}
+
+.hero-access-list span::before { background: var(--logo-magenta); }
+
+.hero-access-list span::before {
+  border-radius: 999px;
+  content: "";
+  flex: 0 0 auto;
+  height: 8px;
+  width: 8px;
+}
+
+.lean-hero-facts span {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(63, 162, 219, 0.18);
+}
+
+.hero-service-dock {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(242, 248, 252, 0.78));
+  border-radius: 18px;
+}
+
+.lean-service-grid article {
+  border-top: 4px solid var(--logo-blue);
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.lean-service-grid article:nth-child(2) {
+  border-top-color: var(--logo-magenta);
+}
+
+.lean-service-grid article:nth-child(3) {
+  border-top-color: #6fc3ea;
+}
+
+.lean-service-grid article:hover {
+  box-shadow: 0 18px 44px rgba(20, 58, 92, 0.10);
+  transform: translateY(-3px);
+}
+
+.depth-section {
+  background: linear-gradient(180deg, #ffffff, #f7fbfe);
+}
+
+.patient-story-rail {
+  background:
+    linear-gradient(135deg, rgba(63, 162, 219, 0.92), rgba(16, 33, 49, 0.96) 55%, rgba(255, 0, 194, 0.50));
+}
+
+.team-card,
+.insight-list a,
+.lean-visit-list span {
+  box-shadow: 0 12px 34px rgba(20, 58, 92, 0.06);
+}
+
+@media (max-width: 720px) {
+  .hero-access-list {
+    grid-template-columns: 1fr;
   }
 }
