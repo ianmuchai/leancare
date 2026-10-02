@@ -306,6 +306,23 @@ test('homepage has mature photo-forward hero and no repeated CTA section', () =>
   assert(!html.includes('bottom-photo-bg'), 'homepage should not repeat appointment CTA in a bottom photo section');
   assert(!html.includes('<section class="cta-panel'), 'homepage should not keep a second CTA panel');
 });
+
+test('homepage applies benchmarked clinical revamp with tighter hero fit and original messaging', () => {
+  const html = read('index.html');
+  const css = read('styles.css');
+  const main = html.match(/<main>[\s\S]*?<\/main>/)?.[0] || '';
+  assert(html.includes('benchmark-revamp'), 'homepage should use the benchmarked revamp layout marker');
+  assert(html.includes('Bringing Wellness, Compassion & Integrity in Healthcare'), 'homepage should preserve original Leancare brand message');
+  assert(html.includes('Our providers, nurses, and specialists have the expertise and dedication'), 'homepage should borrow original provider promise');
+  assert(html.includes('Experience healthcare that prioritizes your needs'), 'homepage should keep the original appointment promise');
+  assert(!html.includes('Care made clear.'), 'homepage should replace the placeholder-style headline');
+  assert(css.includes('/* Benchmarked clinical homepage revamp. */'), 'missing benchmarked clinical revamp CSS layer');
+  assert(css.includes('.lean-home-hero { min-height: min(760px, calc(100vh - 64px)); }'), 'homepage hero should have a tighter viewport fit');
+  assert(css.includes('.lean-hero-copy, .hero-command, .video-card-carousel { min-height: clamp(430px, 50vw, 600px); }'), 'left card and video card should share matched section height');
+  assert(css.includes('.video-card-carousel { height: 100%; }'), 'video card should fill its side of the hero');
+  assert(css.includes('.lean-home-services { padding-top: clamp(34px, 4.4vw, 58px); }'), 'services section should sit closer to the hero without dead space');
+  assert((main.match(/class="button /g) || []).length <= 2, 'homepage main should avoid button clutter');
+});
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
   assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');

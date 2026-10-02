@@ -4596,3 +4596,157 @@ img {
     font-size: clamp(34px, 10vw, 48px);
   }
 }
+
+/* Benchmarked clinical homepage revamp. */
+.site-header {
+  min-height: 64px;
+}
+
+.home-hero.photo-bg-active .hero-bg-carousel::after {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.lean-home-hero { min-height: min(760px, calc(100vh - 64px)); }
+
+.lean-home-hero {
+  align-items: center;
+  gap: clamp(24px, 3vw, 46px);
+  grid-template-columns: minmax(420px, 0.98fr) minmax(500px, 1.02fr);
+  padding-bottom: clamp(34px, 4.6vw, 64px);
+  padding-top: clamp(34px, 4.6vw, 64px);
+}
+
+.lean-hero-copy, .hero-command, .video-card-carousel { min-height: clamp(430px, 50vw, 600px); }
+
+.lean-hero-copy {
+  background: rgba(255, 255, 255, 0.76);
+  border-color: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 22px 62px rgba(16, 33, 49, 0.13);
+  display: grid;
+  gap: 16px;
+  padding: clamp(34px, 4vw, 54px);
+}
+
+.lean-hero-copy h1 {
+  color: var(--logo-ink);
+  font-family: var(--font-sans);
+  font-size: clamp(34px, 4.3vw, 58px);
+  letter-spacing: -0.042em;
+  line-height: 1.02;
+  margin-bottom: 0;
+  max-width: 720px;
+  text-wrap: balance;
+}
+
+.lean-hero-copy .hero-lede {
+  color: #24394b;
+  font-size: clamp(16px, 1.32vw, 19px);
+  line-height: 1.5;
+  max-width: 610px;
+}
+
+.hero-note {
+  color: #405469;
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 600px;
+}
+
+.lean-hero-copy .hero-actions {
+  margin-top: 2px;
+}
+
+.video-card-carousel { height: 100%; }
+
+.video-card-carousel {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.video-card-carousel .video-slide video {
+  min-height: 100%;
+}
+
+.video-card-carousel .video-slide::after {
+  background: linear-gradient(90deg, rgba(16, 33, 49, 0.32), rgba(16, 33, 49, 0.04) 62%, rgba(16, 33, 49, 0.10));
+}
+
+.video-card-carousel .video-slide .media-caption {
+  background: rgba(255, 255, 255, 0.84);
+  border-color: rgba(255, 255, 255, 0.82);
+  color: var(--logo-ink);
+  max-width: min(430px, calc(100% - 64px));
+}
+
+.video-card-carousel .video-slide .media-caption span {
+  color: var(--logo-blue);
+}
+
+.video-card-carousel .video-slide .media-caption strong {
+  color: var(--logo-ink);
+}
+
+.lean-home-services { padding-top: clamp(34px, 4.4vw, 58px); }
+
+.lean-home-services {
+  padding-bottom: clamp(40px, 5vw, 70px);
+}
+
+.lean-home-services .section-copy {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+}
+
+.lean-home-services .section-copy h2 {
+  font-size: clamp(25px, 2.7vw, 38px);
+}
+
+.lean-service-grid article {
+  min-height: 205px;
+}
+
+.lean-visit-strip {
+  background: #f8fbfe;
+  padding-bottom: clamp(34px, 4.4vw, 58px);
+  padding-top: clamp(34px, 4.4vw, 58px);
+}
+
+@media (max-width: 1080px) {
+  .lean-home-hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .lean-hero-copy, .hero-command, .video-card-carousel {
+    min-height: auto;
+  }
+
+  .video-card-carousel {
+    min-height: clamp(360px, 58vw, 540px);
+  }
+}
+
+@media (max-width: 680px) {
+  .lean-home-hero {
+    padding-top: 26px;
+  }
+
+  .lean-hero-copy {
+    padding: 24px;
+  }
+
+  .lean-hero-copy h1 {
+    font-size: clamp(30px, 9vw, 42px);
+  }
+
+  .hero-note {
+    font-size: 13px;
+  }
+
+  .lean-home-services .section-copy {
+    align-items: flex-start;
+    display: grid;
+  }
+}
