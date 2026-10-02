@@ -207,12 +207,8 @@ test('all pages use reliable hero photo carousels and the homepage card uses dir
   const innerPages = ['services.html', 'family-practice.html', 'wellness.html', 'telehealth.html', 'about.html', 'contact.html'];
   const homeBgTags = home.match(/<img class="bg-slide[\s\S]*?>/g) || [];
   const homeVideoTags = home.match(/<video class="slide-video"[\s\S]*?<\/video>/g) || [];
-  assert(homeBgTags.length >= 3, 'homepage should keep background photo carousel photos');
+  assert(homeBgTags.length === 0, 'homepage should not use background photo carousel photos');
   assert(homeVideoTags.length >= 4, 'homepage right media card should use four direct video slides');
-  for (const tag of homeBgTags) {
-    assert(!tag.includes('www.leancarehealth.com/_next/image'), 'homepage background carousel still depends on original-site _next/image URLs');
-    assert(/images\.unsplash\.com|images\.pexels\.com/.test(tag), 'homepage background carousel should use direct reliable photo URLs');
-  }
   for (const tag of homeVideoTags) {
     assert(/videos\.pexels\.com\/video-files\//.test(tag), 'homepage video carousel should use direct reliable video URLs');
     assert(!tag.includes('<img'), 'homepage video carousel should not include image slides');
@@ -236,37 +232,31 @@ test('homepage uses distinct background photos and rotates multiple opaque hero 
   const css = read('styles.css');
   const bgTags = html.match(/<img class="bg-slide[\s\S]*?>/g) || [];
   const videoSources = [...html.matchAll(/<video class="slide-video"[\s\S]*?<source src="([^"]+)"/g)].map((match) => match[1]);
-  assert(bgTags.length >= 3, 'homepage background should keep at least three photo slides');
+  assert(bgTags.length === 0, 'homepage should remove background photo slides');
   assert(videoSources.length >= 4, 'homepage media carousel should provide four video clips');
   assert(new Set(videoSources).size >= 4, 'homepage video clips should be distinct');
-  for (const tag of bgTags) {
-    assert(/images\.unsplash\.com/.test(tag), 'homepage background photos should use direct Unsplash photo URLs');
-    assert(!tag.includes('photo-1511895426328-dc8714191300'), 'homepage should not reuse the old family-sunset photo');
-    assert(!tag.includes('photo-1576091160550-2173dba999ef'), 'homepage should not reuse the old telehealth office photo');
-  }
   for (const source of videoSources) {
     assert(source.startsWith('https://videos.pexels.com/video-files/'), 'homepage videos should use direct Pexels video files');
   }
-  assert(css.includes('/* Homepage distinct opaque video carousel correction. */'), 'missing homepage opaque video correction layer');
-  assert(css.includes('/* Homepage true video carousel correction. */'), 'missing true video carousel layer');
+  assert(css.includes('/* Full-depth video-led homepage rebuild. */'), 'missing full-depth video-led homepage rebuild layer');
   assert(css.includes('.video-card-carousel .video-slide video'), 'homepage video slides should be styled directly');
   assert(js.includes('querySelectorAll(\'[data-slide-video]\')'), 'media carousel should manage multiple slide videos');
 });
 
-test('homepage right media card is a video carousel without photo slides', () => {
+test('homepage hero is a full-bleed video carousel without photo slides', () => {
   const html = read('index.html');
   const js = read('script.js');
   const css = read('styles.css');
-  const mediaMatch = html.match(/<div class="media-carousel video-card-carousel[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/);
-  assert(mediaMatch, 'homepage media carousel markup not found');
+  const mediaMatch = html.match(/<div class="hero-video-carousel[\s\S]*?<\/div>\s*<div class="hero-content/);
+  assert(mediaMatch, 'homepage full-bleed hero video carousel markup not found');
   const media = mediaMatch[0];
   const videoSlides = media.match(/<figure class="media-slide video-slide[\s\S]*?<video/g) || [];
-  assert(videoSlides.length >= 4, 'homepage right media card should have at least three video slides');
+  assert(videoSlides.length >= 4, 'homepage hero should have at least four video slides');
   assert(!media.includes('<img'), 'homepage right media card should not include photo carousel images');
   assert(!media.includes('data-video-src'), 'homepage right media card should not use hidden photo slides to swap one video source');
   assert(media.includes('data-slide-video'), 'each video carousel slide should expose its own video element');
-  assert(css.includes('/* Homepage true video carousel correction. */'), 'missing true video carousel CSS correction');
-  assert(css.includes('.video-card-carousel .video-slide video'), 'video carousel slides need direct video styling');
+  assert(css.includes('.hero-video-carousel { position: absolute; inset: 0; }'), 'hero video carousel should fill the whole hero');
+  assert(css.includes('.full-video-home .hero-content { position: relative; z-index: 3; }'), 'hero copy should layer over the video');
   assert(js.includes('querySelectorAll(\'[data-slide-video]\')'), 'media carousel should manage multiple slide videos');
 });
 
@@ -299,10 +289,10 @@ test('homepage has mature photo-forward hero and no repeated CTA section', () =>
   const html = read('index.html');
   const css = read('styles.css');
   assert(css.includes('/* Mature photo-forward homepage polish. */'), 'missing mature homepage polish layer');
-  assert(css.includes('.home-hero.photo-bg-active .hero-bg-carousel::after { background: rgba(255, 255, 255, 0.46); }'), 'homepage photo overlay should be more transparent');
+  assert(!html.includes('hero-bg-carousel'), 'homepage should no longer use the photo background carousel');
   assert(css.includes('.page-photo-carousel::after { background: rgba(255, 255, 255, 0.56); }'), 'inner page photo overlays should reveal more image detail');
-  assert(css.includes('.lean-hero-copy { min-height: clamp(430px, 42vw, 560px); padding: clamp(34px, 4.4vw, 62px); }'), 'left hero card should be larger and better proportioned');
-  assert(css.includes('.lean-home-hero { grid-template-columns: minmax(430px, 0.96fr) minmax(480px, 1.04fr); }'), 'homepage hero columns should give the left card more presence');
+  assert(css.includes('.full-video-home .lean-hero-copy { max-width: 720px; }'), 'hero card should be proportioned over the video');
+  assert(css.includes('.full-video-home { min-height: min(820px, calc(100vh - 64px)); }'), 'homepage hero should use a tighter full-video viewport');
   assert(!html.includes('bottom-photo-bg'), 'homepage should not repeat appointment CTA in a bottom photo section');
   assert(!html.includes('<section class="cta-panel'), 'homepage should not keep a second CTA panel');
 });
@@ -317,11 +307,36 @@ test('homepage applies benchmarked clinical revamp with tighter hero fit and ori
   assert(html.includes('Experience healthcare that prioritizes your needs'), 'homepage should keep the original appointment promise');
   assert(!html.includes('Care made clear.'), 'homepage should replace the placeholder-style headline');
   assert(css.includes('/* Benchmarked clinical homepage revamp. */'), 'missing benchmarked clinical revamp CSS layer');
-  assert(css.includes('.lean-home-hero { min-height: min(760px, calc(100vh - 64px)); }'), 'homepage hero should have a tighter viewport fit');
-  assert(css.includes('.lean-hero-copy, .hero-command, .video-card-carousel { min-height: clamp(430px, 50vw, 600px); }'), 'left card and video card should share matched section height');
-  assert(css.includes('.video-card-carousel { height: 100%; }'), 'video card should fill its side of the hero');
+  assert(css.includes('.full-video-home { min-height: min(820px, calc(100vh - 64px)); }'), 'homepage hero should have a tighter full-video viewport fit');
+  assert(css.includes('.hero-video-carousel { position: absolute; inset: 0; }'), 'video should fill the full hero carousel area');
   assert(css.includes('.lean-home-services { padding-top: clamp(34px, 4.4vw, 58px); }'), 'services section should sit closer to the hero without dead space');
   assert((main.match(/class="button /g) || []).length <= 2, 'homepage main should avoid button clutter');
+});
+
+test('homepage restores original-site depth in a cleaner benchmarked structure', () => {
+  const html = read('index.html');
+  const css = read('styles.css');
+  const requiredSections = [
+    'What We Offer',
+    'Dedicated to your well-being',
+    'What sets us apart',
+    'Patient stories',
+    'Our team loves what they do',
+    'Hours & location',
+    'Health tips & insights',
+  ];
+  for (const section of requiredSections) {
+    assert(html.includes(section), `homepage missing original-site depth section: ${section}`);
+  }
+  for (const term of ['Telehealth', 'Behavioral Health', 'Weight Management', 'Vitamin Injections', 'Practice Search Code', 'Eunice Binyanya, DNP, ARNP, FNP-C']) {
+    assert(html.includes(term), `homepage missing important original-site content cue: ${term}`);
+  }
+  assert(html.includes('direct-primary-care'), 'homepage should borrow the benchmark direct-primary-care cue');
+  assert(html.includes('mental-wellness'), 'homepage should borrow the benchmark mental wellness cue');
+  assert(html.includes('chronic-care'), 'homepage should borrow the benchmark chronic care cue');
+  assert(css.includes('.depth-grid'), 'missing richer homepage depth grid styling');
+  assert(css.includes('.patient-story-rail'), 'missing patient story rail styling');
+  assert(css.includes('.insight-strip'), 'missing health insight strip styling');
 });
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
