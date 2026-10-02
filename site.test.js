@@ -357,6 +357,20 @@ test('homepage adds restrained Nola-inspired color and optimized hero card witho
   assert(!css.includes('rainbow'), 'homepage polish should not use rainbow styling');
   assert(!css.includes('neon'), 'homepage polish should avoid neon styling');
 });
+
+test('site uses firmer smaller typography across homepage and inner pages', () => {
+  const css = read('styles.css');
+  assert(css.includes('/* Firm compact typography system. */'), 'missing final compact typography layer');
+  assert(css.includes(':root { --font-sans: "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: var(--font-sans); --font-serif: var(--font-sans); }'), 'font stack should be firm and sans-led');
+  assert(css.includes('body { font-size: 14px; }'), 'base font size should be smaller');
+  assert(css.includes('h1, h2, h3 { font-family: var(--font-sans); font-variation-settings: normal; }'), 'headings should no longer use the soft display font');
+  assert(css.includes('h1 { font-size: clamp(30px, 4.1vw, 58px); }'), 'global h1 scale should be reduced');
+  assert(css.includes('h2 { font-size: clamp(22px, 2.5vw, 34px); }'), 'global h2 scale should be reduced');
+  assert(css.includes('.full-video-home .lean-hero-copy h1 { font-size: clamp(31px, 4.2vw, 52px); }'), 'homepage hero title should be smaller and firmer');
+  assert(css.includes('.page-hero h1, .contact-hero h1 { font-size: clamp(25px, 3vw, 38px); }'), 'inner page titles should be significantly reduced');
+  assert(css.includes('.hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p { font-size: clamp(14px, 1.05vw, 16px); }'), 'lead copy should be compact');
+  assert(css.includes('.lean-service-grid h3, .depth-copy h2, .story-team-section h2, .insight-strip h2 { letter-spacing: -0.015em; }'), 'section/card headings should have firmer tracking');
+});
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
   assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');

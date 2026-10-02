@@ -5167,3 +5167,126 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* Firm compact typography system. */
+:root { --font-sans: "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: var(--font-sans); --font-serif: var(--font-sans); }
+
+body { font-size: 14px; }
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: normal;
+  font-weight: 450;
+  letter-spacing: 0;
+  line-height: 1.54;
+}
+
+h1, h2, h3 { font-family: var(--font-sans); font-variation-settings: normal; }
+
+h1, h2, h3 {
+  font-weight: 820;
+  letter-spacing: -0.018em;
+}
+
+h1 { font-size: clamp(30px, 4.1vw, 58px); }
+
+h2 { font-size: clamp(22px, 2.5vw, 34px); }
+
+h3 {
+  font-size: clamp(17px, 1.45vw, 21px);
+  line-height: 1.16;
+}
+
+.full-video-home .lean-hero-copy h1 { font-size: clamp(31px, 4.2vw, 52px); }
+
+.full-video-home .lean-hero-copy h1 {
+  font-weight: 840;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.page-hero h1, .contact-hero h1 { font-size: clamp(25px, 3vw, 38px); }
+
+.page-hero h1,
+.contact-hero h1 {
+  font-weight: 820;
+  letter-spacing: -0.018em;
+  line-height: 1.1;
+}
+
+.hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p { font-size: clamp(14px, 1.05vw, 16px); }
+
+.hero-lede,
+.page-hero > p,
+.section-copy > p,
+.contact-hero > div > p,
+.hero-note,
+.depth-copy p,
+.team-card p,
+.lean-visit-strip p,
+.lean-service-grid p,
+.story-cards blockquote,
+.insight-list a {
+  line-height: 1.5;
+}
+
+.lean-service-grid h3, .depth-copy h2, .story-team-section h2, .insight-strip h2 { letter-spacing: -0.015em; }
+
+.lean-service-grid h3,
+.depth-grid strong,
+.team-card h2,
+.lean-visit-strip h2,
+.depth-grid-head h2 {
+  font-weight: 810;
+}
+
+.site-nav a,
+.button,
+.phone-link,
+.eyebrow,
+.lean-hero-facts span,
+.hero-access-list span,
+.support-tags span,
+.lean-visit-list span {
+  font-size: 12px;
+}
+
+.button {
+  min-height: 40px;
+  padding: 10px 16px;
+}
+
+.hero-note,
+.lean-service-grid p,
+.depth-copy p,
+.team-card p,
+.lean-visit-strip p {
+  font-size: 13px;
+}
+
+.depth-grid strong {
+  font-size: clamp(16px, 1.25vw, 19px);
+}
+
+.story-team-section h2,
+.depth-copy h2,
+.insight-strip h2,
+.lean-visit-strip h2,
+.lean-home-services .section-copy h2 {
+  font-size: clamp(22px, 2.45vw, 33px);
+}
+
+@media (max-width: 760px) {
+  body {
+    font-size: 13px;
+  }
+
+  .full-video-home .lean-hero-copy h1 {
+    font-size: clamp(28px, 8vw, 38px);
+  }
+
+  .page-hero h1,
+  .contact-hero h1 {
+    font-size: clamp(24px, 7vw, 34px);
+  }
+}
