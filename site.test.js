@@ -415,6 +415,22 @@ test('site uses clean card surfaces, readable body text, and softer hero video',
   assert(css.includes('.story-cards blockquote { background: rgba(255, 255, 255, 0.10); color: #f7fbff; }'), 'dark-section story cards should remain readable');
 });
 
+test('regular non-bold copy is larger without changing heading or button scale', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const copyScale = 'p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a { font-size: clamp(15px, 1.08vw, 17px); }';
+  const mobileCopyScale = 'p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a { font-size: 15px; }';
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Larger regular copy correction. */'), 'missing larger regular copy layer');
+    assert(stylesheet.includes(copyScale), 'regular non-bold copy should be larger');
+    assert(stylesheet.includes('.story-cards blockquote { font-size: clamp(15px, 1.08vw, 17px); }'), 'testimonial copy should be larger');
+    assert(stylesheet.includes('.full-video-home .hero-lede { font-size: clamp(15px, 1.08vw, 17px); }'), 'homepage lead copy should be larger');
+    assert(stylesheet.includes(mobileCopyScale), 'mobile regular copy should stay readable at 15px');
+  }
+  assert(css.includes('font-size: clamp(29px, 3.7vw, 46px);'), 'homepage heading scale should remain unchanged');
+  assert(css.includes('.site-nav a, .button, .phone-link { font-weight: 650; }'), 'button and nav emphasis should remain unchanged');
+});
+
 test('homepage hero and first card are shorter and tighter', () => {
   const css = read('styles.css');
   assert(css.includes('/* Shorter homepage hero correction. */'), 'missing shorter homepage hero correction layer');
