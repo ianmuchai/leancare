@@ -8,6 +8,7 @@ const pages = [
   'family-practice.html',
   'wellness.html',
   'telehealth.html',
+  'blog.html',
   'about.html',
   'contact.html',
 ];
@@ -407,7 +408,7 @@ test('site uses clean card surfaces, readable body text, and softer hero video',
   const css = read('styles.css');
   assert(css.includes('/* Clean card surfaces and readable copy correction. */'), 'missing clean card/readable copy layer');
   assert(css.includes('.hero-video-carousel video { opacity: 0.42; }'), 'hero video should be very transparent');
-  assert(css.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.14); }'), 'hero video overlay should be very light');
+  assert(css.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.05); }'), 'hero video overlay should be a 5 percent wash');
   assert(css.includes('.lean-service-grid article, .depth-grid article, .team-card, .story-cards blockquote, .insight-list a, .lean-visit-list span, .hero-service-dock, .nola-inspired-polish .lean-hero-copy, .feature-grid article, .detail-grid article, .cards-section article, .values-row article, .appointment-grid article, .service-panel, .contact-card { background: rgba(255, 255, 255, 0.94); }'), 'cards should use clean solid surfaces');
   assert(css.includes('.patient-story-rail { background: #102131; }'), 'patient story section should avoid decorative gradients');
   assert(css.includes('p, li, dd, .hero-note, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p { color: #24384a; }'), 'body copy should use a readable color');
@@ -459,6 +460,34 @@ test('top menu text is larger and easier to read', () => {
     assert(stylesheet.includes('.header-actions { gap: clamp(16px, 1.7vw, 26px); }'), 'phone and appointment button should breathe');
     assert(stylesheet.includes('.header-actions .button { min-height: 48px; padding: 13px 22px; }'), 'header CTA should be better proportioned');
     assert(stylesheet.includes(headerMobileScale), 'mobile nav menu should remain large and tappable');
+  }
+});
+
+test('header uses two-tier contact bar with requested page structure', () => {
+  const nextHeader = read('components/SiteHeader.tsx');
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const expectedLabels = ['Home', 'Family Practice', 'Wellness', 'Blog', 'About', 'Contact'];
+  for (const markup of [...pages.map((page) => read(page)), nextHeader]) {
+    assert(markup.includes('class="header-info-strip"') || markup.includes('className="header-info-strip"'), 'header should include a slim contact information strip');
+    assert(markup.includes('3002 Myrtle Ave N, Suite 1, Jacksonville, FL 32209'), 'header should show the clinic address');
+    assert(markup.includes('Mon-Fri, 9:00 a.m. - 4:30 p.m.'), 'header should show the clinic hours');
+    assert(markup.includes('904-201-9232') && markup.includes('904-374-1121'), 'header should show both phone numbers');
+    assert(markup.includes('class="site-header-shell"') || markup.includes('className="site-header-shell"'), 'header should separate the main nav shell from the info strip');
+    assert(markup.includes('class="nav-group"') || markup.includes('className="nav-group"'), 'header should use creative dropdown nav groups');
+    assert(markup.includes('class="nav-chevron"') || markup.includes('className="nav-chevron"'), 'dropdown labels should include a restrained chevron');
+    for (const label of expectedLabels) {
+      assert(markup.includes(`>${label}<`) || markup.includes(`>{item.label}<`) || markup.includes(`label: '${label}'`), `header missing top-level page ${label}`);
+    }
+    assert(!markup.includes('data-nav-link="services">Services'), 'Services should not remain a top-level header page');
+  }
+  assert(fs.existsSync(path.join(root, 'blog.html')), 'static blog page should exist because Blog is in the header');
+  assert(fs.existsSync(path.join(root, 'app/blog/page.tsx')), 'Next blog route should exist because Blog is in the header');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Two-tier clinical header and 5 percent hero transparency. */'), 'missing final two-tier header layer');
+    assert(stylesheet.includes('.header-info-strip { background: rgba(247, 252, 255, 0.92); border-bottom: 1px solid rgba(63, 162, 219, 0.13); color: #31475a; display: flex; font-size: 13px; gap: clamp(18px, 4vw, 52px); justify-content: center; min-height: 30px; padding: 6px clamp(22px, 5vw, 72px); }'), 'info strip should match the requested top bar rhythm');
+    assert(stylesheet.includes('.nav-group-menu { background: rgba(255, 255, 255, 0.96); border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 16px; box-shadow: 0 18px 48px rgba(16, 33, 49, 0.14); opacity: 0; padding: 8px; pointer-events: none; position: absolute; top: calc(100% + 10px); transform: translateY(6px); transition: opacity 180ms ease, transform 180ms ease; visibility: hidden; }'), 'dropdown menus should be polished but restrained');
+    assert(stylesheet.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.05); }'), 'hero media wash should be exactly 5 percent');
   }
 });
 
@@ -545,7 +574,7 @@ test('homepage hero uses vibrant posters, subtle scroll reveals, and corrected C
   for (const stylesheet of [css, globals]) {
     assert(stylesheet.includes('/* Subtle scroll reveal and hero media polish. */'), 'missing subtle reveal/media polish layer');
     assert(stylesheet.includes('.hero-video-carousel .media-slide { background-image: var(--hero-photo); background-position: center; background-repeat: no-repeat; background-size: cover; }'), 'hero carousel should show colorful photo backplates behind transparent videos');
-    assert(stylesheet.includes('.hero-video-carousel .media-slide::before { background: linear-gradient(135deg, rgba(63, 162, 219, 0.10), rgba(255, 0, 194, 0.08)); content: ""; inset: 0; pointer-events: none; position: absolute; z-index: 1; }'), 'hero backplates should have a subtle brand-tinted glass wash');
+    assert(stylesheet.includes('.hero-video-carousel .media-slide::before { background: linear-gradient(135deg, rgba(63, 162, 219, 0.05), rgba(255, 0, 194, 0.05)); content: ""; inset: 0; pointer-events: none; position: absolute; z-index: 1; }'), 'hero backplates should have a 5 percent brand-tinted glass wash');
     assert(stylesheet.includes('.hero-video-carousel video { filter: saturate(1.08) contrast(1.02); position: relative; z-index: 2; }'), 'transparent hero videos should sit over the photo backplates with a cleaner finish');
     assert(stylesheet.includes('.reveal { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 720ms cubic-bezier(0.22, 1, 0.36, 1); }'), 'reveal elements should slide and fade subtly');
     assert(stylesheet.includes('.reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }'), 'visible reveal state should settle cleanly');
@@ -583,6 +612,7 @@ test('project is migrated to a Vercel-ready Next.js App Router application', () 
     'app/family-practice/page.tsx',
     'app/wellness/page.tsx',
     'app/telehealth/page.tsx',
+    'app/blog/page.tsx',
     'app/about/page.tsx',
     'app/contact/page.tsx',
     'components/SiteHeader.tsx',

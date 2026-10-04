@@ -49,7 +49,7 @@ function initMobileNav() {
 }
 
 function initActiveNav() {
-  const page = document.body.dataset.page || { '/': 'home', '/services': 'services', '/family-practice': 'family-practice', '/wellness': 'wellness', '/telehealth': 'telehealth', '/about': 'about', '/contact': 'contact' }[window.location.pathname];
+    const page = document.body.dataset.page || { '/': 'home', '/services': 'services', '/family-practice': 'family-practice', '/wellness': 'wellness', '/telehealth': 'telehealth', '/blog': 'blog', '/about': 'about', '/contact': 'contact' }[window.location.pathname];
   if (!page) return;
 
   document.querySelectorAll('[data-nav-link]').forEach((link) => {

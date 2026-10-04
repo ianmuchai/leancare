@@ -12,20 +12,30 @@
 </head>
 <body data-page="home">
   <header class="site-header" data-header>
-    <a class="brand" href="index.html" aria-label="Leancare Health & Wellness home"><img class="brand-logo" src="https://www.leancarehealth.com/logo.svg" alt="Leancare Health & Wellness" /></a>
-    <nav class="site-nav" aria-label="Main navigation" data-nav>
-      <a href="index.html" data-nav-link="home">Home</a>
-      <a href="services.html" data-nav-link="services">Services</a>
-      <a href="about.html" data-nav-link="about">About</a>
-      <a href="contact.html" data-nav-link="contact">Contact</a>
-    </nav>
-    <div class="header-actions">
-      <a class="phone-link" href="tel:9042019232">904-201-9232</a>
-      <a class="button button-primary" href="contact.html">Request appointment</a>
+    <div class="header-info-strip" aria-label="Clinic information">
+      <a class="header-info-item" href="https://maps.google.com/?q=3002+Myrtle+Ave+N,+Suite+1,+Jacksonville,+FL+32209">3002 Myrtle Ave N, Suite 1, Jacksonville, FL 32209</a>
+      <span class="header-info-item">Mon-Fri, 9:00 a.m. - 4:30 p.m.</span>
+      <span class="header-info-item"><a href="tel:9042019232">904-201-9232</a><span aria-hidden="true"> · </span><a href="tel:9043741121">904-374-1121</a></span>
     </div>
-    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle>
-      <span></span><span></span>
-    </button>
+    <div class="site-header-shell">
+      <a class="brand" href="index.html" aria-label="Leancare Health & Wellness home"><img class="brand-logo" src="https://www.leancarehealth.com/logo.svg" alt="Leancare Health & Wellness" /></a>
+      <nav class="site-nav" aria-label="Main navigation" data-nav>
+        <a href="index.html" data-nav-link="home">Home</a>
+        <div class="nav-group">
+          <a class="nav-group-label" href="family-practice.html" data-nav-link="family-practice">Family Practice<span class="nav-chevron" aria-hidden="true"></span></a>
+          <div class="nav-group-menu"><a href="family-practice.html">Family Practice</a><a href="services.html">Primary Care</a><a href="telehealth.html">Telehealth</a></div>
+        </div>
+        <div class="nav-group">
+          <a class="nav-group-label" href="wellness.html" data-nav-link="wellness">Wellness<span class="nav-chevron" aria-hidden="true"></span></a>
+          <div class="nav-group-menu"><a href="wellness.html">Wellness</a><a href="services.html#behavioral-services">Behavioural Services</a><a href="services.html#chronic-disease-management">Chronic Disease Management</a></div>
+        </div>
+        <a href="blog.html" data-nav-link="blog">Blog</a>
+        <a href="about.html" data-nav-link="about">About</a>
+        <a href="contact.html" data-nav-link="contact">Contact</a>
+      </nav>
+      <div class="header-actions"><a class="phone-link" href="tel:9042019232">904-201-9232</a><a class="button button-primary" href="contact.html">Request appointment</a></div>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span></button>
+    </div>
   </header>
 
   <main>
