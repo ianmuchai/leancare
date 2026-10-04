@@ -5316,3 +5316,59 @@ h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-st
 .lean-home-services .section-copy h2 {
   letter-spacing: -0.01em;
 }
+
+/* Clean card surfaces and readable copy correction. */
+.hero-video-carousel video { opacity: 0.72; }
+
+.hero-video-carousel {
+  background: #eaf7fd;
+}
+
+.hero-video-carousel::after { background: rgba(12, 28, 42, 0.38); }
+
+.lean-service-grid article, .depth-grid article, .team-card, .story-cards blockquote, .insight-list a, .lean-visit-list span, .hero-service-dock, .nola-inspired-polish .lean-hero-copy, .feature-grid article, .detail-grid article, .cards-section article, .values-row article, .appointment-grid article, .service-panel, .contact-card { background: rgba(255, 255, 255, 0.94); }
+
+.lean-service-grid article,
+.depth-grid article,
+.team-card,
+.insight-list a,
+.lean-visit-list span,
+.hero-service-dock,
+.nola-inspired-polish .lean-hero-copy,
+.feature-grid article,
+.detail-grid article,
+.cards-section article,
+.values-row article,
+.appointment-grid article,
+.service-panel,
+.contact-card {
+  border-color: rgba(63, 162, 219, 0.14);
+  box-shadow: 0 10px 28px rgba(20, 58, 92, 0.055);
+}
+
+.patient-story-rail { background: #102131; }
+
+.depth-section,
+.lean-home-services,
+.lean-visit-strip,
+.insight-strip {
+  background: #ffffff;
+}
+
+p, li, dd, .hero-note, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p { color: #24384a; }
+
+p, li, dd, .hero-note, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p { font-weight: 500; }
+
+.page-hero > p,
+.contact-hero > div > p,
+.section-copy > p {
+  color: #24384a;
+  font-weight: 500;
+}
+
+.story-cards blockquote { background: rgba(255, 255, 255, 0.10); color: #f7fbff; }
+
+.story-cards blockquote {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: none;
+}

@@ -383,6 +383,18 @@ test('all page headings use a professional medium-weight heading system', () => 
   assert(css.includes('.site-nav a, .button, .phone-link { font-weight: 650; }'), 'navigation and button text should be less heavy');
   assert(!css.includes('font-weight: 840;'), 'final CSS should not keep the homepage title at 840 weight');
 });
+
+test('site uses clean card surfaces, readable body text, and softer hero video', () => {
+  const css = read('styles.css');
+  assert(css.includes('/* Clean card surfaces and readable copy correction. */'), 'missing clean card/readable copy layer');
+  assert(css.includes('.hero-video-carousel video { opacity: 0.72; }'), 'hero video should be more transparent');
+  assert(css.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.38); }'), 'hero video overlay should be simpler and less gradient-heavy');
+  assert(css.includes('.lean-service-grid article, .depth-grid article, .team-card, .story-cards blockquote, .insight-list a, .lean-visit-list span, .hero-service-dock, .nola-inspired-polish .lean-hero-copy, .feature-grid article, .detail-grid article, .cards-section article, .values-row article, .appointment-grid article, .service-panel, .contact-card { background: rgba(255, 255, 255, 0.94); }'), 'cards should use clean solid surfaces');
+  assert(css.includes('.patient-story-rail { background: #102131; }'), 'patient story section should avoid decorative gradients');
+  assert(css.includes('p, li, dd, .hero-note, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p { color: #24384a; }'), 'body copy should use a readable color');
+  assert(css.includes('p, li, dd, .hero-note, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p { font-weight: 500; }'), 'regular text should be more legible without becoming bold');
+  assert(css.includes('.story-cards blockquote { background: rgba(255, 255, 255, 0.10); color: #f7fbff; }'), 'dark-section story cards should remain readable');
+});
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
   assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');
