@@ -11,6 +11,8 @@ const pages = [
   'about.html',
   'contact.html',
 ];
+const dmSansHref = 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap';
+const dmSansStack = ':root { --font-sans: var(--font-dm-sans, "DM Sans"), "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: var(--font-sans); --font-serif: var(--font-sans); --heading-font: var(--font-dm-sans, "DM Sans"), "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; }';
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), 'utf8');
@@ -71,6 +73,23 @@ test('css defines professional responsive system and reduced motion path', () =>
   assert(css.includes('--font-sans'), 'missing professional font token');
   assert(css.includes('@media (max-width: 760px)'), 'missing mobile breakpoint');
   assert(css.includes('prefers-reduced-motion'), 'missing reduced-motion media query');
+});
+
+test('site loads and applies DM Sans as the primary readable font', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const layout = read('app/layout.tsx');
+  for (const page of pages) {
+    const html = read(page);
+    assert(html.includes(dmSansHref), `${page} should load DM Sans`);
+  }
+  assert(layout.includes(dmSansHref), 'Next layout should load DM Sans');
+  assert(css.includes('/* DM Sans site-wide font system. */'), 'missing DM Sans final font layer');
+  assert(css.includes(dmSansStack), 'static CSS should make DM Sans the primary font token');
+  assert(globals.includes('/* DM Sans site-wide font system. */'), 'Next globals missing DM Sans layer');
+  assert(globals.includes(dmSansStack), 'Next globals should make DM Sans the primary font token');
+  assert(css.includes('body, button, input, textarea, select { font-family: var(--font-sans); }'), 'form controls should inherit DM Sans');
+  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); }'), 'headings should use the DM Sans heading token');
 });
 
 test('css uses logo-inspired vibrant brand palette and image composition system', () => {
@@ -361,7 +380,7 @@ test('homepage adds restrained Nola-inspired color and optimized hero card witho
 test('site uses firmer smaller typography across homepage and inner pages', () => {
   const css = read('styles.css');
   assert(css.includes('/* Firm compact typography system. */'), 'missing final compact typography layer');
-  assert(css.includes(':root { --font-sans: "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: var(--font-sans); --font-serif: var(--font-sans); }'), 'font stack should be firm and sans-led');
+  assert(css.includes(dmSansStack), 'font stack should be firm, sans-led, and DM Sans first');
   assert(css.includes('body { font-size: 14px; }'), 'base font size should be smaller');
   assert(css.includes('h1, h2, h3 { font-family: var(--font-sans); font-variation-settings: normal; }'), 'headings should no longer use the soft display font');
   assert(css.includes('h1 { font-size: clamp(30px, 4.1vw, 58px); }'), 'global h1 scale should be reduced');
@@ -375,8 +394,8 @@ test('site uses firmer smaller typography across homepage and inner pages', () =
 test('all page headings use a professional medium-weight heading system', () => {
   const css = read('styles.css');
   assert(css.includes('/* Professional medium-weight heading correction. */'), 'missing professional heading correction layer');
-  assert(css.includes(':root { --heading-font: "Aptos Display", "Segoe UI Variable Display", "Inter", "Helvetica Neue", Arial, sans-serif; }'), 'missing professional heading font stack');
-  assert(css.includes('h1, h2, h3, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); }'), 'heading font should apply globally and to page overrides');
+  assert(css.includes(dmSansStack), 'missing professional DM Sans heading font stack');
+  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); }'), 'heading font should apply globally and to page overrides');
   assert(css.includes('h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 650; }'), 'main headings should be medium-weight, not heavy bold');
   assert(css.includes('h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 620; }'), 'section and card headings should be firm but not overly bold');
   assert(css.includes('.eyebrow, .lean-service-grid span, .depth-grid span, .panel-kicker { font-weight: 700; }'), 'small topic labels should not use extra-bold weights');

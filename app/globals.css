@@ -5419,3 +5419,10 @@ p, li, dd, .hero-note, .lean-service-grid p, .depth-copy p, .team-card p, .lean-
     padding-top: 30px;
   }
 }
+
+/* DM Sans site-wide font system. */
+:root { --font-sans: var(--font-dm-sans, "DM Sans"), "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: var(--font-sans); --font-serif: var(--font-sans); --heading-font: var(--font-dm-sans, "DM Sans"), "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; }
+
+body, button, input, textarea, select { font-family: var(--font-sans); }
+
+h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); }
