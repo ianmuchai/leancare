@@ -448,12 +448,16 @@ test('regular copy increase reaches inner pages, footer text, and non-bold spans
 test('top menu text is larger and easier to read', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
-  const headerScale = '.site-nav a, .phone-link, .header-actions .button { font-size: clamp(14px, 1vw, 16px); }';
+  const headerScale = '.site-nav a, .phone-link, .header-actions .button { font-family: var(--font-sans); font-size: clamp(14px, 0.96vw, 15px); font-weight: 600; letter-spacing: 0.005em; line-height: 1.1; }';
   const headerMobileScale = '.site-nav a { font-size: 20px; }';
   for (const stylesheet of [css, globals]) {
-    assert(stylesheet.includes('/* Header menu readability correction. */'), 'missing header menu readability layer');
-    assert(stylesheet.includes(headerScale), 'header nav, phone, and CTA text should be larger');
-    assert(stylesheet.includes('.site-nav { gap: clamp(12px, 1.4vw, 22px); }'), 'header nav links should keep comfortable spacing');
+    assert(stylesheet.includes('/* Professional header spacing and font refinement. */'), 'missing professional header refinement layer');
+    assert(stylesheet.includes('.site-header { column-gap: clamp(22px, 3vw, 42px); min-height: 86px; padding-left: clamp(32px, 4.8vw, 72px); padding-right: clamp(32px, 4.8vw, 72px); }'), 'header bar should have stronger outer spacing');
+    assert(stylesheet.includes('.site-nav { gap: clamp(14px, 1.6vw, 28px); }'), 'header nav links should keep comfortable spacing');
+    assert(stylesheet.includes(headerScale), 'header nav, phone, and CTA should use a cleaner DM Sans treatment');
+    assert(stylesheet.includes('.site-nav a { padding: 11px 14px; }'), 'nav links should have balanced click padding');
+    assert(stylesheet.includes('.header-actions { gap: clamp(16px, 1.7vw, 26px); }'), 'phone and appointment button should breathe');
+    assert(stylesheet.includes('.header-actions .button { min-height: 48px; padding: 13px 22px; }'), 'header CTA should be better proportioned');
     assert(stylesheet.includes(headerMobileScale), 'mobile nav menu should remain large and tappable');
   }
 });

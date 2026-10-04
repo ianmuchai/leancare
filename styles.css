@@ -5494,3 +5494,27 @@ p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-h
     grid-template-columns: 1fr;
   }
 }
+
+/* Professional header spacing and font refinement. */
+.site-header { column-gap: clamp(22px, 3vw, 42px); min-height: 86px; padding-left: clamp(32px, 4.8vw, 72px); padding-right: clamp(32px, 4.8vw, 72px); }
+
+.site-nav { gap: clamp(14px, 1.6vw, 28px); }
+
+.site-nav a, .phone-link, .header-actions .button { font-family: var(--font-sans); font-size: clamp(14px, 0.96vw, 15px); font-weight: 600; letter-spacing: 0.005em; line-height: 1.1; }
+
+.site-nav a { padding: 11px 14px; }
+
+.header-actions { gap: clamp(16px, 1.7vw, 26px); }
+
+.header-actions .button { min-height: 48px; padding: 13px 22px; }
+
+@media (max-width: 1120px) {
+  .site-header { padding-left: clamp(22px, 3.4vw, 42px); padding-right: clamp(22px, 3.4vw, 42px); }
+  .site-nav { gap: clamp(8px, 1vw, 14px); }
+  .site-nav a { padding-left: 10px; padding-right: 10px; }
+}
+
+@media (max-width: 760px) {
+  .site-header { min-height: 74px; padding-left: 5vw; padding-right: 5vw; }
+  .site-nav a { font-size: 20px; }
+}
