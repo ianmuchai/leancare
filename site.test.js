@@ -464,6 +464,7 @@ test('top menu text is larger and easier to read', () => {
 
 test('homepage uses actual Leancare patient testimonials from the original site', () => {
   const html = read('index.html');
+  const nextHome = read('app/page.tsx');
   const css = read('styles.css');
   const testimonials = [
     ['James Patterson', 'Finally a clinic that treats me like a person'],
@@ -478,10 +479,37 @@ test('homepage uses actual Leancare patient testimonials from the original site'
   for (const [name, excerpt] of testimonials) {
     assert(html.includes(name), `homepage missing original testimonial name: ${name}`);
     assert(html.includes(excerpt), `homepage missing original testimonial copy excerpt: ${excerpt}`);
+    assert(nextHome.includes(name), `Next homepage missing original testimonial name: ${name}`);
+    assert(nextHome.includes(excerpt), `Next homepage missing original testimonial copy excerpt: ${excerpt}`);
   }
   assert((html.match(/<blockquote>/g) || []).length >= 8, 'homepage should include the full set of original testimonials');
   assert(css.includes('.story-cards blockquote cite'), 'testimonial names and patient types should be styled');
   assert(css.includes('.story-cards blockquote p'), 'testimonial copy should have dedicated styling');
+});
+
+test('doctor portrait is intentionally placed on homepage and about page', () => {
+  const portraitPath = 'public/eunice-binyanya-provider.jpeg';
+  const home = read('index.html');
+  const about = read('about.html');
+  const nextHome = read('app/page.tsx');
+  const nextAbout = read('app/about/page.tsx');
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  assert(fs.existsSync(path.join(root, portraitPath)), 'doctor portrait asset should be available in public');
+  for (const markup of [home, about, nextHome, nextAbout]) {
+    assert(markup.includes('/eunice-binyanya-provider.jpeg'), 'provider portrait should use the deployed doctor photo asset');
+    assert(markup.includes('Eunice Binyanya, DNP, ARNP, FNP-C'), 'provider placement should keep the provider name');
+  }
+  assert(home.includes('class="team-card provider-team-card"'), 'homepage provider mention should become a portrait card');
+  assert(home.includes('class="team-card-photo"'), 'homepage provider card should include a dedicated portrait frame');
+  assert(about.includes('class="provider-profile reveal doctor-profile"'), 'about page should use the enhanced doctor profile layout');
+  assert(about.includes('class="provider-portrait-frame"'), 'about page should include an intentional portrait frame');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Provider portrait placement correction. */'), 'missing provider portrait CSS layer');
+    assert(stylesheet.includes('.provider-team-card { grid-template-columns: minmax(150px, 0.72fr) minmax(0, 1fr); }'), 'homepage provider card should lay out image and copy intentionally');
+    assert(stylesheet.includes('.team-card-photo img, .provider-portrait-frame img { object-position: center top; }'), 'doctor portrait should keep the face framed properly');
+    assert(stylesheet.includes('.doctor-profile { grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1fr); }'), 'about profile should give the portrait proper presence');
+  }
 });
 
 test('homepage hero and first card are shorter and tighter', () => {
