@@ -406,8 +406,8 @@ test('all page headings use a professional medium-weight heading system', () => 
 test('site uses clean card surfaces, readable body text, and softer hero video', () => {
   const css = read('styles.css');
   assert(css.includes('/* Clean card surfaces and readable copy correction. */'), 'missing clean card/readable copy layer');
-  assert(css.includes('.hero-video-carousel video { opacity: 0.72; }'), 'hero video should be more transparent');
-  assert(css.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.38); }'), 'hero video overlay should be simpler and less gradient-heavy');
+  assert(css.includes('.hero-video-carousel video { opacity: 0.54; }'), 'hero video should be significantly more transparent');
+  assert(css.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.22); }'), 'hero video overlay should be lighter and less gradient-heavy');
   assert(css.includes('.lean-service-grid article, .depth-grid article, .team-card, .story-cards blockquote, .insight-list a, .lean-visit-list span, .hero-service-dock, .nola-inspired-polish .lean-hero-copy, .feature-grid article, .detail-grid article, .cards-section article, .values-row article, .appointment-grid article, .service-panel, .contact-card { background: rgba(255, 255, 255, 0.94); }'), 'cards should use clean solid surfaces');
   assert(css.includes('.patient-story-rail { background: #102131; }'), 'patient story section should avoid decorative gradients');
   assert(css.includes('p, li, dd, .hero-note, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p { color: #24384a; }'), 'body copy should use a readable color');
@@ -509,6 +509,42 @@ test('doctor portrait is intentionally placed on homepage and about page', () =>
     assert(stylesheet.includes('.provider-team-card { grid-template-columns: minmax(150px, 0.72fr) minmax(0, 1fr); }'), 'homepage provider card should lay out image and copy intentionally');
     assert(stylesheet.includes('.team-card-photo img, .provider-portrait-frame img { object-position: center top; }'), 'doctor portrait should keep the face framed properly');
     assert(stylesheet.includes('.doctor-profile { grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1fr); }'), 'about profile should give the portrait proper presence');
+  }
+});
+
+test('homepage hero uses vibrant posters, subtle scroll reveals, and corrected CTA font', () => {
+  const home = read('index.html');
+  const nextHome = read('app/page.tsx');
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const retiredPosters = [
+    'photo-1532938911079-1b06ac7ceec7',
+    'photo-1498837167922-ddd27525d352',
+    'photo-1519494026892-80bbd2d6fd0d',
+    'photo-1505751172876-fa1923c5c528',
+  ];
+  const vibrantPosters = [
+    'photo-1550831107-1553da8c8464',
+    'photo-1512621776951-a57141f2eefd',
+    'photo-1576091160550-2173dba999ef',
+    'photo-1506126613408-eca07ce68773',
+  ];
+  for (const poster of retiredPosters) {
+    assert(!home.includes(`poster="https://images.unsplash.com/${poster}`), `homepage still uses old muted poster ${poster}`);
+    assert(!nextHome.includes(`poster="https://images.unsplash.com/${poster}`), `Next homepage still uses old muted poster ${poster}`);
+  }
+  for (const poster of vibrantPosters) {
+    assert(home.includes(poster), `homepage missing vibrant hero poster ${poster}`);
+    assert(nextHome.includes(poster), `Next homepage missing vibrant hero poster ${poster}`);
+  }
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Subtle scroll reveal and hero media polish. */'), 'missing subtle reveal/media polish layer');
+    assert(stylesheet.includes('.reveal { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 720ms cubic-bezier(0.22, 1, 0.36, 1); }'), 'reveal elements should slide and fade subtly');
+    assert(stylesheet.includes('.reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }'), 'visible reveal state should settle cleanly');
+    assert(stylesheet.includes('.reveal.is-visible .lean-service-grid article, .reveal.is-visible .depth-grid article, .reveal.is-visible .story-cards blockquote, .reveal.is-visible .insight-list a { opacity: 1; transform: translate3d(0, 0, 0); }'), 'scroll reveal should cascade into repeated cards');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(246, 251, 255, 0.66)); }'), 'hero copy card should be more transparent');
+    assert(stylesheet.includes('.hero-service-dock { background: rgba(255, 255, 255, 0.58); }'), 'hero dock should be more transparent');
+    assert(stylesheet.includes('.button, .header-cta, .hero-actions .button-primary { font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }'), 'request appointment buttons should use the corrected DM Sans button font');
   }
 });
 

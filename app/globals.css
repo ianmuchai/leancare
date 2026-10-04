@@ -5608,3 +5608,55 @@ p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-h
     max-height: 420px;
   }
 }
+
+/* Subtle scroll reveal and hero media polish. */
+.reveal { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 720ms cubic-bezier(0.22, 1, 0.36, 1); }
+
+.reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }
+
+.reveal .lean-service-grid article,
+.reveal .depth-grid article,
+.reveal .story-cards blockquote,
+.reveal .insight-list a {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 680ms cubic-bezier(0.22, 1, 0.36, 1), transform 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible .lean-service-grid article, .reveal.is-visible .depth-grid article, .reveal.is-visible .story-cards blockquote, .reveal.is-visible .insight-list a { opacity: 1; transform: translate3d(0, 0, 0); }
+
+.reveal.is-visible .lean-service-grid article:nth-child(2),
+.reveal.is-visible .depth-grid article:nth-child(3),
+.reveal.is-visible .story-cards blockquote:nth-child(2),
+.reveal.is-visible .insight-list a:nth-child(2) {
+  transition-delay: 80ms;
+}
+
+.reveal.is-visible .lean-service-grid article:nth-child(3),
+.reveal.is-visible .depth-grid article:nth-child(4),
+.reveal.is-visible .story-cards blockquote:nth-child(3),
+.reveal.is-visible .insight-list a:nth-child(3) {
+  transition-delay: 140ms;
+}
+
+.hero-video-carousel video { opacity: 0.54; }
+
+.hero-video-carousel::after { background: rgba(12, 28, 42, 0.22); }
+
+.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(246, 251, 255, 0.66)); }
+
+.hero-service-dock { background: rgba(255, 255, 255, 0.58); }
+
+.button, .header-cta, .hero-actions .button-primary { font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal .lean-service-grid article,
+  .reveal .depth-grid article,
+  .reveal .story-cards blockquote,
+  .reveal .insight-list a {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
