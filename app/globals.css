@@ -5437,3 +5437,12 @@ p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-h
 @media (max-width: 760px) {
   p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a { font-size: 15px; }
 }
+
+/* All-page regular text reach correction. */
+.two-feature article p, .metric-band span, .process-list p, .provider-profile article p:not(.eyebrow), .feature-grid article p, .detail-grid article p, .cards-section article p, .values-row article p, .appointment-grid article p, .service-panel p, .service-panel dd, .contact-card p, .cta-panel p:not(.eyebrow), .site-footer p, .site-footer a { font-size: clamp(15px, 1.08vw, 17px); }
+
+.two-feature article p, .metric-band span, .process-list p, .provider-profile article p:not(.eyebrow), .feature-grid article p, .detail-grid article p, .cards-section article p, .values-row article p, .appointment-grid article p, .service-panel p, .service-panel dd, .contact-card p, .cta-panel p:not(.eyebrow), .site-footer p, .site-footer a { line-height: 1.58; }
+
+@media (max-width: 760px) {
+  .two-feature article p, .metric-band span, .process-list p, .provider-profile article p:not(.eyebrow), .feature-grid article p, .detail-grid article p, .cards-section article p, .values-row article p, .appointment-grid article p, .service-panel p, .service-panel dd, .contact-card p, .cta-panel p:not(.eyebrow), .site-footer p, .site-footer a { font-size: 15px; }
+}

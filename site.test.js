@@ -431,6 +431,20 @@ test('regular non-bold copy is larger without changing heading or button scale',
   assert(css.includes('.site-nav a, .button, .phone-link { font-weight: 650; }'), 'button and nav emphasis should remain unchanged');
 });
 
+test('regular copy increase reaches inner pages, footer text, and non-bold spans', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const allPageCopySelector = '.two-feature article p, .metric-band span, .process-list p, .provider-profile article p:not(.eyebrow), .feature-grid article p, .detail-grid article p, .cards-section article p, .values-row article p, .appointment-grid article p, .service-panel p, .service-panel dd, .contact-card p, .cta-panel p:not(.eyebrow), .site-footer p, .site-footer a { font-size: clamp(15px, 1.08vw, 17px); }';
+  const mobileAllPageCopySelector = '.two-feature article p, .metric-band span, .process-list p, .provider-profile article p:not(.eyebrow), .feature-grid article p, .detail-grid article p, .cards-section article p, .values-row article p, .appointment-grid article p, .service-panel p, .service-panel dd, .contact-card p, .cta-panel p:not(.eyebrow), .site-footer p, .site-footer a { font-size: 15px; }';
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* All-page regular text reach correction. */'), 'missing all-page regular text reach layer');
+    assert(stylesheet.includes(allPageCopySelector), 'inner-page regular text and footer copy should be larger');
+    assert(stylesheet.includes(mobileAllPageCopySelector), 'inner-page regular text should stay readable on mobile');
+  }
+  assert(!allPageCopySelector.includes('strong'), 'bold/stat labels should not be included in the regular text increase');
+  assert(!allPageCopySelector.includes('.process-list span'), 'step number pills should not be included in the regular text increase');
+});
+
 test('homepage hero and first card are shorter and tighter', () => {
   const css = read('styles.css');
   assert(css.includes('/* Shorter homepage hero correction. */'), 'missing shorter homepage hero correction layer');
