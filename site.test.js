@@ -428,7 +428,7 @@ test('regular non-bold copy is larger without changing heading or button scale',
     assert(stylesheet.includes(mobileCopyScale), 'mobile regular copy should stay readable at 15px');
   }
   assert(css.includes('font-size: clamp(29px, 3.7vw, 46px);'), 'homepage heading scale should remain unchanged');
-  assert(css.includes('.site-nav a, .button, .phone-link { font-weight: 650; }'), 'button and nav emphasis should remain unchanged');
+  assert(css.includes('.site-nav a, .button, .phone-link { font-weight: 650; }'), 'button and nav emphasis should remain controlled');
 });
 
 test('regular copy increase reaches inner pages, footer text, and non-bold spans', () => {
@@ -443,6 +443,41 @@ test('regular copy increase reaches inner pages, footer text, and non-bold spans
   }
   assert(!allPageCopySelector.includes('strong'), 'bold/stat labels should not be included in the regular text increase');
   assert(!allPageCopySelector.includes('.process-list span'), 'step number pills should not be included in the regular text increase');
+});
+
+test('top menu text is larger and easier to read', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const headerScale = '.site-nav a, .phone-link, .header-actions .button { font-size: clamp(14px, 1vw, 16px); }';
+  const headerMobileScale = '.site-nav a { font-size: 20px; }';
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Header menu readability correction. */'), 'missing header menu readability layer');
+    assert(stylesheet.includes(headerScale), 'header nav, phone, and CTA text should be larger');
+    assert(stylesheet.includes('.site-nav { gap: clamp(12px, 1.4vw, 22px); }'), 'header nav links should keep comfortable spacing');
+    assert(stylesheet.includes(headerMobileScale), 'mobile nav menu should remain large and tappable');
+  }
+});
+
+test('homepage uses actual Leancare patient testimonials from the original site', () => {
+  const html = read('index.html');
+  const css = read('styles.css');
+  const testimonials = [
+    ['James Patterson', 'Finally a clinic that treats me like a person'],
+    ['Latoya Brooks', 'They treated my whole family with such kindness'],
+    ['Kevin Okafor', 'Compassion and integrity are not just words'],
+    ['Rosa Medina', 'Warm, professional, and unhurried'],
+    ['Anthony Guerrero', 'I did my visit from work over video'],
+    ['Priya Sharma', 'The weight-management plan was built around my life'],
+    ['Marcus Thornton', 'Same-day appointment, no long wait'],
+    ['Danielle Reeves', 'Dr. Binyanya actually listens'],
+  ];
+  for (const [name, excerpt] of testimonials) {
+    assert(html.includes(name), `homepage missing original testimonial name: ${name}`);
+    assert(html.includes(excerpt), `homepage missing original testimonial copy excerpt: ${excerpt}`);
+  }
+  assert((html.match(/<blockquote>/g) || []).length >= 8, 'homepage should include the full set of original testimonials');
+  assert(css.includes('.story-cards blockquote cite'), 'testimonial names and patient types should be styled');
+  assert(css.includes('.story-cards blockquote p'), 'testimonial copy should have dedicated styling');
 });
 
 test('homepage hero and first card are shorter and tighter', () => {

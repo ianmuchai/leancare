@@ -5446,3 +5446,51 @@ p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-h
 @media (max-width: 760px) {
   .two-feature article p, .metric-band span, .process-list p, .provider-profile article p:not(.eyebrow), .feature-grid article p, .detail-grid article p, .cards-section article p, .values-row article p, .appointment-grid article p, .service-panel p, .service-panel dd, .contact-card p, .cta-panel p:not(.eyebrow), .site-footer p, .site-footer a { font-size: 15px; }
 }
+
+/* Header menu readability correction. */
+.site-nav { gap: clamp(12px, 1.4vw, 22px); }
+
+.site-nav a, .phone-link, .header-actions .button { font-size: clamp(14px, 1vw, 16px); }
+
+@media (max-width: 760px) {
+  .site-nav a { font-size: 20px; }
+}
+
+/* Original patient testimonial correction. */
+.story-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.story-cards blockquote {
+  align-content: space-between;
+  display: grid;
+  gap: 18px;
+}
+
+.story-cards blockquote p {
+  color: inherit;
+  font-size: clamp(15px, 1.08vw, 17px);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.story-cards blockquote cite {
+  color: #ffffff;
+  display: grid;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  gap: 2px;
+}
+
+.story-cards blockquote cite span {
+  color: rgba(247, 251, 255, 0.72);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+@media (max-width: 920px) {
+  .story-cards {
+    grid-template-columns: 1fr;
+  }
+}
