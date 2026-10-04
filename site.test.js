@@ -395,6 +395,15 @@ test('site uses clean card surfaces, readable body text, and softer hero video',
   assert(css.includes('p, li, dd, .hero-note, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p { font-weight: 500; }'), 'regular text should be more legible without becoming bold');
   assert(css.includes('.story-cards blockquote { background: rgba(255, 255, 255, 0.10); color: #f7fbff; }'), 'dark-section story cards should remain readable');
 });
+
+test('homepage hero and first card are shorter and tighter', () => {
+  const css = read('styles.css');
+  assert(css.includes('/* Shorter homepage hero correction. */'), 'missing shorter homepage hero correction layer');
+  assert(css.includes('.full-video-home { min-height: min(640px, calc(100vh - 96px)); padding: clamp(34px, 5vw, 56px) 6vw; }'), 'homepage hero should be shorter than the previous tall viewport');
+  assert(css.includes('.full-video-home .lean-hero-copy { padding: clamp(24px, 3vw, 38px); }'), 'first homepage card should have reduced padding');
+  assert(css.includes('.full-video-home .lean-hero-copy { max-width: 660px; }'), 'first homepage card should be slightly narrower');
+  assert(css.includes('.hero-service-dock { padding: 16px 18px; }'), 'secondary hero dock should be more compact');
+});
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
   assert(pkg.scripts.dev === 'next dev', 'dev script should run Next.js');
