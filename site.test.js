@@ -560,6 +560,37 @@ test('top bar matches the screenshot-informed header structure', () => {
   }
 });
 
+test('top information bar uses real icons and a modern utility treatment', () => {
+  const nextHeader = read('components/SiteHeader.tsx');
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const home = read('index.html');
+  for (const markup of [home, nextHeader]) {
+    assert(markup.includes('info-icon-location') || markup.includes('type="location"'), 'top bar should include a location icon');
+    assert(markup.includes('info-icon-clock') || markup.includes('type="clock"'), 'top bar should include a clock icon');
+    assert(markup.includes('info-icon-phone') || markup.includes('type="phone"'), 'top bar should include a phone icon');
+    assert(markup.includes('<svg') || markup.includes('<InfoIcon'), 'top bar icons should be actual SVG icons, not CSS dots');
+  }
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Modern utility bar icons and uncluttered rhythm. */'), 'missing modern utility/header rhythm layer');
+    assert(stylesheet.includes('.header-info-item::before { content: none; display: none; }'), 'old pseudo-icon blobs should be disabled');
+    assert(stylesheet.includes('.info-icon { align-items: center; background: linear-gradient(135deg, #3fa2db, #1d75a8); border-radius: 999px; color: #ffffff; display: inline-flex; flex: 0 0 auto; height: 28px; justify-content: center; width: 28px; }'), 'info icons should use polished brand-blue icon chips');
+    assert(stylesheet.includes('.header-info-strip { background: linear-gradient(90deg, rgba(248, 252, 255, 0.98), rgba(239, 250, 255, 0.94)); box-shadow: inset 0 -1px 0 rgba(63, 162, 219, 0.14); }'), 'top bar should have a modern restrained utility treatment');
+  }
+});
+
+test('pages use cleaner uncluttered rhythm across homepage and inner pages', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('body[data-page="home"] main > section:not(.home-hero) { padding-block: clamp(54px, 6vw, 82px); }'), 'homepage sections should have calmer vertical rhythm');
+    assert(stylesheet.includes('.lean-home-services, .depth-section, .story-team-section, .lean-visit-strip, .insight-strip, .cards-section, .split-section, .two-feature { max-width: 1160px; margin-inline: auto; }'), 'major sections should share a clean centered width');
+    assert(stylesheet.includes('.lean-service-grid, .depth-grid, .story-cards, .feature-grid, .detail-grid, .values-row, .appointment-grid, .blog-grid { gap: clamp(18px, 2.4vw, 28px); }'), 'card grids should use consistent uncluttered spacing');
+    assert(stylesheet.includes('.lean-service-grid article, .depth-grid article, .team-card, .story-cards blockquote, .feature-grid article, .detail-grid article, .values-row article, .appointment-grid article, .blog-grid article { border: 1px solid rgba(63, 162, 219, 0.14); box-shadow: 0 18px 48px rgba(16, 33, 49, 0.07); }'), 'cards should look clean and consistent without heavy clutter');
+    assert(stylesheet.includes('.page-hero, .contact-hero { min-height: clamp(300px, 38vw, 430px); }'), 'inner page heroes should be shorter and less crowded');
+  }
+});
+
 test('newer inner pages use polished page layouts and no grainy wellness meditation photo', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
