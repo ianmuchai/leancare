@@ -224,7 +224,7 @@ test('site-wide typography and cards are reduced and rebalanced with visible pag
 test('all pages use reliable hero photo carousels and the homepage card uses direct videos', () => {
   const css = read('styles.css');
   const home = read('index.html');
-  const innerPages = ['services.html', 'family-practice.html', 'wellness.html', 'telehealth.html', 'about.html', 'contact.html'];
+  const innerPages = ['services.html', 'family-practice.html', 'wellness.html', 'telehealth.html', 'blog.html', 'about.html', 'contact.html'];
   const homeBgTags = home.match(/<img class="bg-slide[\s\S]*?>/g) || [];
   const homeVideoTags = home.match(/<video class="slide-video"[\s\S]*?<\/video>/g) || [];
   assert(homeBgTags.length === 0, 'homepage should not use background photo carousel photos');
@@ -278,6 +278,22 @@ test('homepage hero is a full-bleed video carousel without photo slides', () => 
   assert(css.includes('.hero-video-carousel { position: absolute; inset: 0; }'), 'hero video carousel should fill the whole hero');
   assert(css.includes('.full-video-home .hero-content { position: relative; z-index: 3; }'), 'hero copy should layer over the video');
   assert(js.includes('querySelectorAll(\'[data-slide-video]\')'), 'media carousel should manage multiple slide videos');
+});
+
+test('homepage video carousel stays video-only without photo backplates', () => {
+  const home = read('index.html');
+  const nextHome = read('app/page.tsx');
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const markup of [home, nextHome]) {
+    assert(!markup.includes('--hero-photo'), 'homepage video carousel should not use photo backplates behind videos');
+    assert(!markup.includes('poster="https://images.unsplash.com/'), 'homepage video carousel should not show photo posters over videos');
+  }
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Homepage video-only carousel correction. */'), 'missing homepage video-only carousel correction layer');
+    assert(stylesheet.includes('.hero-video-carousel .media-slide { background-image: none; background-color: #102131; }'), 'video slides should not render background photos');
+    assert(stylesheet.includes('.hero-video-carousel .media-slide::before { display: none; }'), 'video slides should not place photo/gradient layers over videos');
+  }
 });
 
 test('site uses restrained clinical styling and concise inner-page copy', () => {
@@ -488,6 +504,22 @@ test('header uses two-tier contact bar with requested page structure', () => {
     assert(stylesheet.includes('.header-info-strip { background: rgba(247, 252, 255, 0.92); border-bottom: 1px solid rgba(63, 162, 219, 0.13); color: #31475a; display: flex; font-size: 12px; gap: clamp(14px, 3vw, 38px); justify-content: center; min-height: 26px; padding: 4px clamp(20px, 4vw, 64px); }'), 'info strip should be slimmer and fit the requested top bar rhythm');
     assert(stylesheet.includes('.nav-group-menu { background: rgba(255, 255, 255, 0.96); border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 16px; box-shadow: 0 18px 48px rgba(16, 33, 49, 0.14); opacity: 0; padding: 8px; pointer-events: none; position: absolute; top: calc(100% + 10px); transform: translateY(6px); transition: opacity 180ms ease, transform 180ms ease; visibility: hidden; }'), 'dropdown menus should be polished but restrained');
     assert(stylesheet.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.05); }'), 'hero media wash should be exactly 5 percent');
+    assert(stylesheet.includes('.menu-toggle, .nav-toggle { display: none; }'), 'desktop header should not show the menu toggle artifact');
+  }
+});
+
+test('newer inner pages use polished page layouts and no grainy wellness meditation photo', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const wellness = read('wellness.html');
+  const nextWellness = read('app/wellness/page.tsx');
+  assert(!wellness.includes('photo-1518611012118-696072aa579a'), 'wellness page should remove the grainy meditation image');
+  assert(!nextWellness.includes('photo-1518611012118-696072aa579a'), 'Next wellness page should remove the grainy meditation image');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Inner page polish and newer-page optimization. */'), 'missing inner page polish layer');
+    assert(stylesheet.includes('body[data-page="family-practice"] .page-hero, body[data-page="wellness"] .page-hero, body[data-page="telehealth"] .page-hero, body[data-page="blog"] .page-hero { min-height: 340px; padding: clamp(48px, 6vw, 76px) 6vw; }'), 'newer page heroes should be more compact and consistent');
+    assert(stylesheet.includes('body[data-page="blog"] .blog-grid, body[data-page="wellness"] .two-feature, body[data-page="family-practice"] .two-feature, body[data-page="telehealth"] .split-section { max-width: 1120px; margin-inline: auto; }'), 'newer page content grids should be centered and optimized');
+    assert(stylesheet.includes('.page-photo-carousel::after { background: linear-gradient(90deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.62) 48%, rgba(255,255,255,0.34) 100%); }'), 'inner page photo overlays should be cleaner and less chaotic');
   }
 });
 
@@ -563,23 +595,18 @@ test('homepage hero uses vibrant posters, subtle scroll reveals, and corrected C
     'photo-1550831107-1553da8c8464',
     'photo-1512621776951-a57141f2eefd',
     'photo-1576091160550-2173dba999ef',
-    'photo-1506126613408-eca07ce68773',
   ];
   for (const poster of retiredPosters) {
     assert(!home.includes(`poster="https://images.unsplash.com/${poster}`), `homepage still uses old muted poster ${poster}`);
     assert(!nextHome.includes(`poster="https://images.unsplash.com/${poster}`), `Next homepage still uses old muted poster ${poster}`);
   }
   for (const poster of vibrantPosters) {
-    assert(home.includes(poster), `homepage missing vibrant hero poster ${poster}`);
-    assert(nextHome.includes(poster), `Next homepage missing vibrant hero poster ${poster}`);
-    assert(home.includes(`--hero-photo: url(https://images.unsplash.com/${poster}`), `homepage missing visible hero photo backplate ${poster}`);
-    assert(nextHome.includes(`--hero-photo: url(https://images.unsplash.com/${poster}`), `Next homepage missing visible hero photo backplate ${poster}`);
+    assert(!home.includes(`poster="https://images.unsplash.com/${poster}`), `homepage should not use photo poster ${poster}`);
+    assert(!nextHome.includes(`poster="https://images.unsplash.com/${poster}`), `Next homepage should not use photo poster ${poster}`);
   }
   for (const stylesheet of [css, globals]) {
     assert(stylesheet.includes('/* Subtle scroll reveal and hero media polish. */'), 'missing subtle reveal/media polish layer');
-    assert(stylesheet.includes('.hero-video-carousel .media-slide { background-image: var(--hero-photo); background-position: center; background-repeat: no-repeat; background-size: cover; }'), 'hero carousel should show colorful photo backplates behind transparent videos');
-    assert(stylesheet.includes('.hero-video-carousel .media-slide::before { background: linear-gradient(135deg, rgba(63, 162, 219, 0.05), rgba(255, 0, 194, 0.05)); content: ""; inset: 0; pointer-events: none; position: absolute; z-index: 1; }'), 'hero backplates should have a 5 percent brand-tinted glass wash');
-    assert(stylesheet.includes('.hero-video-carousel video { filter: saturate(1.08) contrast(1.02); position: relative; z-index: 2; }'), 'transparent hero videos should sit over the photo backplates with a cleaner finish');
+    assert(stylesheet.includes('.hero-video-carousel video { filter: saturate(1.08) contrast(1.02); position: relative; z-index: 2; }'), 'hero videos should have a cleaner finish without photo layers');
     assert(stylesheet.includes('.reveal { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 720ms cubic-bezier(0.22, 1, 0.36, 1); }'), 'reveal elements should slide and fade subtly');
     assert(stylesheet.includes('.reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }'), 'visible reveal state should settle cleanly');
     assert(stylesheet.includes('.reveal.is-visible .lean-service-grid article, .reveal.is-visible .depth-grid article, .reveal.is-visible .story-cards blockquote, .reveal.is-visible .insight-list a { opacity: 1; transform: translate3d(0, 0, 0); }'), 'scroll reveal should cascade into repeated cards');

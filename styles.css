@@ -5909,6 +5909,52 @@ p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-h
   max-width: 300px;
 }
 
+/* Homepage video-only carousel correction. */
+.hero-video-carousel .media-slide { background-image: none; background-color: #102131; }
+
+.hero-video-carousel .media-slide::before { display: none; }
+
+.menu-toggle, .nav-toggle { display: none; }
+
+/* Inner page polish and newer-page optimization. */
+body[data-page="family-practice"] .page-hero, body[data-page="wellness"] .page-hero, body[data-page="telehealth"] .page-hero, body[data-page="blog"] .page-hero { min-height: 340px; padding: clamp(48px, 6vw, 76px) 6vw; }
+
+body[data-page="blog"] .blog-grid, body[data-page="wellness"] .two-feature, body[data-page="family-practice"] .two-feature, body[data-page="telehealth"] .split-section { max-width: 1120px; margin-inline: auto; }
+
+.page-photo-carousel::after { background: linear-gradient(90deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.62) 48%, rgba(255,255,255,0.34) 100%); }
+
+body[data-page="family-practice"] .two-feature,
+body[data-page="wellness"] .two-feature,
+body[data-page="telehealth"] .split-section,
+body[data-page="blog"] .cards-section {
+  padding-left: 6vw;
+  padding-right: 6vw;
+}
+
+body[data-page="blog"] .blog-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding-top: clamp(38px, 5vw, 64px);
+}
+
+body[data-page="blog"] .blog-grid article,
+body[data-page="wellness"] .two-feature article,
+body[data-page="family-practice"] .two-feature article,
+body[data-page="telehealth"] .process-list article {
+  border-color: rgba(63, 162, 219, 0.18);
+  border-radius: 16px;
+  min-height: 0;
+}
+
+@media (max-width: 760px) {
+  .menu-toggle, .nav-toggle {
+    display: block;
+  }
+
+  body[data-page="blog"] .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1120px) {
   .header-info-strip {
     flex-wrap: wrap;
