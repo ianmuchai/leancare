@@ -541,6 +541,10 @@ test('doctor portrait is intentionally placed on homepage and about page', () =>
     assert(stylesheet.includes('.provider-portrait-frame { aspect-ratio: 0.9; min-height: 520px; }'), 'about doctor portrait should use a taller intentional frame');
     assert(stylesheet.includes('.team-card-photo img, .provider-portrait-frame img { object-fit: contain; object-position: center center; border-radius: 14px; }'), 'doctor portrait should show the full composed photo, not a harsh crop');
     assert(stylesheet.includes('.doctor-profile { grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1fr); }'), 'about profile should give the portrait proper presence');
+    assert(stylesheet.includes('/* Homepage provider card fit correction. */'), 'missing homepage provider card fit correction layer');
+    assert(stylesheet.includes('.story-team-section .provider-team-card { grid-column: 1 / -1; grid-template-columns: minmax(240px, 320px) minmax(0, 1fr); max-width: 980px; margin-inline: auto; }'), 'homepage provider card should span the section instead of squeezing the copy');
+    assert(stylesheet.includes('.story-team-section .team-card-photo { max-width: 320px; min-height: 0; width: 100%; }'), 'homepage provider portrait should be capped to fit the card');
+    assert(stylesheet.includes('.story-team-section .team-card-copy { max-width: 520px; min-width: 0; }'), 'homepage provider copy should have a real readable column');
   }
 });
 

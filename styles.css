@@ -5804,6 +5804,36 @@ p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-h
 
 .hero-video-carousel::after { background: rgba(12, 28, 42, 0.05); }
 
+/* Homepage provider card fit correction. */
+.story-team-section .provider-team-card { grid-column: 1 / -1; grid-template-columns: minmax(240px, 320px) minmax(0, 1fr); max-width: 980px; margin-inline: auto; }
+
+.story-team-section .team-card-photo { max-width: 320px; min-height: 0; width: 100%; }
+
+.story-team-section .team-card-copy { max-width: 520px; min-width: 0; }
+
+.story-team-section .provider-team-card .eyebrow,
+.story-team-section .provider-team-card h2,
+.story-team-section .provider-team-card p,
+.story-team-section .provider-team-card a {
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  .story-team-section .provider-team-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: left;
+  }
+
+  .story-team-section .team-card-photo {
+    max-width: min(100%, 340px);
+  }
+
+  .story-team-section .team-card-copy {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 1120px) {
   .header-info-strip {
     flex-wrap: wrap;
