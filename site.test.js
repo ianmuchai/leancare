@@ -449,16 +449,16 @@ test('regular copy increase reaches inner pages, footer text, and non-bold spans
 test('top menu text is larger and easier to read', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
-  const headerScale = '.site-nav a, .phone-link, .header-actions .button { font-family: var(--font-sans); font-size: clamp(14px, 0.96vw, 15px); font-weight: 600; letter-spacing: 0.005em; line-height: 1.1; }';
+  const headerScale = '.site-nav a, .phone-link, .header-actions .button { font-family: var(--font-sans); font-size: clamp(13px, 0.9vw, 14px); font-weight: 600; letter-spacing: 0; line-height: 1.05; }';
   const headerMobileScale = '.site-nav a { font-size: 20px; }';
   for (const stylesheet of [css, globals]) {
     assert(stylesheet.includes('/* Professional header spacing and font refinement. */'), 'missing professional header refinement layer');
-    assert(stylesheet.includes('.site-header { column-gap: clamp(22px, 3vw, 42px); min-height: 86px; padding-left: clamp(32px, 4.8vw, 72px); padding-right: clamp(32px, 4.8vw, 72px); }'), 'header bar should have stronger outer spacing');
-    assert(stylesheet.includes('.site-nav { gap: clamp(14px, 1.6vw, 28px); }'), 'header nav links should keep comfortable spacing');
+    assert(stylesheet.includes('.site-header { column-gap: clamp(18px, 2.4vw, 34px); min-height: 0; padding-left: 0; padding-right: 0; }'), 'header bar should be slimmer and avoid crowding');
+    assert(stylesheet.includes('.site-nav { gap: clamp(10px, 1.2vw, 22px); }'), 'header nav links should keep controlled spacing');
     assert(stylesheet.includes(headerScale), 'header nav, phone, and CTA should use a cleaner DM Sans treatment');
-    assert(stylesheet.includes('.site-nav a { padding: 11px 14px; }'), 'nav links should have balanced click padding');
-    assert(stylesheet.includes('.header-actions { gap: clamp(16px, 1.7vw, 26px); }'), 'phone and appointment button should breathe');
-    assert(stylesheet.includes('.header-actions .button { min-height: 48px; padding: 13px 22px; }'), 'header CTA should be better proportioned');
+    assert(stylesheet.includes('.site-nav a { padding: 9px 12px; }'), 'nav links should have tighter click padding');
+    assert(stylesheet.includes('.header-actions { gap: clamp(10px, 1.2vw, 18px); }'), 'phone and appointment button should fit the bar');
+    assert(stylesheet.includes('.header-actions .button { min-height: 42px; padding: 11px 18px; }'), 'header CTA should be compact and better proportioned');
     assert(stylesheet.includes(headerMobileScale), 'mobile nav menu should remain large and tappable');
   }
 });
@@ -485,7 +485,7 @@ test('header uses two-tier contact bar with requested page structure', () => {
   assert(fs.existsSync(path.join(root, 'app/blog/page.tsx')), 'Next blog route should exist because Blog is in the header');
   for (const stylesheet of [css, globals]) {
     assert(stylesheet.includes('/* Two-tier clinical header and 5 percent hero transparency. */'), 'missing final two-tier header layer');
-    assert(stylesheet.includes('.header-info-strip { background: rgba(247, 252, 255, 0.92); border-bottom: 1px solid rgba(63, 162, 219, 0.13); color: #31475a; display: flex; font-size: 13px; gap: clamp(18px, 4vw, 52px); justify-content: center; min-height: 30px; padding: 6px clamp(22px, 5vw, 72px); }'), 'info strip should match the requested top bar rhythm');
+    assert(stylesheet.includes('.header-info-strip { background: rgba(247, 252, 255, 0.92); border-bottom: 1px solid rgba(63, 162, 219, 0.13); color: #31475a; display: flex; font-size: 12px; gap: clamp(14px, 3vw, 38px); justify-content: center; min-height: 26px; padding: 4px clamp(20px, 4vw, 64px); }'), 'info strip should be slimmer and fit the requested top bar rhythm');
     assert(stylesheet.includes('.nav-group-menu { background: rgba(255, 255, 255, 0.96); border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 16px; box-shadow: 0 18px 48px rgba(16, 33, 49, 0.14); opacity: 0; padding: 8px; pointer-events: none; position: absolute; top: calc(100% + 10px); transform: translateY(6px); transition: opacity 180ms ease, transform 180ms ease; visibility: hidden; }'), 'dropdown menus should be polished but restrained');
     assert(stylesheet.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.05); }'), 'hero media wash should be exactly 5 percent');
   }
@@ -585,17 +585,18 @@ test('homepage hero uses vibrant posters, subtle scroll reveals, and corrected C
     assert(stylesheet.includes('.reveal.is-visible .lean-service-grid article, .reveal.is-visible .depth-grid article, .reveal.is-visible .story-cards blockquote, .reveal.is-visible .insight-list a { opacity: 1; transform: translate3d(0, 0, 0); }'), 'scroll reveal should cascade into repeated cards');
     assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(246, 251, 255, 0.82)); }'), 'hero copy card should stay readable and not inherit the 5 percent carousel transparency');
     assert(stylesheet.includes('.hero-service-dock { background: rgba(255, 255, 255, 0.82); }'), 'hero dock should stay readable and not inherit the 5 percent carousel transparency');
-    assert(stylesheet.includes('.button, .header-cta, .hero-actions .button-primary { font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }'), 'request appointment buttons should use the corrected DM Sans button font');
+    assert(stylesheet.includes('.button, .header-cta, .hero-actions .button-primary, .header-actions .button { font-family: var(--font-sans); font-size: 14px; font-weight: 650; letter-spacing: 0; line-height: 1; }'), 'buttons should use a cleaner compact DM Sans treatment');
   }
 });
 
 test('homepage hero and first card are shorter and tighter', () => {
   const css = read('styles.css');
   assert(css.includes('/* Shorter homepage hero correction. */'), 'missing shorter homepage hero correction layer');
-  assert(css.includes('.full-video-home { min-height: min(640px, calc(100vh - 96px)); padding: clamp(34px, 5vw, 56px) 6vw; }'), 'homepage hero should be shorter than the previous tall viewport');
-  assert(css.includes('.full-video-home .lean-hero-copy { padding: clamp(24px, 3vw, 38px); }'), 'first homepage card should have reduced padding');
-  assert(css.includes('.full-video-home .lean-hero-copy { max-width: 660px; }'), 'first homepage card should be slightly narrower');
-  assert(css.includes('.hero-service-dock { padding: 16px 18px; }'), 'secondary hero dock should be more compact');
+  assert(css.includes('.full-video-home { min-height: min(560px, calc(100vh - 118px)); padding: clamp(24px, 4vw, 42px) 6vw; }'), 'homepage hero should be shorter and less dominant');
+  assert(css.includes('.full-video-home .lean-hero-copy { padding: clamp(20px, 2.5vw, 30px); }'), 'first homepage card should have tighter padding');
+  assert(css.includes('.full-video-home .lean-hero-copy { max-width: 620px; }'), 'first homepage card should be narrower and calmer');
+  assert(css.includes('.full-video-home .lean-hero-copy h1 { font-size: clamp(27px, 3.2vw, 40px); }'), 'homepage hero title should be reduced to fit the shorter card');
+  assert(css.includes('.hero-service-dock { padding: 13px 16px; }'), 'secondary hero dock should be more compact');
 });
 test('project is migrated to a Vercel-ready Next.js App Router application', () => {
   const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')); 
