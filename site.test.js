@@ -12,8 +12,8 @@ const pages = [
   'about.html',
   'contact.html',
 ];
-const dmSansHref = 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap';
-const dmSansStack = ':root { --font-sans: var(--font-dm-sans, "DM Sans"), "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: var(--font-sans); --font-serif: var(--font-sans); --heading-font: var(--font-dm-sans, "DM Sans"), "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; }';
+const leancareFontHref = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap';
+const leancareFontStack = ':root { --font-sans: "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif; --font-serif: var(--font-display); --heading-font: var(--font-display); }';
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), 'utf8');
@@ -76,21 +76,21 @@ test('css defines professional responsive system and reduced motion path', () =>
   assert(css.includes('prefers-reduced-motion'), 'missing reduced-motion media query');
 });
 
-test('site loads and applies DM Sans as the primary readable font', () => {
+test('site loads and applies original-site inspired Inter and Cormorant typography', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
   const layout = read('app/layout.tsx');
   for (const page of pages) {
     const html = read(page);
-    assert(html.includes(dmSansHref), `${page} should load DM Sans`);
+    assert(html.includes(leancareFontHref), `${page} should load the LeanCare font pairing`);
   }
-  assert(layout.includes(dmSansHref), 'Next layout should load DM Sans');
-  assert(css.includes('/* DM Sans site-wide font system. */'), 'missing DM Sans final font layer');
-  assert(css.includes(dmSansStack), 'static CSS should make DM Sans the primary font token');
-  assert(globals.includes('/* DM Sans site-wide font system. */'), 'Next globals missing DM Sans layer');
-  assert(globals.includes(dmSansStack), 'Next globals should make DM Sans the primary font token');
-  assert(css.includes('body, button, input, textarea, select { font-family: var(--font-sans); }'), 'form controls should inherit DM Sans');
-  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); }'), 'headings should use the DM Sans heading token');
+  assert(layout.includes(leancareFontHref), 'Next layout should load the LeanCare font pairing');
+  assert(css.includes('/* Original LeanCare typography refinement. */'), 'missing original-site inspired font layer');
+  assert(css.includes(leancareFontStack), 'static CSS should use Inter plus Cormorant like the original site');
+  assert(globals.includes('/* Original LeanCare typography refinement. */'), 'Next globals missing original-site inspired font layer');
+  assert(globals.includes(leancareFontStack), 'Next globals should use Inter plus Cormorant like the original site');
+  assert(css.includes('body, button, input, textarea, select { font-family: var(--font-sans); font-weight: 400; }'), 'form controls should inherit the cleaner Inter treatment');
+  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); font-weight: 600; letter-spacing: -0.012em; }'), 'headings should use the calmer Cormorant heading treatment');
 });
 
 test('css uses logo-inspired vibrant brand palette and image composition system', () => {
@@ -428,9 +428,9 @@ test('homepage adds restrained Nola-inspired color and optimized hero card witho
 test('site uses firmer smaller typography across homepage and inner pages', () => {
   const css = read('styles.css');
   assert(css.includes('/* Firm compact typography system. */'), 'missing final compact typography layer');
-  assert(css.includes(dmSansStack), 'font stack should be firm, sans-led, and DM Sans first');
+  assert(css.includes(leancareFontStack), 'font stack should follow the original LeanCare Inter/Cormorant pairing');
   assert(css.includes('body { font-size: 14px; }'), 'base font size should be smaller');
-  assert(css.includes('h1, h2, h3 { font-family: var(--font-sans); font-variation-settings: normal; }'), 'headings should no longer use the soft display font');
+  assert(css.includes('h1, h2, h3 { font-family: var(--heading-font); font-variation-settings: normal; }'), 'headings should use the original-site serif display treatment');
   assert(css.includes('h1 { font-size: clamp(30px, 4.1vw, 58px); }'), 'global h1 scale should be reduced');
   assert(css.includes('h2 { font-size: clamp(22px, 2.5vw, 34px); }'), 'global h2 scale should be reduced');
   assert(css.includes('.full-video-home .lean-hero-copy h1 { font-size: clamp(31px, 4.2vw, 52px); }'), 'homepage hero title should be smaller and firmer');
@@ -442,12 +442,13 @@ test('site uses firmer smaller typography across homepage and inner pages', () =
 test('all page headings use a professional medium-weight heading system', () => {
   const css = read('styles.css');
   assert(css.includes('/* Professional medium-weight heading correction. */'), 'missing professional heading correction layer');
-  assert(css.includes(dmSansStack), 'missing professional DM Sans heading font stack');
-  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); }'), 'heading font should apply globally and to page overrides');
-  assert(css.includes('h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 650; }'), 'main headings should be medium-weight, not heavy bold');
-  assert(css.includes('h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 620; }'), 'section and card headings should be firm but not overly bold');
+  assert(css.includes(leancareFontStack), 'missing professional original-site font stack');
+  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); font-weight: 600; letter-spacing: -0.012em; }'), 'heading font should apply globally and to page overrides');
+  assert(css.includes('h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 600; }'), 'main headings should be elegant medium-weight, not heavy bold');
+  assert(css.includes('h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 600; }'), 'section and card headings should be firm but not overly bold');
   assert(css.includes('.eyebrow, .lean-service-grid span, .depth-grid span, .panel-kicker { font-weight: 700; }'), 'small topic labels should not use extra-bold weights');
-  assert(css.includes('.site-nav a, .button, .phone-link { font-weight: 650; }'), 'navigation and button text should be less heavy');
+  assert(css.includes('.site-nav a, .phone-link { font-weight: 500; }'), 'navigation text should be closer to the original site medium weight');
+  assert(css.includes('.button, .header-cta { font-weight: 600; }'), 'button text should stay readable without feeling heavy');
   assert(!css.includes('font-weight: 840;'), 'final CSS should not keep the homepage title at 840 weight');
 });
 
@@ -476,7 +477,8 @@ test('regular non-bold copy is larger without changing heading or button scale',
     assert(stylesheet.includes(mobileCopyScale), 'mobile regular copy should stay readable at 15px');
   }
   assert(css.includes('font-size: clamp(29px, 3.7vw, 46px);'), 'homepage heading scale should remain unchanged');
-  assert(css.includes('.site-nav a, .button, .phone-link { font-weight: 650; }'), 'button and nav emphasis should remain controlled');
+  assert(css.includes('.site-nav a, .phone-link { font-weight: 500; }'), 'nav emphasis should stay controlled');
+  assert(css.includes('.button, .header-cta { font-weight: 600; }'), 'button emphasis should stay controlled');
 });
 
 test('regular copy increase reaches inner pages, footer text, and non-bold spans', () => {
@@ -496,13 +498,13 @@ test('regular copy increase reaches inner pages, footer text, and non-bold spans
 test('top menu text is larger and easier to read', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
-  const headerScale = '.site-nav a, .phone-link, .header-actions .button { font-family: var(--font-sans); font-size: clamp(13px, 0.9vw, 14px); font-weight: 600; letter-spacing: 0; line-height: 1.05; }';
+  const headerScale = '.site-nav a, .phone-link, .header-actions .button { font-family: var(--font-sans); font-size: clamp(13px, 0.9vw, 14px); font-weight: 500; letter-spacing: 0; line-height: 1.05; }';
   const headerMobileScale = '.site-nav a { font-size: 20px; }';
   for (const stylesheet of [css, globals]) {
     assert(stylesheet.includes('/* Professional header spacing and font refinement. */'), 'missing professional header refinement layer');
     assert(stylesheet.includes('.site-header { column-gap: clamp(18px, 2.4vw, 34px); min-height: 0; padding-left: 0; padding-right: 0; }'), 'header bar should be slimmer and avoid crowding');
     assert(stylesheet.includes('.site-nav { gap: clamp(10px, 1.2vw, 22px); }'), 'header nav links should keep controlled spacing');
-    assert(stylesheet.includes(headerScale), 'header nav, phone, and CTA should use a cleaner DM Sans treatment');
+    assert(stylesheet.includes(headerScale), 'header nav, phone, and CTA should use a cleaner Inter treatment');
     assert(stylesheet.includes('.site-nav a { padding: 9px 12px; }'), 'nav links should have tighter click padding');
     assert(stylesheet.includes('.header-actions { gap: clamp(10px, 1.2vw, 18px); }'), 'phone and appointment button should fit the bar');
     assert(stylesheet.includes('.header-actions .button { min-height: 42px; padding: 11px 18px; }'), 'header CTA should be compact and better proportioned');
@@ -636,6 +638,9 @@ test('homepage service cards hero chips and patient stories are balanced and rea
     assert(stylesheet.includes('.lean-home-services { padding-top: clamp(38px, 4.8vw, 62px); padding-bottom: clamp(38px, 4.8vw, 62px); }'), 'what-we-offer section should reduce dead vertical space');
     assert(stylesheet.includes('.lean-service-grid article { display: grid; grid-template-rows: auto auto 1fr auto; min-height: 260px; padding: clamp(22px, 2.8vw, 34px); }'), 'what-we-offer cards should be balanced and equal height');
     assert(stylesheet.includes('.lean-service-grid article::after { background: linear-gradient(90deg, #3fa2db, #f000be); border-radius: 999px; content: ""; height: 4px; left: 24px; position: absolute; right: 24px; top: 18px; }'), 'service cards should have a restrained brand accent');
+    assert(stylesheet.includes('.lean-service-grid { align-items: stretch; grid-template-columns: repeat(3, minmax(0, 1fr)); }'), 'what-we-offer cards should keep equal columns without overflow');
+    assert(stylesheet.includes('.lean-service-grid h3 { overflow-wrap: anywhere; text-wrap: balance; font-size: clamp(20px, 1.75vw, 24px); line-height: 1.08; }'), 'long behavioural services heading should wrap inside its card');
+    assert(stylesheet.includes('.lean-service-grid p { font-size: clamp(14.5px, 0.98vw, 16px); line-height: 1.55; }'), 'service card body copy should fit neatly');
     assert(stylesheet.includes('.story-team-section { max-width: none; padding: clamp(34px, 4vw, 56px) clamp(18px, 4vw, 48px); }'), 'patient stories section should span wider and reduce vertical spacing');
     assert(stylesheet.includes('.patient-story-rail { margin-inline: auto; max-width: 1320px; width: min(100%, calc(100vw - 36px)); }'), 'patient story rail should extend across the screen more intentionally');
     assert(stylesheet.includes('.story-cards { grid-auto-columns: minmax(300px, 0.34fr); }'), 'patient story cards should be wider and less cramped');
@@ -747,7 +752,7 @@ test('homepage hero uses vibrant posters, subtle scroll reveals, and corrected C
     assert(stylesheet.includes('.reveal.is-visible .lean-service-grid article, .reveal.is-visible .depth-grid article, .reveal.is-visible .story-cards blockquote, .reveal.is-visible .insight-list a { opacity: 1; transform: translate3d(0, 0, 0); }'), 'scroll reveal should cascade into repeated cards');
     assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(246, 251, 255, 0.82)); }'), 'hero copy card should stay readable and not inherit the 5 percent carousel transparency');
     assert(stylesheet.includes('.hero-service-dock { background: rgba(255, 255, 255, 0.82); }'), 'hero dock should stay readable and not inherit the 5 percent carousel transparency');
-    assert(stylesheet.includes('.button, .header-cta, .hero-actions .button-primary, .header-actions .button { font-family: var(--font-sans); font-size: 14px; font-weight: 650; letter-spacing: 0; line-height: 1; }'), 'buttons should use a cleaner compact DM Sans treatment');
+    assert(stylesheet.includes('.button, .header-cta, .hero-actions .button-primary, .header-actions .button { font-family: var(--font-sans); font-size: 14px; font-weight: 600; letter-spacing: 0; line-height: 1; }'), 'buttons should use a cleaner compact Inter treatment');
   }
 });
 
