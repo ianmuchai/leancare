@@ -5657,9 +5657,9 @@ p, li, dd, .hero-note, .hero-lede, .page-hero > p, .section-copy > p, .contact-h
 
 .hero-video-carousel::after { background: rgba(12, 28, 42, 0.14); }
 
-.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(246, 251, 255, 0.48)); }
+.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(246, 251, 255, 0.82)); }
 
-.hero-service-dock { background: rgba(255, 255, 255, 0.42); }
+.hero-service-dock { background: rgba(255, 255, 255, 0.82); }
 
 .button, .header-cta, .hero-actions .button-primary { font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }
 

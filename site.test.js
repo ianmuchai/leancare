@@ -583,8 +583,8 @@ test('homepage hero uses vibrant posters, subtle scroll reveals, and corrected C
     assert(stylesheet.includes('.reveal { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 720ms cubic-bezier(0.22, 1, 0.36, 1); }'), 'reveal elements should slide and fade subtly');
     assert(stylesheet.includes('.reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }'), 'visible reveal state should settle cleanly');
     assert(stylesheet.includes('.reveal.is-visible .lean-service-grid article, .reveal.is-visible .depth-grid article, .reveal.is-visible .story-cards blockquote, .reveal.is-visible .insight-list a { opacity: 1; transform: translate3d(0, 0, 0); }'), 'scroll reveal should cascade into repeated cards');
-    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(246, 251, 255, 0.48)); }'), 'hero copy card should be much more transparent');
-    assert(stylesheet.includes('.hero-service-dock { background: rgba(255, 255, 255, 0.42); }'), 'hero dock should be much more transparent');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(246, 251, 255, 0.82)); }'), 'hero copy card should stay readable and not inherit the 5 percent carousel transparency');
+    assert(stylesheet.includes('.hero-service-dock { background: rgba(255, 255, 255, 0.82); }'), 'hero dock should stay readable and not inherit the 5 percent carousel transparency');
     assert(stylesheet.includes('.button, .header-cta, .hero-actions .button-primary { font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }'), 'request appointment buttons should use the corrected DM Sans button font');
   }
 });
