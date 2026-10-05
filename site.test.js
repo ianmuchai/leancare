@@ -539,6 +539,27 @@ test('header uses two-tier contact bar with requested page structure', () => {
   }
 });
 
+test('top bar matches the screenshot-informed header structure', () => {
+  const nextHeader = read('components/SiteHeader.tsx');
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const staticHeader = read('index.html').match(/<header class="site-header"[\s\S]*?<\/header>/)?.[0] || '';
+  for (const markup of [staticHeader, nextHeader]) {
+    assert(markup.includes('header-info-strip'), 'header should keep the slim top information strip');
+    assert(!markup.includes('class="phone-link"') && !markup.includes('className="phone-link"'), 'main nav row should not include a duplicate phone link');
+    assert(markup.includes('Request appointment'), 'main nav row should keep the appointment CTA');
+  }
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Screenshot-matched top bar correction. */'), 'missing screenshot-matched top bar correction layer');
+    assert(stylesheet.includes('.header-info-strip { align-items: center; background: #f8fcff; border-bottom: 1px solid rgba(63, 162, 219, 0.16); color: #25384b; display: grid; grid-template-columns: minmax(0, max-content) max-content max-content; justify-content: center; min-height: 30px; padding: 0 clamp(28px, 6vw, 96px); }'), 'top info strip should match the screenshot proportions');
+    assert(stylesheet.includes('.header-info-item { align-items: center; display: inline-flex; font-size: 13px; font-weight: 500; gap: 8px; min-width: 0; white-space: nowrap; }'), 'top info text should be compact and readable');
+    assert(stylesheet.includes('.site-header-shell { align-items: center; display: grid; grid-template-columns: minmax(190px, 238px) minmax(0, 1fr) max-content; min-height: 80px; padding: 0 clamp(42px, 6.4vw, 96px); }'), 'main header row should fit logo, centered nav, and CTA like the screenshot');
+    assert(stylesheet.includes('.site-header-shell .site-nav { gap: clamp(24px, 3vw, 44px); justify-content: center; }'), 'nav links should have the wider spacing shown in the screenshot');
+    assert(stylesheet.includes('.site-header-shell .header-actions .button { min-height: 46px; min-width: 224px; padding: 0 25px; }'), 'appointment CTA should match the screenshot scale');
+    assert(stylesheet.includes('.site-header-shell .nav-toggle, .site-header-shell .menu-toggle { display: none !important; }'), 'desktop header should not show the stray toggle dash');
+  }
+});
+
 test('newer inner pages use polished page layouts and no grainy wellness meditation photo', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');

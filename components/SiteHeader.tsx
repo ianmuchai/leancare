@@ -59,7 +59,6 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="header-actions">
-          <a className="phone-link" href="tel:9042019232">904-201-9232</a>
           <Link className="button button-primary header-cta" href="/contact">Request appointment</Link>
         </div>
       </div>
