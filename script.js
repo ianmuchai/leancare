@@ -295,7 +295,7 @@ function initMediaCarousel() {
     button.setAttribute('aria-label', isPlaying ? 'Pause care story video' : 'Play care story video');
   };
 
-  const show = (nextIndex) => {
+  const activateSlide = (nextIndex) => {
     index = (nextIndex + slides.length) % slides.length;
     slides.forEach((slide, slideIndex) => slide.classList.toggle('is-active', slideIndex === index));
     dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
@@ -306,7 +306,58 @@ function initMediaCarousel() {
         video.pause();
       }
     });
+    const nextVideo = slides[(index + 1) % slides.length]?.querySelector('[data-slide-video]');
+    if (nextVideo && nextVideo.preload !== 'metadata') nextVideo.preload = 'metadata';
     syncButton();
+  };
+
+  const waitForPlayableVideo = (video) => {
+    if (!video) return Promise.resolve(true);
+    if (video.dataset.videoFailed === 'true') return Promise.resolve(false);
+    if (video.readyState >= 2) return Promise.resolve(true);
+    video.preload = 'metadata';
+    video.load();
+    return new Promise((resolve) => {
+      let settled = false;
+      const finish = (isReady) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        video.removeEventListener('loadeddata', onReady);
+        video.removeEventListener('canplay', onReady);
+        video.removeEventListener('error', onError);
+        resolve(isReady);
+      };
+      const onReady = () => finish(true);
+      const onError = () => {
+        video.dataset.videoFailed = 'true';
+        finish(false);
+      };
+      const timer = window.setTimeout(() => finish(video.readyState >= 2), 2400);
+      video.addEventListener('loadeddata', onReady, { once: true });
+      video.addEventListener('canplay', onReady, { once: true });
+      video.addEventListener('error', onError, { once: true });
+    });
+  };
+
+  let switchToken = 0;
+  const show = (nextIndex, attempts = 0) => {
+    if (attempts >= slides.length) return;
+    const targetIndex = (nextIndex + slides.length) % slides.length;
+    const nextVideo = slides[targetIndex]?.querySelector('[data-slide-video]');
+    const token = ++switchToken;
+    if (targetIndex !== index && nextVideo) {
+      waitForPlayableVideo(nextVideo).then((isReady) => {
+        if (token !== switchToken) return;
+        if (!isReady || nextVideo.dataset.videoFailed === 'true') {
+          show(targetIndex + 1, attempts + 1);
+          return;
+        }
+        activateSlide(targetIndex);
+      });
+      return;
+    }
+    activateSlide(targetIndex);
   };
 
   dots.forEach((dot) => dot.addEventListener('click', () => show(Number(dot.dataset.mediaDot || 0))));

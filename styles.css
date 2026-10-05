@@ -6000,3 +6000,80 @@ body[data-page="telehealth"] .process-list article {
     visibility: visible;
   }
 }
+
+/* Intentional hero carousel and header fit correction. */
+.hero-video-carousel .media-slide { background-image: none; background-color: #f7fcff; }
+
+.hero-video-carousel video { opacity: 0.78; filter: saturate(1.1) contrast(1.04); position: relative; z-index: 2; }
+
+.hero-video-carousel::after { background: rgba(12, 28, 42, 0.05); }
+
+.nola-inspired-polish .lean-hero-copy { background: rgba(255, 255, 255, 0.96); }
+
+.hero-service-dock { background: rgba(255, 255, 255, 0.9); }
+
+.site-header-shell { display: grid; grid-template-columns: minmax(172px, 210px) minmax(0, 1fr) max-content; }
+
+.site-header-shell {
+  align-items: center;
+  column-gap: clamp(18px, 2.4vw, 36px);
+  min-height: 74px;
+  padding: 0 clamp(28px, 4.4vw, 74px);
+}
+
+.header-info-strip {
+  align-items: center;
+  overflow: hidden;
+  text-align: center;
+}
+
+.site-header-shell .brand-logo {
+  display: block;
+  width: clamp(172px, 14vw, 210px);
+}
+
+.site-header-shell .site-nav {
+  gap: clamp(14px, 1.9vw, 30px);
+  justify-content: center;
+  min-width: 0;
+}
+
+.site-header-shell .site-nav > a,
+.site-header-shell .nav-group-label {
+  font-size: clamp(14px, 0.9vw, 15px);
+  min-height: 40px;
+  padding: 9px 10px;
+}
+
+.site-header-shell .phone-link { display: none; }
+
+.site-header-shell .nav-toggle, .site-header-shell .menu-toggle { display: none; }
+
+.site-header-shell .header-actions {
+  justify-content: end;
+  min-width: 0;
+}
+
+.site-header-shell .header-actions .button {
+  font-size: 14px;
+  min-height: 44px;
+  padding: 12px 22px;
+  white-space: nowrap;
+}
+
+@media (max-width: 980px) {
+  .site-header-shell {
+    grid-template-columns: minmax(154px, 190px) max-content;
+    justify-content: space-between;
+  }
+
+  .site-header-shell .site-nav,
+  .site-header-shell .header-actions {
+    display: none;
+  }
+
+  .site-header-shell .nav-toggle,
+  .site-header-shell .menu-toggle {
+    display: inline-flex;
+  }
+}

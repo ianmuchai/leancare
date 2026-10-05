@@ -291,8 +291,39 @@ test('homepage video carousel stays video-only without photo backplates', () => 
   }
   for (const stylesheet of [css, globals]) {
     assert(stylesheet.includes('/* Homepage video-only carousel correction. */'), 'missing homepage video-only carousel correction layer');
-    assert(stylesheet.includes('.hero-video-carousel .media-slide { background-image: none; background-color: #102131; }'), 'video slides should not render background photos');
+    assert(stylesheet.includes('.hero-video-carousel .media-slide { background-image: none; background-color: #f7fcff; }'), 'video slides should use a light fallback, not a flat blue panel');
     assert(stylesheet.includes('.hero-video-carousel .media-slide::before { display: none; }'), 'video slides should not place photo/gradient layers over videos');
+  }
+});
+
+test('homepage hero carousel avoids shaky blank slides and header has intentional fit', () => {
+  const home = read('index.html');
+  const nextHome = read('app/page.tsx');
+  const js = read('script.js');
+  const runtime = read('public/site-interactions.js');
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const videoSources = [...home.matchAll(/<video class="slide-video"[\s\S]*?<source src="([^"]+)"/g)].map((match) => match[1]);
+  assert(videoSources.length >= 4, 'homepage should still have four video slides');
+  for (const source of videoSources) {
+    assert(!source.includes('uhd_4096_2160'), 'homepage should not use heavyweight 4K video files that load as blank panels');
+    assert(!source.includes('/8375608/'), 'homepage should remove the shaky/heavy video clip');
+  }
+  for (const markup of [home, nextHome]) {
+    assert(markup.includes('preload="metadata"') || markup.includes('preload=\\"metadata\\"'), 'hero videos should preload metadata for smoother switching');
+  }
+  for (const script of [js, runtime]) {
+    assert(script.includes('const waitForPlayableVideo = (video) =>'), 'media carousel should wait for playable video before switching slides');
+    assert(script.includes('video.readyState >= 2'), 'media carousel should check video readiness before changing the active slide');
+    assert(script.includes('nextVideo.dataset.videoFailed === \'true\''), 'media carousel should skip failed videos instead of showing a blank slide');
+  }
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Intentional hero carousel and header fit correction. */'), 'missing final intentional hero/header correction layer');
+    assert(stylesheet.includes('.hero-video-carousel video { opacity: 0.78; filter: saturate(1.1) contrast(1.04); position: relative; z-index: 2; }'), 'hero videos should be visible enough to read as video, not a tinted blank panel');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: rgba(255, 255, 255, 0.96); }'), 'hero card should be more opaque and readable');
+    assert(stylesheet.includes('.site-header-shell { display: grid; grid-template-columns: minmax(172px, 210px) minmax(0, 1fr) max-content; }'), 'header shell should use a stable three-column grid');
+    assert(stylesheet.includes('.site-header-shell .phone-link { display: none; }'), 'main header should not duplicate the phone number already shown in the info strip');
+    assert(stylesheet.includes('.site-header-shell .nav-toggle, .site-header-shell .menu-toggle { display: none; }'), 'desktop header should not show a menu-toggle artifact');
   }
 });
 
@@ -423,7 +454,7 @@ test('all page headings use a professional medium-weight heading system', () => 
 test('site uses clean card surfaces, readable body text, and softer hero video', () => {
   const css = read('styles.css');
   assert(css.includes('/* Clean card surfaces and readable copy correction. */'), 'missing clean card/readable copy layer');
-  assert(css.includes('.hero-video-carousel video { opacity: 0.42; }'), 'hero video should be very transparent');
+  assert(css.includes('.hero-video-carousel video { opacity: 0.78; filter: saturate(1.1) contrast(1.04); position: relative; z-index: 2; }'), 'hero video should be visible and polished');
   assert(css.includes('.hero-video-carousel::after { background: rgba(12, 28, 42, 0.05); }'), 'hero video overlay should be a 5 percent wash');
   assert(css.includes('.lean-service-grid article, .depth-grid article, .team-card, .story-cards blockquote, .insight-list a, .lean-visit-list span, .hero-service-dock, .nola-inspired-polish .lean-hero-copy, .feature-grid article, .detail-grid article, .cards-section article, .values-row article, .appointment-grid article, .service-panel, .contact-card { background: rgba(255, 255, 255, 0.94); }'), 'cards should use clean solid surfaces');
   assert(css.includes('.patient-story-rail { background: #102131; }'), 'patient story section should avoid decorative gradients');
