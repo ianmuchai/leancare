@@ -591,6 +591,40 @@ test('pages use cleaner uncluttered rhythm across homepage and inner pages', () 
   }
 });
 
+test('header CTA active tabs visit strip and testimonials use the refined UI pass', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Refined header tabs, CTA position, visit strip, and testimonials. */'), 'missing refined header/testimonial correction layer');
+    assert(stylesheet.includes('.site-header-shell { padding: 0 clamp(24px, 3.6vw, 54px) 0 clamp(42px, 6.4vw, 96px); }'), 'header appointment CTA should move further right');
+    assert(stylesheet.includes('.site-header-shell .header-actions { justify-self: end; transform: translateX(clamp(8px, 1.6vw, 22px)); }'), 'header CTA should be anchored further to the right edge');
+    assert(stylesheet.includes('.site-header-shell .site-nav > a.is-active, .site-header-shell .nav-group-label.is-active { background: rgba(255, 255, 255, 0.82); border-radius: 10px; box-shadow: inset 0 0 0 1px rgba(63, 162, 219, 0.34); color: #126493; }'), 'active nav state should be a clean rectangular chip, not a wide pill');
+    assert(stylesheet.includes('.lean-visit-strip { background: #f7fbff; border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 22px; color: #102131; }'), 'bottom hours/location section should use a cleaner clinical card');
+    assert(stylesheet.includes('.lean-visit-strip h2 { font-size: clamp(24px, 2.8vw, 36px); font-weight: 620; letter-spacing: 0; line-height: 1.08; }'), 'visit strip heading should be corrected and readable');
+    assert(stylesheet.includes('.lean-visit-list span { align-items: center; background: #ffffff; border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 14px; color: #25384b; display: flex; font-size: clamp(14px, 1vw, 16px); font-weight: 600; gap: 10px; }'), 'visit strip details should use clean readable cards');
+    assert(stylesheet.includes('.patient-story-rail { background: #ffffff; border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 24px; color: #102131; }'), 'testimonial section should no longer use the disliked dark blank styling');
+    assert(stylesheet.includes('.story-team-section .story-cards blockquote { opacity: 1; transform: none; }'), 'testimonial cards should remain visible even before reveal effects run');
+    assert(stylesheet.includes('.story-cards { display: grid; grid-auto-columns: minmax(260px, 1fr); grid-auto-flow: column; overflow-x: auto; }'), 'testimonials should use a clean horizontal card rail');
+  }
+});
+
+test('information strip scrolls away while compact nav remains sticky and minimal', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Minimal sticky nav and scrolling info bar refinement. */'), 'missing sticky nav/info bar refinement layer');
+    assert(stylesheet.includes('.site-header { position: static; }'), 'full header should scroll normally so the info bar is not sticky');
+    assert(stylesheet.includes('.site-header-shell { position: sticky; top: 0; z-index: 80; }'), 'main top bar should remain sticky while scrolling');
+    assert(stylesheet.includes('.header-info-strip { background: #f8fcff; min-height: 28px; padding: 4px clamp(22px, 5vw, 76px); }'), 'information bar should be smaller and minimal');
+    assert(stylesheet.includes('.info-icon { height: 20px; width: 20px; }'), 'information bar icons should be reduced to a decent size');
+    assert(stylesheet.includes('.info-icon svg { height: 12px; width: 12px; stroke-width: 2; }'), 'information bar svg icons should be smaller');
+    assert(stylesheet.includes('.site-header-shell .site-nav { gap: clamp(30px, 4vw, 58px); }'), 'top nav tabs should have better spacing');
+    assert(stylesheet.includes('.site-header-shell .site-nav > a, .site-header-shell .nav-group-label { font-weight: 500; }'), 'top nav text should be less bold');
+    assert(stylesheet.includes('.site-header-shell .header-actions .button { font-size: 13px; min-height: 38px; min-width: 174px; padding: 0 18px; }'), 'request appointment button should be smaller');
+    assert(stylesheet.includes('.header-info-item { font-size: 12px; font-weight: 500; min-height: 26px; padding: 2px 10px 2px 3px; }'), 'info bar text should be compact and less bold');
+  }
+});
+
 test('newer inner pages use polished page layouts and no grainy wellness meditation photo', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
