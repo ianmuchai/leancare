@@ -627,6 +627,22 @@ test('information strip scrolls away while compact nav remains sticky and minima
   }
 });
 
+test('homepage service cards hero chips and patient stories are balanced and readable', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Balanced offer cards, hero chips, and patient story rail. */'), 'missing balanced homepage cards/story rail layer');
+    assert(stylesheet.includes('.hero-access-list span { font-size: clamp(13.5px, 0.95vw, 15px); font-weight: 600; line-height: 1.22; min-height: 42px; }'), 'hero support chips should be more readable');
+    assert(stylesheet.includes('.lean-home-services { padding-top: clamp(38px, 4.8vw, 62px); padding-bottom: clamp(38px, 4.8vw, 62px); }'), 'what-we-offer section should reduce dead vertical space');
+    assert(stylesheet.includes('.lean-service-grid article { display: grid; grid-template-rows: auto auto 1fr auto; min-height: 260px; padding: clamp(22px, 2.8vw, 34px); }'), 'what-we-offer cards should be balanced and equal height');
+    assert(stylesheet.includes('.lean-service-grid article::after { background: linear-gradient(90deg, #3fa2db, #f000be); border-radius: 999px; content: ""; height: 4px; left: 24px; position: absolute; right: 24px; top: 18px; }'), 'service cards should have a restrained brand accent');
+    assert(stylesheet.includes('.story-team-section { max-width: none; padding: clamp(34px, 4vw, 56px) clamp(18px, 4vw, 48px); }'), 'patient stories section should span wider and reduce vertical spacing');
+    assert(stylesheet.includes('.patient-story-rail { margin-inline: auto; max-width: 1320px; width: min(100%, calc(100vw - 36px)); }'), 'patient story rail should extend across the screen more intentionally');
+    assert(stylesheet.includes('.story-cards { grid-auto-columns: minmax(300px, 0.34fr); }'), 'patient story cards should be wider and less cramped');
+    assert(stylesheet.includes('.story-cards blockquote { min-height: 178px; padding: clamp(18px, 2vw, 24px); }'), 'patient story cards should be shorter and less vertically padded');
+  }
+});
+
 test('newer inner pages use polished page layouts and no grainy wellness meditation photo', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
