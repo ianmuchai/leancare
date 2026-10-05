@@ -12,8 +12,8 @@ const pages = [
   'about.html',
   'contact.html',
 ];
-const leancareFontHref = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap';
-const leancareFontStack = ':root { --font-sans: "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif; --font-serif: var(--font-display); --heading-font: var(--font-display); }';
+const leancareFontHref = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+const leancareFontStack = ':root { --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --font-display: var(--font-sans); --font-serif: var(--font-sans); --heading-font: var(--font-sans); }';
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), 'utf8');
@@ -76,21 +76,21 @@ test('css defines professional responsive system and reduced motion path', () =>
   assert(css.includes('prefers-reduced-motion'), 'missing reduced-motion media query');
 });
 
-test('site loads and applies original-site inspired Inter and Cormorant typography', () => {
+test('site loads and applies Tablecraft-style compact Inter typography', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
   const layout = read('app/layout.tsx');
   for (const page of pages) {
     const html = read(page);
-    assert(html.includes(leancareFontHref), `${page} should load the LeanCare font pairing`);
+    assert(html.includes(leancareFontHref), `${page} should load the compact Tablecraft-style font`);
   }
-  assert(layout.includes(leancareFontHref), 'Next layout should load the LeanCare font pairing');
-  assert(css.includes('/* Original LeanCare typography refinement. */'), 'missing original-site inspired font layer');
-  assert(css.includes(leancareFontStack), 'static CSS should use Inter plus Cormorant like the original site');
-  assert(globals.includes('/* Original LeanCare typography refinement. */'), 'Next globals missing original-site inspired font layer');
-  assert(globals.includes(leancareFontStack), 'Next globals should use Inter plus Cormorant like the original site');
+  assert(layout.includes(leancareFontHref), 'Next layout should load the compact Tablecraft-style font');
+  assert(css.includes('/* Tablecraft-style compact typography refinement. */'), 'missing Tablecraft-style font layer');
+  assert(css.includes(leancareFontStack), 'static CSS should use the compact Inter/system stack');
+  assert(globals.includes('/* Tablecraft-style compact typography refinement. */'), 'Next globals missing Tablecraft-style font layer');
+  assert(globals.includes(leancareFontStack), 'Next globals should use the compact Inter/system stack');
   assert(css.includes('body, button, input, textarea, select { font-family: var(--font-sans); font-weight: 400; }'), 'form controls should inherit the cleaner Inter treatment');
-  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); font-weight: 600; letter-spacing: -0.012em; }'), 'headings should use the calmer Cormorant heading treatment');
+  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); font-weight: 500; letter-spacing: 0; }'), 'headings should use the compact sans heading treatment');
 });
 
 test('css uses logo-inspired vibrant brand palette and image composition system', () => {
@@ -387,7 +387,6 @@ test('homepage restores original-site depth in a cleaner benchmarked structure',
     'What We Offer',
     'Dedicated to your well-being',
     'What sets us apart',
-    'Patient stories',
     'Our team loves what they do',
     'Hours & location',
     'Health tips & insights',
@@ -402,7 +401,8 @@ test('homepage restores original-site depth in a cleaner benchmarked structure',
   assert(html.includes('mental-wellness'), 'homepage should borrow the benchmark mental wellness cue');
   assert(html.includes('chronic-care'), 'homepage should borrow the benchmark chronic care cue');
   assert(css.includes('.depth-grid'), 'missing richer homepage depth grid styling');
-  assert(css.includes('.patient-story-rail'), 'missing patient story rail styling');
+  assert(!html.includes('Patient stories'), 'homepage should remove the patient stories section');
+  assert(html.includes('aria-label="Provider team"'), 'provider section should remain after removing patient stories');
   assert(css.includes('.insight-strip'), 'missing health insight strip styling');
 });
 
@@ -428,9 +428,9 @@ test('homepage adds restrained Nola-inspired color and optimized hero card witho
 test('site uses firmer smaller typography across homepage and inner pages', () => {
   const css = read('styles.css');
   assert(css.includes('/* Firm compact typography system. */'), 'missing final compact typography layer');
-  assert(css.includes(leancareFontStack), 'font stack should follow the original LeanCare Inter/Cormorant pairing');
+  assert(css.includes(leancareFontStack), 'font stack should follow the compact Tablecraft-style Inter pairing');
   assert(css.includes('body { font-size: 14px; }'), 'base font size should be smaller');
-  assert(css.includes('h1, h2, h3 { font-family: var(--heading-font); font-variation-settings: normal; }'), 'headings should use the original-site serif display treatment');
+  assert(css.includes('h1, h2, h3 { font-family: var(--heading-font); font-variation-settings: normal; }'), 'headings should use the compact sans display treatment');
   assert(css.includes('h1 { font-size: clamp(30px, 4.1vw, 58px); }'), 'global h1 scale should be reduced');
   assert(css.includes('h2 { font-size: clamp(22px, 2.5vw, 34px); }'), 'global h2 scale should be reduced');
   assert(css.includes('.full-video-home .lean-hero-copy h1 { font-size: clamp(31px, 4.2vw, 52px); }'), 'homepage hero title should be smaller and firmer');
@@ -442,14 +442,33 @@ test('site uses firmer smaller typography across homepage and inner pages', () =
 test('all page headings use a professional medium-weight heading system', () => {
   const css = read('styles.css');
   assert(css.includes('/* Professional medium-weight heading correction. */'), 'missing professional heading correction layer');
-  assert(css.includes(leancareFontStack), 'missing professional original-site font stack');
-  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); font-weight: 600; letter-spacing: -0.012em; }'), 'heading font should apply globally and to page overrides');
-  assert(css.includes('h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 600; }'), 'main headings should be elegant medium-weight, not heavy bold');
-  assert(css.includes('h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 600; }'), 'section and card headings should be firm but not overly bold');
+  assert(css.includes(leancareFontStack), 'missing professional compact font stack');
+  assert(css.includes('h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); font-weight: 500; letter-spacing: 0; }'), 'heading font should apply globally and to page overrides');
+  assert(css.includes('h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 500; }'), 'main headings should use medium Tablecraft-style weight, not bold');
+  assert(css.includes('h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 500; }'), 'section and card headings should not be bold');
   assert(css.includes('.eyebrow, .lean-service-grid span, .depth-grid span, .panel-kicker { font-weight: 700; }'), 'small topic labels should not use extra-bold weights');
   assert(css.includes('.site-nav a, .phone-link { font-weight: 500; }'), 'navigation text should be closer to the original site medium weight');
   assert(css.includes('.button, .header-cta { font-weight: 600; }'), 'button text should stay readable without feeling heavy');
   assert(!css.includes('font-weight: 840;'), 'final CSS should not keep the homepage title at 840 weight');
+});
+
+test('homepage sections below hero use Tablecraft-style lighter typography instead of bold blocks', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  const tablecraftPostHeroLayer = '/* Tablecraft-style post-hero typography cleanup. */';
+  const postHeroSectionScale = '.lean-home-services h2, .depth-section h2, .story-team-section h2, .lean-visit-strip h2, .insight-strip h2 { font-family: var(--font-sans); font-size: clamp(21px, 2.2vw, 31px); font-weight: 500; letter-spacing: 0; line-height: 1.12; }';
+  const postHeroCardScale = '.lean-service-grid h3, .depth-grid strong, .team-card h2, .insight-list a { font-family: var(--font-sans); font-size: clamp(16px, 1.22vw, 20px); font-weight: 500; letter-spacing: 0; line-height: 1.22; }';
+  const postHeroCopyScale = '.lean-home-services p, .depth-section p, .story-team-section p, .lean-visit-strip p, .insight-strip p, .story-cards blockquote p { font-size: clamp(14px, 0.98vw, 15.5px); font-weight: 400; line-height: 1.58; }';
+  const postHeroStrongReset = '.depth-section strong, .story-team-section strong, .lean-visit-strip strong, .insight-strip strong, .hero-service-dock strong { font-weight: 500; }';
+  const postHeroLabelReset = '.lean-home-services .eyebrow, .depth-section .eyebrow, .story-team-section .eyebrow, .lean-visit-strip .eyebrow, .insight-strip .eyebrow, .lean-service-grid span, .depth-grid span { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; }';
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes(tablecraftPostHeroLayer), 'missing Tablecraft-style post-hero typography cleanup layer');
+    assert(stylesheet.includes(postHeroSectionScale), 'post-hero section headings should be compact and medium weight');
+    assert(stylesheet.includes(postHeroCardScale), 'post-hero card headings should no longer be bold blocks');
+    assert(stylesheet.includes(postHeroCopyScale), 'post-hero copy should be regular, compact, and readable');
+    assert(stylesheet.includes(postHeroStrongReset), 'post-hero strong text should not render as heavy bold');
+    assert(stylesheet.includes(postHeroLabelReset), 'post-hero labels should use restrained Tablecraft-like sizing');
+  }
 });
 
 test('site uses clean card surfaces, readable body text, and softer hero video', () => {
@@ -629,7 +648,7 @@ test('information strip scrolls away while compact nav remains sticky and minima
   }
 });
 
-test('homepage service cards hero chips and patient stories are balanced and readable', () => {
+test('homepage service cards hero chips and provider section are balanced and readable', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
   for (const stylesheet of [css, globals]) {
@@ -641,10 +660,8 @@ test('homepage service cards hero chips and patient stories are balanced and rea
     assert(stylesheet.includes('.lean-service-grid { align-items: stretch; grid-template-columns: repeat(3, minmax(0, 1fr)); }'), 'what-we-offer cards should keep equal columns without overflow');
     assert(stylesheet.includes('.lean-service-grid h3 { overflow-wrap: anywhere; text-wrap: balance; font-size: clamp(20px, 1.75vw, 24px); line-height: 1.08; }'), 'long behavioural services heading should wrap inside its card');
     assert(stylesheet.includes('.lean-service-grid p { font-size: clamp(14.5px, 0.98vw, 16px); line-height: 1.55; }'), 'service card body copy should fit neatly');
-    assert(stylesheet.includes('.story-team-section { max-width: none; padding: clamp(34px, 4vw, 56px) clamp(18px, 4vw, 48px); }'), 'patient stories section should span wider and reduce vertical spacing');
-    assert(stylesheet.includes('.patient-story-rail { margin-inline: auto; max-width: 1320px; width: min(100%, calc(100vw - 36px)); }'), 'patient story rail should extend across the screen more intentionally');
-    assert(stylesheet.includes('.story-cards { grid-auto-columns: minmax(300px, 0.34fr); }'), 'patient story cards should be wider and less cramped');
-    assert(stylesheet.includes('.story-cards blockquote { min-height: 178px; padding: clamp(18px, 2vw, 24px); }'), 'patient story cards should be shorter and less vertically padded');
+    assert(stylesheet.includes('.story-team-section { max-width: none; padding: clamp(34px, 4vw, 56px) clamp(18px, 4vw, 48px); }'), 'provider section should span wider and reduce vertical spacing');
+    assert(stylesheet.includes('.story-team-section .provider-team-card { grid-column: 1 / -1; grid-template-columns: minmax(240px, 320px) minmax(0, 1fr); max-width: 980px; margin-inline: auto; }'), 'provider card should remain balanced after patient stories are removed');
   }
 });
 
@@ -663,29 +680,27 @@ test('newer inner pages use polished page layouts and no grainy wellness meditat
   }
 });
 
-test('homepage uses actual Leancare patient testimonials from the original site', () => {
+test('homepage removes patient stories while keeping the provider card', () => {
   const html = read('index.html');
   const nextHome = read('app/page.tsx');
   const css = read('styles.css');
-  const testimonials = [
-    ['James Patterson', 'Finally a clinic that treats me like a person'],
-    ['Latoya Brooks', 'They treated my whole family with such kindness'],
-    ['Kevin Okafor', 'Compassion and integrity are not just words'],
-    ['Rosa Medina', 'Warm, professional, and unhurried'],
-    ['Anthony Guerrero', 'I did my visit from work over video'],
-    ['Priya Sharma', 'The weight-management plan was built around my life'],
-    ['Marcus Thornton', 'Same-day appointment, no long wait'],
-    ['Danielle Reeves', 'Dr. Binyanya actually listens'],
+  const removedStoryText = [
+    'Patient stories',
+    'patient-story-rail',
+    'story-cards',
+    'James Patterson',
+    'Danielle Reeves',
+    'Finally a clinic that treats me like a person',
+    'Dr. Binyanya actually listens',
   ];
-  for (const [name, excerpt] of testimonials) {
-    assert(html.includes(name), `homepage missing original testimonial name: ${name}`);
-    assert(html.includes(excerpt), `homepage missing original testimonial copy excerpt: ${excerpt}`);
-    assert(nextHome.includes(name), `Next homepage missing original testimonial name: ${name}`);
-    assert(nextHome.includes(excerpt), `Next homepage missing original testimonial copy excerpt: ${excerpt}`);
+  for (const text of removedStoryText) {
+    assert(!html.includes(text), `homepage should remove patient story text: ${text}`);
+    assert(!nextHome.includes(text), `Next homepage should remove patient story text: ${text}`);
   }
-  assert((html.match(/<blockquote>/g) || []).length >= 8, 'homepage should include the full set of original testimonials');
-  assert(css.includes('.story-cards blockquote cite'), 'testimonial names and patient types should be styled');
-  assert(css.includes('.story-cards blockquote p'), 'testimonial copy should have dedicated styling');
+  assert((html.match(/<blockquote>/g) || []).length === 0, 'homepage should not render testimonial blockquotes');
+  assert(html.includes('aria-label="Provider team"'), 'provider card section should remain');
+  assert(nextHome.includes('Provider team'), 'Next provider card section should remain');
+  assert(css.includes('.story-team-section .provider-team-card'), 'provider card styling should remain');
 });
 
 test('doctor portrait is intentionally placed on homepage and about page', () => {

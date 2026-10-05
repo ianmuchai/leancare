@@ -6539,18 +6539,18 @@ body[data-page="home"] main > section:not(.home-hero) { padding-block: clamp(54p
   }
 }
 
-/* Original LeanCare typography refinement. */
-:root { --font-sans: "Inter", "Aptos", "Helvetica Neue", Arial, sans-serif; --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif; --font-serif: var(--font-display); --heading-font: var(--font-display); }
+/* Tablecraft-style compact typography refinement. */
+:root { --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --font-display: var(--font-sans); --font-serif: var(--font-sans); --heading-font: var(--font-sans); }
 
 body, button, input, textarea, select { font-family: var(--font-sans); font-weight: 400; }
 
 h1, h2, h3 { font-family: var(--heading-font); font-variation-settings: normal; }
 
-h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); font-weight: 600; letter-spacing: -0.012em; }
+h1, h2, h3, h4, h5, h6, .page-hero h1, .contact-hero h1, .full-video-home .lean-hero-copy h1 { font-family: var(--heading-font); font-weight: 500; letter-spacing: 0; }
 
-h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 600; }
+h1, .full-video-home .lean-hero-copy h1, .page-hero h1, .contact-hero h1 { font-weight: 500; }
 
-h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 600; }
+h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-strip h2, .depth-grid-head h2 { font-weight: 500; }
 
 .site-nav a, .phone-link { font-weight: 500; }
 
@@ -6580,4 +6580,20 @@ h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-st
   .lean-service-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Tablecraft-style post-hero typography cleanup. */
+.lean-home-services h2, .depth-section h2, .story-team-section h2, .lean-visit-strip h2, .insight-strip h2 { font-family: var(--font-sans); font-size: clamp(21px, 2.2vw, 31px); font-weight: 500; letter-spacing: 0; line-height: 1.12; }
+
+.lean-service-grid h3, .depth-grid strong, .team-card h2, .insight-list a { font-family: var(--font-sans); font-size: clamp(16px, 1.22vw, 20px); font-weight: 500; letter-spacing: 0; line-height: 1.22; }
+
+.lean-home-services p, .depth-section p, .story-team-section p, .lean-visit-strip p, .insight-strip p, .story-cards blockquote p { font-size: clamp(14px, 0.98vw, 15.5px); font-weight: 400; line-height: 1.58; }
+
+.depth-section strong, .story-team-section strong, .lean-visit-strip strong, .insight-strip strong, .hero-service-dock strong { font-weight: 500; }
+
+.lean-home-services .eyebrow, .depth-section .eyebrow, .story-team-section .eyebrow, .lean-visit-strip .eyebrow, .insight-strip .eyebrow, .lean-service-grid span, .depth-grid span { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; }
+
+.story-team-section {
+  padding-top: clamp(26px, 3.4vw, 44px);
+  padding-bottom: clamp(30px, 3.8vw, 52px);
 }
