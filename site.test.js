@@ -613,8 +613,10 @@ test('information strip scrolls away while compact nav remains sticky and minima
   const globals = read('app/globals.css');
   for (const stylesheet of [css, globals]) {
     assert(stylesheet.includes('/* Minimal sticky nav and scrolling info bar refinement. */'), 'missing sticky nav/info bar refinement layer');
-    assert(stylesheet.includes('.site-header { position: static; }'), 'full header should scroll normally so the info bar is not sticky');
-    assert(stylesheet.includes('.site-header-shell { position: sticky; top: 0; z-index: 80; }'), 'main top bar should remain sticky while scrolling');
+    assert(stylesheet.includes('.site-header { position: sticky; top: -36px; z-index: 1000; }'), 'header should use a negative sticky offset so the info strip scrolls away and the nav stays fixed');
+    assert(stylesheet.includes('.site-header-shell { position: relative; top: auto; z-index: 2; }'), 'main nav shell should sit above the info strip inside the sticky header');
+    assert(stylesheet.includes('.home-hero, .full-video-home { position: relative; z-index: 0; }'), 'hero should stay beneath the sticky navigation layer');
+    assert(stylesheet.includes('.hero-video-carousel { z-index: 0; }'), 'hero carousel should never stack over the header');
     assert(stylesheet.includes('.header-info-strip { background: #f8fcff; min-height: 28px; padding: 4px clamp(22px, 5vw, 76px); }'), 'information bar should be smaller and minimal');
     assert(stylesheet.includes('.info-icon { height: 20px; width: 20px; }'), 'information bar icons should be reduced to a decent size');
     assert(stylesheet.includes('.info-icon svg { height: 12px; width: 12px; stroke-width: 2; }'), 'information bar svg icons should be smaller');

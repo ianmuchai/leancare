@@ -6429,3 +6429,26 @@ body[data-page="home"] main > section:not(.home-hero) { padding-block: clamp(54p
     transform: none;
   }
 }
+
+/* Correct sticky header stacking over hero carousel. */
+.site-header { position: sticky; top: -36px; z-index: 1000; }
+
+.site-header {
+  isolation: isolate;
+}
+
+.site-header-shell { position: relative; top: auto; z-index: 2; }
+
+.home-hero, .full-video-home { position: relative; z-index: 0; }
+
+.hero-video-carousel { z-index: 0; }
+
+.hero-video-carousel .media-controls {
+  z-index: 4;
+}
+
+@media (max-width: 980px) {
+  .site-header {
+    top: 0;
+  }
+}
