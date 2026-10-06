@@ -593,10 +593,10 @@ test('site-wide regular text has larger readable spacing and icon-only WhatsApp 
     assert(stylesheet.includes('h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eyebrow { word-spacing: normal; }'), 'bold/headline/UI text should not inherit loose word spacing');
     assert(stylesheet.includes('.whatsapp-float { align-items: center; background: #25d366; border: 1px solid rgba(255, 255, 255, 0.82); border-radius: 999px; bottom: clamp(18px, 2.4vw, 28px); box-shadow: 0 18px 38px rgba(18, 140, 75, 0.26); color: #ffffff; display: inline-flex; height: 50px; justify-content: center; position: fixed; right: clamp(18px, 2.4vw, 28px); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease; width: 50px; z-index: 1200; }'), 'WhatsApp floating button should be styled as a polished icon-only control');
     assert(stylesheet.includes('.whatsapp-float svg { display: block; fill: currentColor; height: 29px; stroke: none; width: 29px; }'), 'WhatsApp button should show a clean filled icon');
-    assert(stylesheet.includes('/* WhatsApp icon and translucent top bar refinement. */'), 'missing final WhatsApp/top-bar refinement layer');
-    assert(stylesheet.includes('.site-header { background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(18px); }'), 'site header should be more transparent');
-    assert(stylesheet.includes('.header-info-strip { background: rgba(248, 252, 255, 0.62); backdrop-filter: blur(14px); }'), 'top info strip should be more transparent');
-    assert(stylesheet.includes('.site-header-shell { background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(18px); box-shadow: 0 12px 34px rgba(16, 33, 49, 0.08); }'), 'main nav shell should be translucent but readable');
+    assert(stylesheet.includes('/* WhatsApp icon and glass top bar refinement. */'), 'missing final WhatsApp/top-bar glass refinement layer');
+    assert(stylesheet.includes('.site-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: saturate(145%) blur(18px); box-shadow: 0 10px 34px rgba(16, 33, 49, 0.08); }'), 'site header should use a deliberate glass surface, not plain transparency');
+    assert(stylesheet.includes('.header-info-strip { background: linear-gradient(90deg, rgba(248, 252, 255, 0.92), rgba(255, 255, 255, 0.82)); backdrop-filter: saturate(145%) blur(14px); border-bottom: 1px solid rgba(63, 162, 219, 0.12); }'), 'top info strip should use a polished glass treatment');
+    assert(stylesheet.includes('.site-header-shell { background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.84)); backdrop-filter: saturate(150%) blur(20px); border-bottom: 1px solid rgba(63, 162, 219, 0.10); box-shadow: 0 14px 34px rgba(16, 33, 49, 0.10); }'), 'main nav shell should read as glass while staying readable');
   }
 });
 
