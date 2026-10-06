@@ -6597,3 +6597,11 @@ h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-st
   padding-top: clamp(26px, 3.4vw, 44px);
   padding-bottom: clamp(30px, 3.8vw, 52px);
 }
+
+/* Linked homepage hero care paths. */
+.hero-access-list a { align-items: center; background: #f7fbff; border: 1px solid rgba(63, 162, 219, 0.18); border-radius: 8px; color: #203442; display: inline-flex; font-size: clamp(13.5px, 0.95vw, 15px); font-weight: 600; gap: 8px; justify-content: flex-start; line-height: 1.22; min-height: 42px; padding: 9px 11px; text-decoration: none; transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease; }
+.hero-access-list a::before { background: var(--logo-magenta); border-radius: 999px; content: ""; flex: 0 0 auto; height: 7px; width: 7px; }
+.hero-access-list a:hover, .hero-access-list a:focus-visible { background: #ffffff; border-color: rgba(240, 0, 190, 0.36); color: #126493; transform: translateY(-1px); }
+.hero-access-list a:focus-visible { outline: 2px solid rgba(63, 162, 219, 0.42); outline-offset: 3px; }
+.nola-inspired-polish .hero-access-list { margin-top: 4px; }
+.nola-inspired-polish .lean-hero-copy { gap: 15px; }

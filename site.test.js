@@ -151,6 +151,60 @@ test('home page keeps concise media and appointment paths without button clutter
   assert(!html.includes('data-spotlight-rail'), 'homepage should remove duplicate spotlight rail controls');
 });
 
+test('homepage hero card uses direct service links and inner heroes expose appointment CTAs', () => {
+  const home = read('index.html');
+  const nextHome = read('app/page.tsx');
+  const removedLine = 'Primary care, psychiatric support, chronic care, telehealth, weight management, and vitamin injections under one attentive team.';
+  for (const markup of [home, nextHome]) {
+    assert(!markup.includes(removedLine), 'homepage hero should remove the redundant service sentence');
+    assert(!markup.includes('Transparent visit path'), 'homepage hero should replace the transparent visit chip');
+    assert(markup.includes('Chronic illness management'), 'homepage hero should include the chronic illness management chip');
+  }
+
+  const staticHeroMatch = home.match(/<div class="hero-content reveal lean-hero-copy[\s\S]*?<\/div>\s*<div class="hero-service-dock/);
+  assert(staticHeroMatch, 'static homepage hero card missing');
+  const staticHero = staticHeroMatch[0];
+  for (const expected of [
+    '<a href="services.html#primary-care">Whole-family primary care</a>',
+    '<a href="services.html#chronic-disease-management">Chronic illness management</a>',
+    '<a href="services.html#behavioral-services">Mental wellness support</a>',
+  ]) {
+    assert(staticHero.includes(expected), `static homepage hero chip should link to ${expected}`);
+  }
+
+  const nextHeroMatch = nextHome.match(/<div class=\\"hero-content reveal lean-hero-copy[\s\S]*?<\/div>\\n      <div class=\\"hero-service-dock/);
+  assert(nextHeroMatch, 'Next homepage hero card missing');
+  const nextHero = nextHeroMatch[0];
+  for (const expected of [
+    '<a href=\\"/services#primary-care\\">Whole-family primary care</a>',
+    '<a href=\\"/services#chronic-disease-management\\">Chronic illness management</a>',
+    '<a href=\\"/services#behavioral-services\\">Mental wellness support</a>',
+  ]) {
+    assert(nextHero.includes(expected), `Next homepage hero chip should link to ${expected}`);
+  }
+
+  for (const page of ['services.html', 'about.html', 'blog.html']) {
+    const heroMatch = read(page).match(/<section class="[^"]*(?:page-hero|contact-hero)[\s\S]*?<\/section>/);
+    assert(heroMatch, `${page} missing hero section`);
+    assert(heroMatch[0].includes('<a class="button button-primary" href="contact.html">Request appointment</a>'), `${page} should show a body appointment CTA before scrolling`);
+  }
+
+  for (const page of ['app/services/page.tsx', 'app/about/page.tsx', 'app/blog/page.tsx']) {
+    const markup = read(page);
+    const hasNormalCta = markup.includes('class=\\"button button-primary\\" href=\\"/contact\\">Request appointment</a>');
+    const hasSerializedCta = markup.includes('class=\\"button button-primary\\" href=\\"/contact\\"\\u003eRequest appointment\\u003c/a');
+    assert(hasNormalCta || hasSerializedCta, `${page} should show a body appointment CTA before scrolling`);
+  }
+
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Linked homepage hero care paths. */'), 'missing linked hero care paths CSS layer');
+    assert(stylesheet.includes('.hero-access-list a { align-items: center; background: #f7fbff; border: 1px solid rgba(63, 162, 219, 0.18); border-radius: 8px; color: #203442; display: inline-flex; font-size: clamp(13.5px, 0.95vw, 15px); font-weight: 600; gap: 8px; justify-content: flex-start; line-height: 1.22; min-height: 42px; padding: 9px 11px; text-decoration: none; transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease; }'), 'hero service links should look like clean clickable card controls');
+    assert(stylesheet.includes('.hero-access-list a:hover, .hero-access-list a:focus-visible { background: #ffffff; border-color: rgba(240, 0, 190, 0.36); color: #126493; transform: translateY(-1px); }'), 'hero service links should have a restrained interactive state');
+  }
+});
+
 test('home page header shows the real Leancare logo image', () => {
   const html = read('index.html');
   const headerMatch = html.match(/<header class="site-header"[\s\S]*?<\/header>/);
@@ -415,7 +469,7 @@ test('homepage adds restrained Nola-inspired color and optimized hero card witho
   assert(html.includes('nola-inspired-polish'), 'homepage should mark the restrained benchmark polish layer');
   assert(heroCard.includes('hero-access-list'), 'hero card should include concise access cues');
   assert(heroCard.includes('Whole-family primary care'), 'hero card should borrow the benchmark whole-family care cue');
-  assert(heroCard.includes('Transparent visit path'), 'hero card should include a clear access/pricing-style cue');
+  assert(heroCard.includes('Chronic illness management'), 'hero card should include the chronic illness management cue');
   assert(heroCard.includes('Mental wellness support'), 'hero card should include mental wellness support cue');
   assert(css.includes('/* Restrained Nola-inspired color and hero card polish. */'), 'missing restrained color/card polish CSS');
   assert(css.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(246, 251, 255, 0.82)); }'), 'hero card should use a light clinical color wash');
