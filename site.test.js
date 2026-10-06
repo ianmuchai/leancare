@@ -730,7 +730,8 @@ test('information strip scrolls away while compact nav remains sticky and minima
     assert(stylesheet.includes('.site-header-shell .site-nav { gap: clamp(30px, 4vw, 58px); }'), 'top nav tabs should have better spacing');
     assert(stylesheet.includes('.site-header-shell .site-nav > a, .site-header-shell .nav-group-label { font-weight: 500; }'), 'top nav text should be less bold');
     assert(stylesheet.includes('.site-header-shell .header-actions .button { font-size: 13px; min-height: 38px; min-width: 174px; padding: 0 18px; }'), 'request appointment button should be smaller');
-    assert(stylesheet.includes('.header-info-item { font-size: 12px; font-weight: 500; min-height: 26px; padding: 2px 10px 2px 3px; }'), 'info bar text should be compact and less bold');
+    assert(stylesheet.includes('.header-info-item { color: #203442; font-family: var(--font-sans); font-size: 12px; font-weight: 400; letter-spacing: 0.01em; min-height: 26px; padding: 2px 10px 2px 3px; }'), 'info bar text should keep its size but use regular readable typography');
+    assert(stylesheet.includes('.header-info-item a { color: inherit; font-weight: 400; text-decoration: none; }'), 'info bar links should not appear bold against the other details');
   }
 });
 
