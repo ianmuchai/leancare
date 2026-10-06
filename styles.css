@@ -6619,3 +6619,10 @@ h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eye
   p:not(.eyebrow), li, dd, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a, .site-footer p, .site-footer a { font-size: 16px; line-height: 1.64; }
   .whatsapp-float { bottom: 18px; height: 50px; right: 18px; width: 50px; }
 }
+
+/* WhatsApp icon and translucent top bar refinement. */
+.site-header { background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(18px); }
+.header-info-strip { background: rgba(248, 252, 255, 0.62); backdrop-filter: blur(14px); }
+.site-header-shell { background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(18px); box-shadow: 0 12px 34px rgba(16, 33, 49, 0.08); }
+.whatsapp-float { align-items: center; background: #25d366; border: 1px solid rgba(255, 255, 255, 0.82); border-radius: 999px; bottom: clamp(18px, 2.4vw, 28px); box-shadow: 0 18px 38px rgba(18, 140, 75, 0.26); color: #ffffff; display: inline-flex; height: 50px; justify-content: center; position: fixed; right: clamp(18px, 2.4vw, 28px); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease; width: 50px; z-index: 1200; }
+.whatsapp-float svg { display: block; fill: currentColor; height: 29px; stroke: none; width: 29px; }

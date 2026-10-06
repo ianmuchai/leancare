@@ -579,18 +579,24 @@ test('site-wide regular text has larger readable spacing and icon-only WhatsApp 
     assert(html.includes(`class="whatsapp-float" href="${whatsappHref}"`), `${page} missing icon-only WhatsApp button`);
     assert(html.includes('aria-label="Chat on WhatsApp"'), `${page} missing WhatsApp accessible label`);
     assert(html.includes('viewBox="0 0 24 24"'), `${page} missing WhatsApp icon SVG`);
+    assert(html.includes('M20.52 3.48'), `${page} should use the refined filled WhatsApp mark`);
   }
 
   assert(layout.includes('className="whatsapp-float"'), 'Next layout missing icon-only WhatsApp button');
   assert(layout.includes(`href="${whatsappHref}"`), 'Next layout should use the provided clinic WhatsApp number');
+  assert(layout.includes('M20.52 3.48'), 'Next layout should use the refined filled WhatsApp mark');
 
   for (const stylesheet of [css, globals]) {
     assert(stylesheet.includes('/* Final regular-text readability and WhatsApp contact layer. */'), 'missing final text readability/WhatsApp layer');
     assert(stylesheet.includes('body { letter-spacing: 0.002em; word-spacing: 0.018em; }'), 'body text should use subtle professional spacing');
     assert(stylesheet.includes('p:not(.eyebrow), li, dd, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a, .site-footer p, .site-footer a { font-size: clamp(16px, 1.12vw, 18px); letter-spacing: 0.003em; line-height: 1.68; word-spacing: 0.02em; }'), 'regular non-bold copy should be larger with improved spacing');
     assert(stylesheet.includes('h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eyebrow { word-spacing: normal; }'), 'bold/headline/UI text should not inherit loose word spacing');
-    assert(stylesheet.includes('.whatsapp-float { align-items: center; background: #25d366; border: 1px solid rgba(255, 255, 255, 0.72); border-radius: 999px; bottom: clamp(18px, 2.4vw, 28px); box-shadow: 0 18px 42px rgba(15, 88, 49, 0.28); color: #ffffff; display: inline-flex; height: 52px; justify-content: center; position: fixed; right: clamp(18px, 2.4vw, 28px); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease; width: 52px; z-index: 1200; }'), 'WhatsApp floating button should be styled as a polished icon-only control');
-    assert(stylesheet.includes('.whatsapp-float svg { display: block; fill: none; height: 27px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.9; width: 27px; }'), 'WhatsApp button should show only a clean icon');
+    assert(stylesheet.includes('.whatsapp-float { align-items: center; background: #25d366; border: 1px solid rgba(255, 255, 255, 0.82); border-radius: 999px; bottom: clamp(18px, 2.4vw, 28px); box-shadow: 0 18px 38px rgba(18, 140, 75, 0.26); color: #ffffff; display: inline-flex; height: 50px; justify-content: center; position: fixed; right: clamp(18px, 2.4vw, 28px); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease; width: 50px; z-index: 1200; }'), 'WhatsApp floating button should be styled as a polished icon-only control');
+    assert(stylesheet.includes('.whatsapp-float svg { display: block; fill: currentColor; height: 29px; stroke: none; width: 29px; }'), 'WhatsApp button should show a clean filled icon');
+    assert(stylesheet.includes('/* WhatsApp icon and translucent top bar refinement. */'), 'missing final WhatsApp/top-bar refinement layer');
+    assert(stylesheet.includes('.site-header { background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(18px); }'), 'site header should be more transparent');
+    assert(stylesheet.includes('.header-info-strip { background: rgba(248, 252, 255, 0.62); backdrop-filter: blur(14px); }'), 'top info strip should be more transparent');
+    assert(stylesheet.includes('.site-header-shell { background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(18px); box-shadow: 0 12px 34px rgba(16, 33, 49, 0.08); }'), 'main nav shell should be translucent but readable');
   }
 });
 
