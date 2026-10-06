@@ -6605,3 +6605,17 @@ h2, h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .lean-visit-st
 .hero-access-list a:focus-visible { outline: 2px solid rgba(63, 162, 219, 0.42); outline-offset: 3px; }
 .nola-inspired-polish .hero-access-list { margin-top: 4px; }
 .nola-inspired-polish .lean-hero-copy { gap: 15px; }
+
+/* Final regular-text readability and WhatsApp contact layer. */
+body { letter-spacing: 0.002em; word-spacing: 0.018em; }
+p:not(.eyebrow), li, dd, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a, .site-footer p, .site-footer a { font-size: clamp(16px, 1.12vw, 18px); letter-spacing: 0.003em; line-height: 1.68; word-spacing: 0.02em; }
+h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eyebrow { word-spacing: normal; }
+.whatsapp-float { align-items: center; background: #25d366; border: 1px solid rgba(255, 255, 255, 0.72); border-radius: 999px; bottom: clamp(18px, 2.4vw, 28px); box-shadow: 0 18px 42px rgba(15, 88, 49, 0.28); color: #ffffff; display: inline-flex; height: 52px; justify-content: center; position: fixed; right: clamp(18px, 2.4vw, 28px); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease; width: 52px; z-index: 1200; }
+.whatsapp-float:hover, .whatsapp-float:focus-visible { background: #1ebe5d; box-shadow: 0 22px 50px rgba(15, 88, 49, 0.34); transform: translateY(-2px); }
+.whatsapp-float:focus-visible { outline: 3px solid rgba(63, 162, 219, 0.38); outline-offset: 4px; }
+.whatsapp-float svg { display: block; fill: none; height: 27px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.9; width: 27px; }
+
+@media (max-width: 760px) {
+  p:not(.eyebrow), li, dd, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a, .site-footer p, .site-footer a { font-size: 16px; line-height: 1.64; }
+  .whatsapp-float { bottom: 18px; height: 50px; right: 18px; width: 50px; }
+}
