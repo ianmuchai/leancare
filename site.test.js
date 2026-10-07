@@ -108,6 +108,23 @@ test('layout includes additional tablet and small-phone responsive breakpoints',
   assert(css.includes('@media (max-width: 540px)'), 'missing small-phone breakpoint');
 });
 
+test('mobile layout uses polished responsive composition', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Mobile polish and responsive composition pass. */'), 'missing final mobile polish layer');
+    assert(stylesheet.includes('.header-info-strip { display: flex; gap: 8px; justify-content: flex-start; min-height: 34px; overflow-x: auto; padding: 6px 14px; scrollbar-width: none; }'), 'mobile info strip should become a compact scrollable rail');
+    assert(stylesheet.includes('.site-header-shell { grid-template-columns: minmax(132px, 168px) 44px; min-height: 64px; padding: 0 16px; }'), 'mobile header should use a tighter logo/menu grid');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav { background: rgba(255, 255, 255, 0.96); border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 18px; box-shadow: 0 22px 54px rgba(16, 33, 49, 0.18); display: flex !important; flex-direction: column; gap: 6px; inset: 104px 12px auto 12px; max-height: calc(100vh - 120px); overflow: auto; padding: 14px; position: fixed; }'), 'mobile nav should open as a polished sheet');
+    assert(stylesheet.includes('.full-video-home { align-items: end; min-height: auto; padding: 18px 14px 28px; }'), 'mobile homepage hero should be shorter and fit the viewport better');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { border-radius: 20px; gap: 12px; max-width: none; padding: 20px; width: 100%; }'), 'mobile hero card should be compact and full-width');
+    assert(stylesheet.includes('.full-video-home .lean-hero-copy h1 { font-size: clamp(30px, 9vw, 38px); line-height: 1.04; }'), 'mobile hero heading should be balanced, not oversized');
+    assert(stylesheet.includes('.hero-actions, .hero-access-list, .lean-hero-facts { grid-template-columns: 1fr; width: 100%; }'), 'mobile hero controls should stack cleanly');
+    assert(stylesheet.includes('.lean-home-services, .depth-section, .story-team-section, .lean-visit-strip, .insight-strip { padding-left: 16px; padding-right: 16px; width: calc(100% - 24px); }'), 'mobile sections should have consistent breathing room');
+    assert(stylesheet.includes('.page-hero, .contact-hero { min-height: 300px; padding: 52px 18px 42px; }'), 'mobile inner-page heroes should be compact and readable');
+  }
+});
+
 test('homepage is streamlined around three real services', () => {
   const html = read('index.html');
   const css = read('styles.css');
