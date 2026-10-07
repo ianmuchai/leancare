@@ -6673,3 +6673,36 @@ h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eye
   .page-hero h1, .contact-hero h1 { font-size: clamp(28px, 8vw, 36px); line-height: 1.06; }
   .site-footer { gap: 24px; grid-template-columns: 1fr; padding: 36px 18px; }
 }
+
+/* Mobile-first hero restructure and simplified rhythm. */
+@media (max-width: 760px) {
+  .full-video-home { background: #f7fbff; display: grid; gap: 14px; grid-template-columns: 1fr; min-height: auto; padding: 12px 14px 26px; }
+  .full-video-home::before, .full-video-home::after { display: none; }
+  .hero-video-carousel { aspect-ratio: 16 / 10; border-radius: 24px; box-shadow: 0 18px 46px rgba(16, 33, 49, 0.16); inset: auto; min-height: 0; overflow: hidden; position: relative; }
+  .hero-video-carousel .media-slide { border-radius: inherit; }
+  .hero-video-carousel video { height: 100%; object-fit: cover; opacity: 0.9; width: 100%; }
+  .hero-video-carousel::after { background: rgba(12, 28, 42, 0.04); }
+  .hero-video-carousel .media-controls { bottom: 12px; gap: 7px; left: 16px; right: auto; top: auto; transform: none; }
+  .hero-video-carousel .carousel-dot { background: rgba(255, 255, 255, 0.72); border: 1px solid rgba(255, 255, 255, 0.8); height: 8px; width: 8px; }
+  .hero-video-carousel .carousel-dot.is-active { background: #3fa2db; width: 24px; }
+  .full-video-home .hero-content { margin: 0; position: relative; z-index: 2; }
+  .nola-inspired-polish .lean-hero-copy { background: rgba(255, 255, 255, 0.98); box-shadow: 0 16px 34px rgba(16, 33, 49, 0.10); min-height: 0; }
+  .nola-inspired-polish .lean-hero-copy .eyebrow { font-size: 12px; letter-spacing: 0.08em; }
+  .full-video-home .lean-hero-copy h1 { font-size: clamp(28px, 8vw, 34px); line-height: 1.08; max-width: 11ch; }
+  .full-video-home .hero-lede { color: #385268; font-size: 16px; line-height: 1.55; }
+  .hero-access-list { gap: 8px; }
+  .hero-access-list a { background: #eef8fd; border-color: rgba(63, 162, 219, 0.18); color: #102131; font-size: 14px; min-height: 42px; }
+  .hero-actions .button { border-radius: 999px; font-size: 14px; min-height: 44px; padding: 12px 16px; }
+  .lean-hero-facts { color: #496274; font-size: 13px; gap: 8px; }
+  .hero-service-dock { display: none; }
+  .lean-home-services { margin-top: 18px; }
+  .lean-service-grid { gap: 12px; }
+  .lean-service-grid article { box-shadow: 0 12px 26px rgba(16, 33, 49, 0.08); }
+  .section-copy, .depth-copy, .lean-visit-strip > div:first-child, .insight-strip > div:first-child { gap: 9px; }
+  .section-copy h2, .depth-copy h2, .team-card-copy h2, .lean-visit-strip h2, .insight-strip h2 { font-size: clamp(24px, 7vw, 32px); line-height: 1.12; }
+  .section-copy p, .depth-copy p, .team-card-copy p, .lean-visit-strip p, .insight-strip p, .lean-service-grid p, .depth-grid strong { font-size: 16px; line-height: 1.6; }
+  .support-tags { gap: 8px; }
+  .support-tags a { font-size: 14px; padding: 10px 12px; }
+  .lean-visit-strip, .insight-strip { gap: 18px; margin-top: 26px; }
+  .whatsapp-float { bottom: 16px; height: 46px; right: 16px; width: 46px; }
+}

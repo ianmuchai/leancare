@@ -125,6 +125,21 @@ test('mobile layout uses polished responsive composition', () => {
   }
 });
 
+test('mobile homepage uses separate video-first hero composition', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Mobile-first hero restructure and simplified rhythm. */'), 'missing mobile-first hero restructure layer');
+    assert(stylesheet.includes('.full-video-home { background: #f7fbff; display: grid; gap: 14px; grid-template-columns: 1fr; min-height: auto; padding: 12px 14px 26px; }'), 'mobile hero should become a simple grid instead of an overlaid desktop hero');
+    assert(stylesheet.includes('.hero-video-carousel { aspect-ratio: 16 / 10; border-radius: 24px; box-shadow: 0 18px 46px rgba(16, 33, 49, 0.16); inset: auto; min-height: 0; overflow: hidden; position: relative; }'), 'mobile video carousel should be a standalone top panel');
+    assert(stylesheet.includes('.full-video-home .hero-content { margin: 0; position: relative; z-index: 2; }'), 'mobile card should sit below the video, not on top of it');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: rgba(255, 255, 255, 0.98); box-shadow: 0 16px 34px rgba(16, 33, 49, 0.10); min-height: 0; }'), 'mobile hero card should be readable and compact below the video');
+    assert(stylesheet.includes('.hero-service-dock { display: none; }'), 'mobile should remove the floating dock from the hero');
+    assert(stylesheet.includes('.lean-home-services { margin-top: 18px; }'), 'mobile content should start close to the hero without wasted space');
+    assert(stylesheet.includes('.section-copy h2, .depth-copy h2, .team-card-copy h2, .lean-visit-strip h2, .insight-strip h2 { font-size: clamp(24px, 7vw, 32px); line-height: 1.12; }'), 'mobile section headings should use manageable sizes');
+  }
+});
+
 test('homepage is streamlined around three real services', () => {
   const html = read('index.html');
   const css = read('styles.css');
