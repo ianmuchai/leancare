@@ -140,6 +140,18 @@ test('mobile homepage uses separate video-first hero composition', () => {
   }
 });
 
+test('mobile information strip is shorter and auto-scrolls horizontally', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Mobile compact auto-scrolling information strip. */'), 'missing compact mobile auto-scroll info strip layer');
+    assert(stylesheet.includes('.header-info-strip { min-height: 24px; max-height: 24px; overflow: hidden; padding: 2px 0; position: relative; }'), 'mobile information strip should be shorter and clipped');
+    assert(stylesheet.includes('.header-info-item { animation: mobile-info-marquee 22s linear infinite; background: transparent; border: 0; flex: 0 0 auto; font-size: 11px; min-height: 20px; padding: 0 18px 0 0; }'), 'mobile information items should auto-scroll in a compact line');
+    assert(stylesheet.includes('.info-icon { height: 16px; width: 16px; }'), 'mobile information icons should be smaller');
+    assert(stylesheet.includes('@keyframes mobile-info-marquee { from { transform: translateX(-115%); } to { transform: translateX(100vw); } }'), 'mobile information strip should scroll from left to right');
+  }
+});
+
 test('homepage is streamlined around three real services', () => {
   const html = read('index.html');
   const css = read('styles.css');
