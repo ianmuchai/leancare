@@ -769,6 +769,19 @@ test('header CTA active tabs visit strip and testimonials use the refined UI pas
   }
 });
 
+test('desktop header uses one full glossy glass surface instead of partial transparency', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Desktop glossy glass header correction. */'), 'missing desktop glossy glass header correction layer');
+    assert(stylesheet.includes('@media (min-width: 761px) {'), 'desktop glossy correction should not affect the mobile layout');
+    assert(stylesheet.includes('.site-header { background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(247, 252, 255, 0.76)); backdrop-filter: saturate(170%) blur(24px); -webkit-backdrop-filter: saturate(170%) blur(24px); box-shadow: 0 18px 42px rgba(16, 33, 49, 0.11); position: sticky; }'), 'desktop header should use one glossy glass surface');
+    assert(stylesheet.includes('.site-header::before { background: linear-gradient(115deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.18) 42%, rgba(63, 162, 219, 0.10) 74%, rgba(255, 0, 194, 0.08)); border-bottom: 1px solid rgba(63, 162, 219, 0.16); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92); }'), 'desktop header should have a subtle glossy sheen across the whole bar');
+    assert(stylesheet.includes('.header-info-strip, .site-header-shell { background: transparent; backdrop-filter: none; }'), 'desktop header rows should not create separate half-transparent surfaces');
+    assert(stylesheet.includes('.site-header-shell { background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08)); }'), 'desktop nav shell should keep only a soft gloss, not a separate glass panel');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
