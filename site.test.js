@@ -821,6 +821,20 @@ test('final header layer removes desktop info pills and upgrades mobile menu', (
   }
 });
 
+test('header command ribbon and mobile nav redesign are visually distinct', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Header command ribbon and mobile nav redesign v2. */'), 'missing unmistakable header/menu redesign layer');
+    assert(stylesheet.includes('body .site-header .header-info-strip { background: linear-gradient(90deg, #102131 0%, #126493 52%, #102131 100%) !important; border-bottom: 0; color: #ffffff; min-height: 34px; }'), 'desktop top bar should become a visibly different dark command ribbon');
+    assert(stylesheet.includes('body .site-header .header-info-item { color: #ffffff !important; font-weight: 500; opacity: 0.95; }'), 'desktop top bar text should invert for the dark ribbon');
+    assert(stylesheet.includes('body .site-header .header-info-strip .info-icon { color: #ffffff; opacity: 0.9; }'), 'desktop top bar icons should be simple white line icons');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav { background: #102131 !important; border: 0; border-radius: 0; color: #ffffff; display: grid !important; gap: 10px; inset: 88px 0 0 0; max-height: none; overflow: auto; padding: 24px 18px 96px; position: fixed; z-index: 130; }'), 'mobile menu should become a full-screen command panel');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { background: rgba(255, 255, 255, 0.10) !important; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 18px; color: #ffffff !important; font-size: 18px; min-height: 58px; padding: 16px 18px; }'), 'mobile menu links should be large high-contrast tiles');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav::before { color: #8ed8ff; content: "LeanCare menu"; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; padding: 4px 2px 10px; text-transform: uppercase; }'), 'mobile menu should have a clear branded label');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
