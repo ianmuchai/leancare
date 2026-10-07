@@ -794,6 +794,19 @@ test('desktop header uses one full glossy glass surface instead of partial trans
   }
 });
 
+test('desktop information strip uses a clean integrated utility ribbon', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Desktop utility strip clinical ribbon correction. */'), 'missing desktop utility ribbon correction layer');
+    assert(stylesheet.includes('.header-info-strip { align-items: center; background: linear-gradient(90deg, rgba(247, 252, 255, 0.92), rgba(239, 249, 255, 0.86)); border-bottom: 1px solid rgba(63, 162, 219, 0.14); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72); display: flex; gap: clamp(22px, 4vw, 64px); justify-content: center; min-height: 32px; padding: 0 clamp(36px, 6vw, 96px); }'), 'desktop info strip should read as one integrated ribbon');
+    assert(stylesheet.includes('.header-info-item { background: transparent; border: 0; box-shadow: none; color: #22384a; font-size: 12px; font-weight: 450; gap: 7px; min-height: 32px; padding: 0; }'), 'desktop info items should not render as separate pills');
+    assert(stylesheet.includes('.header-info-item + .header-info-item { position: relative; }'), 'desktop info items should have subtle structured separation');
+    assert(stylesheet.includes('.header-info-item + .header-info-item::after { background: rgba(63, 162, 219, 0.18); content: ""; height: 14px; left: calc(clamp(22px, 4vw, 64px) / -2); position: absolute; width: 1px; }'), 'desktop info separators should be light dividers, not capsules');
+    assert(stylesheet.includes('.header-info-strip .info-icon { background: #2f96cf; box-shadow: 0 5px 12px rgba(47, 150, 207, 0.18); height: 18px; width: 18px; }'), 'desktop info icons should be smaller and neater');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
