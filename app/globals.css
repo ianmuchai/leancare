@@ -6736,3 +6736,24 @@ h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eye
   .header-info-strip .info-icon { background: #2f96cf; box-shadow: 0 5px 12px rgba(47, 150, 207, 0.18); height: 18px; width: 18px; }
   .header-info-strip .info-icon svg { height: 10px; width: 10px; }
 }
+
+/* Effective final header and mobile menu correction. */
+@media (min-width: 761px) {
+  body .site-header .header-info-strip { background: linear-gradient(90deg, #f7fcff 0%, #eef8fd 48%, #f7fbff 100%); border-bottom: 1px solid rgba(63, 162, 219, 0.12); box-shadow: none; gap: clamp(28px, 5vw, 82px); min-height: 30px; padding: 0 clamp(34px, 6vw, 92px); }
+  body .site-header .header-info-item { background: transparent !important; border: 0 !important; border-radius: 0; box-shadow: none !important; min-height: 30px; padding: 0; }
+  body .site-header .header-info-item + .header-info-item::after { background: rgba(63, 162, 219, 0.16); height: 13px; }
+  body .site-header .header-info-strip .info-icon { background: transparent; box-shadow: none; color: #278fc8; height: 16px; width: 16px; }
+  body .site-header .header-info-strip .info-icon svg { height: 14px; stroke-width: 2.35; width: 14px; }
+}
+
+@media (max-width: 760px) {
+  body.nav-open .site-header-shell::before { background: rgba(16, 33, 49, 0.34); backdrop-filter: blur(8px); content: ""; inset: 88px 0 0; position: fixed; z-index: 90; }
+  body.nav-open .site-header-shell .site-nav { background: linear-gradient(160deg, rgba(255, 255, 255, 0.98), rgba(238, 248, 253, 0.96)); border: 1px solid rgba(63, 162, 219, 0.18); border-radius: 26px 26px 0 0; box-shadow: 0 -18px 54px rgba(16, 33, 49, 0.24); display: grid !important; gap: 8px; inset: auto 10px 10px 10px; max-height: min(72vh, 560px); overflow: auto; padding: 18px; position: fixed; z-index: 110; }
+  body.nav-open .site-header-shell .site-nav::before { color: #278fc8; content: "Menu"; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; padding: 2px 2px 8px; text-transform: uppercase; }
+  body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { background: #ffffff; border: 1px solid rgba(63, 162, 219, 0.14); border-radius: 16px; box-shadow: 0 10px 24px rgba(16, 33, 49, 0.08); color: #102131; font-size: 17px; min-height: 52px; padding: 14px 16px; }
+  body.nav-open .site-header-shell .site-nav > a.is-active, body.nav-open .site-header-shell .nav-group-label.is-active { background: #eef8fd; color: #126493; }
+  body.nav-open .nav-group-menu { background: transparent; padding: 6px 0 2px 12px; }
+  body.nav-open .nav-group-menu a { background: rgba(255, 255, 255, 0.72); border: 1px solid rgba(63, 162, 219, 0.10); border-radius: 14px; font-size: 15px; margin-top: 6px; padding: 12px 14px; }
+  body.nav-open .site-header-shell .header-actions { display: block; position: fixed; bottom: 20px; left: 28px; right: 28px; z-index: 112; }
+  body.nav-open .site-header-shell .header-actions .button { min-height: 48px; width: 100%; }
+}

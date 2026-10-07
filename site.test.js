@@ -807,6 +807,20 @@ test('desktop information strip uses a clean integrated utility ribbon', () => {
   }
 });
 
+test('final header layer removes desktop info pills and upgrades mobile menu', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Effective final header and mobile menu correction. */'), 'missing effective final header/menu correction layer');
+    assert(stylesheet.includes('body .site-header .header-info-strip { background: linear-gradient(90deg, #f7fcff 0%, #eef8fd 48%, #f7fbff 100%); border-bottom: 1px solid rgba(63, 162, 219, 0.12); box-shadow: none; gap: clamp(28px, 5vw, 82px); min-height: 30px; padding: 0 clamp(34px, 6vw, 92px); }'), 'desktop info bar needs a visible integrated strip override');
+    assert(stylesheet.includes('body .site-header .header-info-item { background: transparent !important; border: 0 !important; border-radius: 0; box-shadow: none !important; min-height: 30px; padding: 0; }'), 'desktop info items should be forced out of pill styling');
+    assert(stylesheet.includes('body .site-header .header-info-strip .info-icon { background: transparent; box-shadow: none; color: #278fc8; height: 16px; width: 16px; }'), 'desktop info icons should no longer appear as blue bubbles');
+    assert(stylesheet.includes('body.nav-open .site-header-shell::before { background: rgba(16, 33, 49, 0.34); backdrop-filter: blur(8px); content: ""; inset: 88px 0 0; position: fixed; z-index: 90; }'), 'mobile nav should include a polished dimmed backdrop');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav { background: linear-gradient(160deg, rgba(255, 255, 255, 0.98), rgba(238, 248, 253, 0.96)); border: 1px solid rgba(63, 162, 219, 0.18); border-radius: 26px 26px 0 0; box-shadow: 0 -18px 54px rgba(16, 33, 49, 0.24); display: grid !important; gap: 8px; inset: auto 10px 10px 10px; max-height: min(72vh, 560px); overflow: auto; padding: 18px; position: fixed; z-index: 110; }'), 'mobile nav should become a clear modern bottom sheet');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { background: #ffffff; border: 1px solid rgba(63, 162, 219, 0.14); border-radius: 16px; box-shadow: 0 10px 24px rgba(16, 33, 49, 0.08); color: #102131; font-size: 17px; min-height: 52px; padding: 14px 16px; }'), 'mobile menu links should be large clear cards');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
