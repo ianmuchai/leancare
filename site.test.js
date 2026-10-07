@@ -451,6 +451,27 @@ test('homepage restores original-site depth in a cleaner benchmarked structure',
   for (const term of ['Telehealth', 'Behavioral Health', 'Weight Management', 'Vitamin Injections', 'Practice Search Code', 'Eunice Binyanya, DNP, ARNP, FNP-C']) {
     assert(html.includes(term), `homepage missing important original-site content cue: ${term}`);
   }
+  const linkedSupportTags = [
+    '<a href="telehealth.html">Telehealth</a>',
+    '<a href="services.html#behavioral-services">Behavioral Health</a>',
+    '<a href="wellness.html#weight-management">Weight Management</a>',
+    '<a href="wellness.html#vitamin-injections">Vitamin Injections</a>',
+  ];
+  for (const link of linkedSupportTags) {
+    assert(html.includes(link), `homepage support tag should be clickable: ${link}`);
+  }
+  const nextHome = read('app/page.tsx');
+  for (const link of [
+    '<a href=\\"/telehealth\\">Telehealth</a>',
+    '<a href=\\"/services#behavioral-services\\">Behavioral Health</a>',
+    '<a href=\\"/wellness#weight-management\\">Weight Management</a>',
+    '<a href=\\"/wellness#vitamin-injections\\">Vitamin Injections</a>',
+  ]) {
+    assert(nextHome.includes(link), `Next homepage support tag should be clickable: ${link}`);
+  }
+  assert(read('wellness.html').includes('id="weight-management"'), 'wellness page should expose a weight management anchor');
+  assert(read('wellness.html').includes('id="vitamin-injections"'), 'wellness page should expose a vitamin injections anchor');
+  assert(css.includes('.support-tags a'), 'support tag links should keep the existing pill styling');
   assert(html.includes('direct-primary-care'), 'homepage should borrow the benchmark direct-primary-care cue');
   assert(html.includes('mental-wellness'), 'homepage should borrow the benchmark mental wellness cue');
   assert(html.includes('chronic-care'), 'homepage should borrow the benchmark chronic care cue');
@@ -593,10 +614,11 @@ test('site-wide regular text has larger readable spacing and icon-only WhatsApp 
     assert(stylesheet.includes('h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eyebrow { word-spacing: normal; }'), 'bold/headline/UI text should not inherit loose word spacing');
     assert(stylesheet.includes('.whatsapp-float { align-items: center; background: #25d366; border: 1px solid rgba(255, 255, 255, 0.82); border-radius: 999px; bottom: clamp(18px, 2.4vw, 28px); box-shadow: 0 18px 38px rgba(18, 140, 75, 0.26); color: #ffffff; display: inline-flex; height: 50px; justify-content: center; position: fixed; right: clamp(18px, 2.4vw, 28px); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease; width: 50px; z-index: 1200; }'), 'WhatsApp floating button should be styled as a polished icon-only control');
     assert(stylesheet.includes('.whatsapp-float svg { display: block; fill: currentColor; height: 29px; stroke: none; width: 29px; }'), 'WhatsApp button should show a clean filled icon');
-    assert(stylesheet.includes('/* WhatsApp icon and glass top bar refinement. */'), 'missing final WhatsApp/top-bar glass refinement layer');
-    assert(stylesheet.includes('.site-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: saturate(145%) blur(18px); box-shadow: 0 10px 34px rgba(16, 33, 49, 0.08); }'), 'site header should use a deliberate glass surface, not plain transparency');
-    assert(stylesheet.includes('.header-info-strip { background: linear-gradient(90deg, rgba(248, 252, 255, 0.92), rgba(255, 255, 255, 0.82)); backdrop-filter: saturate(145%) blur(14px); border-bottom: 1px solid rgba(63, 162, 219, 0.12); }'), 'top info strip should use a polished glass treatment');
-    assert(stylesheet.includes('.site-header-shell { background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.84)); backdrop-filter: saturate(150%) blur(20px); border-bottom: 1px solid rgba(63, 162, 219, 0.10); box-shadow: 0 14px 34px rgba(16, 33, 49, 0.10); }'), 'main nav shell should read as glass while staying readable');
+    assert(stylesheet.includes('/* WhatsApp icon and full-width glass top bar refinement. */'), 'missing final WhatsApp/top-bar glass refinement layer');
+    assert(stylesheet.includes('.site-header { background: transparent; backdrop-filter: none; box-shadow: 0 14px 36px rgba(16, 33, 49, 0.10); position: sticky; }'), 'site header should not leave a partial plain transparent surface');
+    assert(stylesheet.includes('.site-header::before { background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 252, 255, 0.82)); backdrop-filter: saturate(155%) blur(22px); border-bottom: 1px solid rgba(63, 162, 219, 0.14); content: ""; inset: 0; pointer-events: none; position: absolute; z-index: 0; }'), 'header should have one full-width glass backplate across the whole top bar');
+    assert(stylesheet.includes('.header-info-strip, .site-header-shell { background: rgba(255, 255, 255, 0.34); backdrop-filter: none; position: relative; z-index: 1; }'), 'both header rows should share the same translucent glass surface');
+    assert(stylesheet.includes('.header-info-item { background: rgba(255, 255, 255, 0.24); border-color: rgba(63, 162, 219, 0.08); }'), 'info items should not look like separate opaque patches');
   }
 });
 
