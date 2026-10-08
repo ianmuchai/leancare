@@ -6778,3 +6778,34 @@ h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eye
   body.nav-open .site-header-shell .header-actions { bottom: 22px; left: 18px; right: 18px; z-index: 135; }
   body.nav-open .site-header-shell .header-actions .button { background: linear-gradient(135deg, #3fa2db, #f000be); box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28); min-height: 52px; }
 }
+
+/* Final opaque header and floating brand mobile menu. */
+.site-header { background: #ffffff !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: 0 8px 24px rgba(16, 33, 49, 0.08) !important; position: sticky; top: 0 !important; z-index: 1000; }
+.site-header::before { content: none !important; display: none !important; }
+.header-info-strip { background: #f8fcff !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; }
+.site-header-shell { background: #ffffff !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-bottom: 1px solid rgba(63, 162, 219, 0.16); min-height: 82px; }
+.site-header-shell .brand { align-self: center; }
+.site-header-shell .brand-logo { display: block; max-height: 64px; object-fit: contain; }
+
+@media (min-width: 761px) {
+  body .site-header .header-info-strip { background: #f8fcff !important; border-bottom: 1px solid rgba(63, 162, 219, 0.14) !important; color: #25384b !important; min-height: 30px; }
+  body .site-header .header-info-item, body .site-header .header-info-item a { color: #25384b !important; font-weight: 400 !important; opacity: 1; }
+  body .site-header .header-info-strip .info-icon { color: #278fc8 !important; opacity: 1; }
+}
+
+@media (max-width: 760px) {
+  .site-header { top: 0 !important; }
+  .site-header-shell { grid-template-columns: minmax(136px, 178px) 46px; min-height: 68px; padding: 0 16px; }
+  .site-header-shell .brand-logo { width: min(46vw, 176px); max-height: 56px; }
+  .site-header-shell .nav-toggle, .site-header-shell .menu-toggle { background: linear-gradient(135deg, #3fa2db, #f000be) !important; border: 0 !important; border-radius: 16px; box-shadow: 0 12px 26px rgba(63, 162, 219, 0.30); }
+  .site-header-shell .nav-toggle span, .site-header-shell .menu-toggle span { background: #ffffff !important; height: 2px; width: 20px; }
+  body.nav-open .site-header-shell::before { background: rgba(16, 33, 49, 0.18) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; content: ""; inset: 0; position: fixed; z-index: 120; }
+  body.nav-open .site-header-shell .site-nav { background: #ffffff !important; border: 1px solid rgba(63, 162, 219, 0.22); border-radius: 24px; box-shadow: 0 26px 70px rgba(16, 33, 49, 0.22); display: grid !important; gap: 10px; inset: 84px 14px auto 14px; max-height: calc(100vh - 110px); overflow: auto; padding: 18px; position: fixed; z-index: 130; }
+  body.nav-open .site-header-shell .site-nav::before { color: #126493; content: "Menu"; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; padding: 2px 2px 8px; text-transform: uppercase; }
+  body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { background: #f7fbff !important; border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 16px; color: #102131 !important; font-size: 17px; min-height: 52px; padding: 14px 16px; }
+  body.nav-open .site-header-shell .site-nav > a.is-active, body.nav-open .site-header-shell .nav-group-label.is-active { background: #eaf7fd !important; border-color: rgba(240, 0, 190, 0.30); color: #126493 !important; }
+  body.nav-open .nav-group-menu { background: transparent !important; border: 0; box-shadow: none; padding: 6px 0 2px 12px; }
+  body.nav-open .nav-group-menu a { background: #ffffff !important; border: 1px solid rgba(63, 162, 219, 0.12); color: #25384b !important; }
+  body.nav-open .site-header-shell .header-actions { bottom: auto; display: block; left: 28px; position: fixed; right: 28px; top: min(calc(100vh - 78px), 560px); z-index: 135; }
+  body.nav-open .site-header-shell .header-actions .button { background: #278fc8 !important; box-shadow: 0 14px 34px rgba(39, 143, 200, 0.24); min-height: 48px; width: 100%; }
+}

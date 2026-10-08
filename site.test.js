@@ -835,6 +835,22 @@ test('header command ribbon and mobile nav redesign are visually distinct', () =
   }
 });
 
+test('final header is fully opaque and mobile menu is a floating brand panel', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Final opaque header and floating brand mobile menu. */'), 'missing final opaque header/mobile menu override');
+    assert(stylesheet.includes('.site-header { background: #ffffff !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: 0 8px 24px rgba(16, 33, 49, 0.08) !important; position: sticky; top: 0 !important; z-index: 1000; }'), 'header should be fully opaque white across the full logo height');
+    assert(stylesheet.includes('.site-header::before { content: none !important; display: none !important; }'), 'header should not keep a translucent pseudo backplate');
+    assert(stylesheet.includes('.site-header-shell { background: #ffffff !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-bottom: 1px solid rgba(63, 162, 219, 0.16); min-height: 82px; }'), 'main header shell should be opaque and tall enough for the logo');
+    assert(stylesheet.includes('.header-info-strip { background: #f8fcff !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; }'), 'top information strip should be opaque, not glassy');
+    assert(stylesheet.includes('.site-header-shell .nav-toggle, .site-header-shell .menu-toggle { background: linear-gradient(135deg, #3fa2db, #f000be) !important; border: 0 !important; border-radius: 16px; box-shadow: 0 12px 26px rgba(63, 162, 219, 0.30); }'), 'mobile hamburger should use the brand-colored control');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav { background: #ffffff !important; border: 1px solid rgba(63, 162, 219, 0.22); border-radius: 24px; box-shadow: 0 26px 70px rgba(16, 33, 49, 0.22); display: grid !important; gap: 10px; inset: 84px 14px auto 14px; max-height: calc(100vh - 110px); overflow: auto; padding: 18px; position: fixed; z-index: 130; }'), 'mobile menu should open as a floating panel, not a full-screen dark sheet');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav::before { color: #126493; content: "Menu"; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; padding: 2px 2px 8px; text-transform: uppercase; }'), 'mobile menu panel should have a clear Menu title');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { background: #f7fbff !important; border: 1px solid rgba(63, 162, 219, 0.16); border-radius: 16px; color: #102131 !important; font-size: 17px; min-height: 52px; padding: 14px 16px; }'), 'mobile menu links should be clear light cards');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
