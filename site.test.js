@@ -890,6 +890,21 @@ test('mobile menu is smaller square edged and hero card has subtle translucent s
   }
 });
 
+test('mobile typography is reduced consistently across the site', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Compact mobile typography reduction. */'), 'missing compact mobile typography layer');
+    assert(stylesheet.includes('@media (max-width: 760px) {\n  body { font-size: 14px; }'), 'mobile base text should be reduced');
+    assert(stylesheet.includes('p:not(.eyebrow), li, dd, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a, .site-footer p, .site-footer a { font-size: 14px; line-height: 1.55; }'), 'mobile body copy should be smaller and still readable');
+    assert(stylesheet.includes('.full-video-home .lean-hero-copy h1 { font-size: clamp(25px, 7vw, 31px); line-height: 1.08; max-width: 12ch; }'), 'mobile home hero title should be reduced');
+    assert(stylesheet.includes('.page-hero h1, .contact-hero h1 { font-size: clamp(22px, 6.4vw, 30px); line-height: 1.08; }'), 'mobile inner page titles should be reduced');
+    assert(stylesheet.includes('.section-copy h2, .depth-copy h2, .team-card-copy h2, .lean-visit-strip h2, .insight-strip h2, .lean-home-services h2 { font-size: clamp(20px, 5.8vw, 27px); line-height: 1.12; }'), 'mobile section headings should be reduced');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { font-size: 14px; min-height: 39px; padding: 9px 11px; }'), 'mobile menu link text should be smaller');
+    assert(stylesheet.includes('.button, .header-cta, .hero-actions .button-primary, .header-actions .button { font-size: 13px; }'), 'mobile button labels should be smaller');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');

@@ -6856,3 +6856,20 @@ h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eye
 @media (prefers-reduced-motion: reduce) {
   .nola-inspired-polish .lean-hero-copy::after { animation: none; opacity: 0.28; }
 }
+
+/* Compact mobile typography reduction. */
+@media (max-width: 760px) {
+  body { font-size: 14px; }
+  p:not(.eyebrow), li, dd, .hero-lede, .page-hero > p, .section-copy > p, .contact-hero > div > p, .lean-service-grid p, .depth-copy p, .team-card p, .lean-visit-strip p, .service-panel p, .contact-card p, .insight-list a, .site-footer p, .site-footer a { font-size: 14px; line-height: 1.55; }
+  .full-video-home .lean-hero-copy h1 { font-size: clamp(25px, 7vw, 31px); line-height: 1.08; max-width: 12ch; }
+  .page-hero h1, .contact-hero h1 { font-size: clamp(22px, 6.4vw, 30px); line-height: 1.08; }
+  .section-copy h2, .depth-copy h2, .team-card-copy h2, .lean-visit-strip h2, .insight-strip h2, .lean-home-services h2 { font-size: clamp(20px, 5.8vw, 27px); line-height: 1.12; }
+  h3, .lean-service-grid h3, .depth-grid strong, .team-card h2, .insight-list a { font-size: clamp(16px, 4.7vw, 19px); line-height: 1.18; }
+  .eyebrow, .panel-kicker, .header-info-item { font-size: 10.5px; }
+  .full-video-home .hero-lede, .lean-hero-copy .hero-lede { font-size: 14px; line-height: 1.5; }
+  .hero-access-list a, .support-tags a, .tool-chip { font-size: 13px; line-height: 1.18; min-height: 38px; }
+  body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { font-size: 14px; min-height: 39px; padding: 9px 11px; }
+  body.nav-open .nav-group-menu a { font-size: 13px; min-height: 35px; padding: 8px 10px; }
+  .button, .header-cta, .hero-actions .button-primary, .header-actions .button { font-size: 13px; }
+  .lean-hero-facts, .media-caption p, .contact-card p, .service-panel p { font-size: 13.5px; }
+}
