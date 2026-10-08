@@ -6873,3 +6873,12 @@ h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eye
   .button, .header-cta, .hero-actions .button-primary, .header-actions .button { font-size: 13px; }
   .lean-hero-facts, .media-caption p, .contact-card p, .service-panel p { font-size: 13.5px; }
 }
+
+/* Mobile hero headline and info marquee refinement. */
+@media (max-width: 760px) {
+  .full-video-home .lean-hero-copy h1 { font-size: clamp(21px, 6vw, 27px); line-height: 1.12; max-width: 18ch; text-align: left; text-wrap: balance; }
+  .nola-inspired-polish .lean-hero-copy { align-items: flex-start; gap: 10px; }
+  .header-info-strip { justify-content: flex-start; }
+}
+
+@keyframes mobile-info-marquee { from { transform: translateX(100vw); } to { transform: translateX(-115%); } }

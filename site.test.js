@@ -905,6 +905,18 @@ test('mobile typography is reduced consistently across the site', () => {
   }
 });
 
+test('mobile hero brand headline is smaller and info bar scrolls right to left', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Mobile hero headline and info marquee refinement. */'), 'missing mobile hero headline/info marquee refinement layer');
+    assert(stylesheet.includes('.full-video-home .lean-hero-copy h1 { font-size: clamp(21px, 6vw, 27px); line-height: 1.12; max-width: 18ch; text-align: left; text-wrap: balance; }'), 'mobile home brand headline should be smaller and balanced');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { align-items: flex-start; gap: 10px; }'), 'mobile hero card text should align cleanly after reducing the title');
+    assert(stylesheet.includes('.header-info-strip { justify-content: flex-start; }'), 'mobile info strip should align its marquee track from the left edge');
+    assert(stylesheet.includes('@keyframes mobile-info-marquee { from { transform: translateX(100vw); } to { transform: translateX(-115%); } }'), 'mobile information bar should scroll from right to left');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
