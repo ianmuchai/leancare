@@ -917,6 +917,15 @@ test('mobile hero brand headline is smaller and info bar scrolls right to left',
   }
 });
 
+test('mobile hero headline card has a slightly more opaque readable surface', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Mobile hero card opacity refinement. */'), 'missing mobile hero card opacity refinement layer');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(247, 252, 255, 0.90)) !important; border: 1px solid rgba(255, 255, 255, 0.72); box-shadow: 0 18px 38px rgba(16, 33, 49, 0.14); }'), 'mobile hero card should be a little more opaque and readable');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
