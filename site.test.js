@@ -851,6 +851,19 @@ test('final header is fully opaque and mobile menu is a floating brand panel', (
   }
 });
 
+test('mobile menu remains a compact floating card with a true hamburger icon', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Compact floating mobile menu correction. */'), 'missing compact mobile menu correction layer');
+    assert(stylesheet.includes('.site-header-shell .nav-toggle, .site-header-shell .menu-toggle { align-items: center; display: inline-flex !important; flex-direction: column; gap: 4px; height: 46px; justify-content: center; padding: 0; width: 46px; }'), 'hamburger control should stack the three bars vertically');
+    assert(stylesheet.includes('.site-header-shell .nav-toggle span, .site-header-shell .menu-toggle span { border-radius: 999px; display: block; flex: 0 0 2px; height: 2px; margin: 0; width: 21px; }'), 'hamburger bars should be three clean horizontal lines');
+    assert(stylesheet.includes('body.nav-open .site-header-shell::before { content: none !important; display: none !important; }'), 'mobile menu should not paint a full-page backdrop');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav { inset: 78px 14px auto auto; max-height: min(70vh, 430px); min-height: 0 !important; width: min(326px, calc(100vw - 28px)); }'), 'mobile menu should be a compact right-aligned floating card');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .header-actions { left: auto; right: 14px; top: min(512px, calc(100vh - 74px)); width: min(326px, calc(100vw - 28px)); }'), 'mobile appointment CTA should align with the floating menu width instead of spanning the page');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
