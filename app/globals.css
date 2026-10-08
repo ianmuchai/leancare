@@ -6826,3 +6826,33 @@ h1, h2, h3, h4, h5, h6, strong, b, .button, .site-nav a, .header-info-item, .eye
 @media (max-width: 760px) {
   .site-header { top: -24px !important; }
 }
+
+/* Sharper mobile menu and translucent hero card polish. */
+@media (max-width: 760px) {
+  .site-header-shell .nav-toggle, .site-header-shell .menu-toggle { background: #ffffff !important; border: 1px solid rgba(63, 162, 219, 0.42) !important; border-radius: 4px; box-shadow: 0 10px 22px rgba(18, 100, 147, 0.18); gap: 4px; height: 42px; width: 42px; }
+  .site-header-shell .nav-toggle span, .site-header-shell .menu-toggle span { width: 20px; }
+  .site-header-shell .nav-toggle span:nth-child(1), .site-header-shell .menu-toggle span:nth-child(1) { background: #3fa2db !important; }
+  .site-header-shell .nav-toggle span:nth-child(2), .site-header-shell .menu-toggle span:nth-child(2) { background: #f000be !important; }
+  .site-header-shell .nav-toggle span:nth-child(3), .site-header-shell .menu-toggle span:nth-child(3) { background: #126493 !important; }
+  body.nav-open .site-header-shell .site-nav { border-radius: 6px; gap: 6px; inset: 72px 12px auto auto; max-height: min(68vh, 390px); padding: 12px; width: min(292px, calc(100vw - 24px)); }
+  body.nav-open .site-header-shell .site-nav::before { border-bottom: 1px solid rgba(63, 162, 219, 0.16); color: #126493; margin-bottom: 2px; padding: 0 0 8px; text-align: left; }
+  body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { border-radius: 4px; font-family: var(--font-sans); font-size: 15px; font-weight: 500; justify-content: flex-start; letter-spacing: 0; line-height: 1.2; min-height: 42px; padding: 10px 12px; text-align: left; }
+  body.nav-open .nav-group-menu a { border-radius: 4px; font-size: 14px; line-height: 1.2; min-height: 38px; padding: 9px 11px; text-align: left; }
+  body.nav-open .site-header-shell .header-actions { right: 12px; top: min(468px, calc(100vh - 70px)); width: min(292px, calc(100vw - 24px)); }
+  body.nav-open .site-header-shell .header-actions .button { border-radius: 4px; font-size: 14px; min-height: 44px; }
+}
+
+@media (min-width: 761px) {
+  .nola-inspired-polish .lean-hero-copy { background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(247, 252, 255, 0.70)) !important; backdrop-filter: blur(10px) saturate(115%); -webkit-backdrop-filter: blur(10px) saturate(115%); overflow: hidden; position: relative; }
+  .nola-inspired-polish .lean-hero-copy::after { animation: lean-card-shimmer 7s ease-in-out infinite; background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.42) 42%, rgba(63, 162, 219, 0.14) 50%, transparent 62%); content: ""; inset: -35% -60%; pointer-events: none; position: absolute; transform: translateX(-48%); z-index: 0; }
+  .nola-inspired-polish .lean-hero-copy > * { position: relative; z-index: 1; }
+}
+
+@keyframes lean-card-shimmer {
+  0%, 58% { transform: translateX(-48%); }
+  100% { transform: translateX(48%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nola-inspired-polish .lean-hero-copy::after { animation: none; opacity: 0.28; }
+}

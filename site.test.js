@@ -875,6 +875,21 @@ test('information bar scrolls away while main menu row stays pinned', () => {
   }
 });
 
+test('mobile menu is smaller square edged and hero card has subtle translucent shimmer', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Sharper mobile menu and translucent hero card polish. */'), 'missing sharper mobile menu/hero card polish layer');
+    assert(stylesheet.includes('.site-header-shell .nav-toggle, .site-header-shell .menu-toggle { background: #ffffff !important; border: 1px solid rgba(63, 162, 219, 0.42) !important; border-radius: 4px; box-shadow: 0 10px 22px rgba(18, 100, 147, 0.18); gap: 4px; height: 42px; width: 42px; }'), 'mobile hamburger should be smaller with square brand styling');
+    assert(stylesheet.includes('.site-header-shell .nav-toggle span:nth-child(1), .site-header-shell .menu-toggle span:nth-child(1) { background: #3fa2db !important; }'), 'hamburger first bar should use LeanCare blue');
+    assert(stylesheet.includes('.site-header-shell .nav-toggle span:nth-child(2), .site-header-shell .menu-toggle span:nth-child(2) { background: #f000be !important; }'), 'hamburger middle bar should use LeanCare magenta');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav { border-radius: 6px; gap: 6px; inset: 72px 12px auto auto; max-height: min(68vh, 390px); padding: 12px; width: min(292px, calc(100vw - 24px)); }'), 'mobile menu should be smaller with squared edges');
+    assert(stylesheet.includes('body.nav-open .site-header-shell .site-nav > a, body.nav-open .site-header-shell .nav-group-label { border-radius: 4px; font-family: var(--font-sans); font-size: 15px; font-weight: 500; justify-content: flex-start; letter-spacing: 0; line-height: 1.2; min-height: 42px; padding: 10px 12px; text-align: left; }'), 'mobile menu words should align cleanly with better font treatment');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy { background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(247, 252, 255, 0.70)) !important; backdrop-filter: blur(10px) saturate(115%); -webkit-backdrop-filter: blur(10px) saturate(115%); overflow: hidden; position: relative; }'), 'desktop hero left card should be subtly transparent with controlled glass CSS');
+    assert(stylesheet.includes('.nola-inspired-polish .lean-hero-copy::after { animation: lean-card-shimmer 7s ease-in-out infinite; background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.42) 42%, rgba(63, 162, 219, 0.14) 50%, transparent 62%); content: ""; inset: -35% -60%; pointer-events: none; position: absolute; transform: translateX(-48%); z-index: 0; }'), 'desktop hero left card should carry a subtle shimmer pass');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
