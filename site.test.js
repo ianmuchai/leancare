@@ -864,6 +864,17 @@ test('mobile menu remains a compact floating card with a true hamburger icon', (
   }
 });
 
+test('information bar scrolls away while main menu row stays pinned', () => {
+  const css = read('styles.css');
+  const globals = read('app/globals.css');
+  for (const stylesheet of [css, globals]) {
+    assert(stylesheet.includes('/* Scroll-away information bar with pinned menu row. */'), 'missing final scroll-away information bar layer');
+    assert(stylesheet.includes('.site-header { position: sticky; top: -30px !important; z-index: 1000; }'), 'desktop header should use a negative sticky offset so only the menu row remains visible');
+    assert(stylesheet.includes('.site-header-shell { position: relative; top: auto; z-index: 3; }'), 'main menu shell should sit above the scrolling info bar inside the sticky header');
+    assert(stylesheet.includes('@media (max-width: 760px) {\n  .site-header { top: -24px !important; }\n}'), 'mobile info strip should also scroll away before the menu row pins');
+  }
+});
+
 test('information strip scrolls away while compact nav remains sticky and minimal', () => {
   const css = read('styles.css');
   const globals = read('app/globals.css');
